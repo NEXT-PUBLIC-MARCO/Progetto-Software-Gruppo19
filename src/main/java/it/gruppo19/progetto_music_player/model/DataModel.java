@@ -11,7 +11,7 @@ public class DataModel implements Serializable{
 
     public DataModel(List<BranoModel> brani, List<PlaylistModel> playlists) {
         this.brani = new ArrayList<>();
-        this.playlists = new ArrayList<>(); 
+        this.playlists = new ArrayList<>();
     }
 
     public void addBrani(BranoModel b){

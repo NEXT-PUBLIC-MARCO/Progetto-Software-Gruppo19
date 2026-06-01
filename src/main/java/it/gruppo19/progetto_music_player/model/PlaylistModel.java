@@ -2,21 +2,26 @@ package it.gruppo19.progetto_music_player.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class PlaylistModel implements  Serializable {
+public class PlaylistModel implements Serializable {
     private String id;
     private String titolo;
     private String descrizione;
     private String pathImmagine;
-    private  List<BranoModel> brani;
+    private List<BranoModel> brani;
 
     public PlaylistModel(String id, String titolo, String descrizione, String pathImmagine, List<BranoModel> brani) {
         this.id = id;
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.pathImmagine = pathImmagine;
-        this.brani = new ArrayList<>(); //si potrebbe cambiare in Queue
+        this.brani = new ArrayList<>();
+
+        if (brani != null) {
+            this.brani.addAll(brani);
+        }
     }
 
     public String getId() {
@@ -52,14 +57,27 @@ public class PlaylistModel implements  Serializable {
     }
 
     public List<BranoModel> getBrani() {
-        return brani;
+        return Collections.unmodifiableList(brani);
     }
 
-    //Metodo per aggiungere brani alla lista in un Arraylist, possibile cambiamento in coda
-    public void addBrani(BranoModel b){
-        brani.add(b);
+    public void addBrano(BranoModel b) {
+        if (b != null && !brani.contains(b)) {
+            brani.add(b);
+        }
     }
-    public void removeBrani (BranoModel b){
+
+    public void removeBrano(BranoModel b) {
         brani.remove(b);
+    }
+
+    public int size() {
+        return brani.size();
+    }
+
+    public BranoModel getBrano(int index) {
+        if (index < 0 || index >= brani.size()) {
+            return null;
+        }
+        return brani.get(index);
     }
 }
