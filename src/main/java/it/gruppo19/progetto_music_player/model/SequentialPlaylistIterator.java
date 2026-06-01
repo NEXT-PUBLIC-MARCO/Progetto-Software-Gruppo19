@@ -16,7 +16,7 @@ public class SequentialPlaylistIterator implements PlaylistIterator {
 
     @Override
     public boolean hasNext(){
-        return p != null && currentIndex+1 <= p.size();
+        return p != null && currentIndex+1 < p.size();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class SequentialPlaylistIterator implements PlaylistIterator {
         if(!hasNext()){
             return null;
         }
-        return p.getBrano(currentIndex++);
+        return p.getBrano(++currentIndex);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class SequentialPlaylistIterator implements PlaylistIterator {
          if(!hasPrevious()){
         return null;
         }
-        return p.getBrano(currentIndex--);
+        return p.getBrano(--currentIndex);
     }
 
     @Override
     public BranoModel current(){
-        if(currentIndex<0 || currentIndex >= p.size() || p == null){
+        if(p == null || currentIndex < 0 || currentIndex >= p.size()){
             return null;
         }
         return p.getBrano(currentIndex);

@@ -12,6 +12,13 @@ public class DataModel implements Serializable{
     public DataModel(List<BranoModel> brani, List<PlaylistModel> playlists) {
         this.brani = new ArrayList<>();
         this.playlists = new ArrayList<>();
+
+        if (brani != null) {
+            this.brani.addAll(brani);
+        }
+        if (playlists != null) {
+            this.playlists.addAll(playlists);
+        }
     }
 
     public void addBrani(BranoModel b){

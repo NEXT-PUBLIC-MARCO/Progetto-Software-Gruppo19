@@ -7,6 +7,7 @@ import it.gruppo19.progetto_music_player.model.SequentialPlaylistIterator;
 public class SequentialPlaylistStrategy implements PlaybackOrderStrategy{
     @Override
     public PlaylistIterator createIterator(PlaylistModel p){
-        return new SequentialPlaylistIterator(p);
+        return new SequentialPlaylistIterator(p,-1);
+
     }
 }
