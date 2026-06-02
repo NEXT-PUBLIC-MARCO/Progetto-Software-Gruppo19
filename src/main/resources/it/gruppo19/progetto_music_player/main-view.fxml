@@ -22,7 +22,7 @@
   Left: library sidebar with the song list. Right: the now-playing card.
 -->
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="it.gruppo19.progetto_music_player.controller.MainController"
+      fx:controller="it.gruppo19.progetto_music_player.controller.PlayerController"
       styleClass="app-root" prefWidth="1280.0" prefHeight="800.0"
       stylesheets="@styles.css">
 

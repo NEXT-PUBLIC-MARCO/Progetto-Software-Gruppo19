@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
  * Per ora gli handler sono stub: l'fxml e' stato generato dal design Figma
  * e collega gia' tutti i nodi tramite fx:id.
  */
-public class MainController {
+public class PlayerController {
 
     @FXML private ToggleButton tabBrani;
     @FXML private ToggleButton tabPlaylist;
