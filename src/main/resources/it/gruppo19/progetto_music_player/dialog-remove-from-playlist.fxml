@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<!--
+  Popup di conferma "Rimuovi dalla playlist".
+-->
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.gruppo19.progetto_music_player.controller.RemoveFromPlaylistDialogController"
+      styleClass="dialog-card" prefWidth="320.0" spacing="16.0" alignment="CENTER"
+      stylesheets="@styles.css">
+    <padding>
+        <Insets top="28.0" right="24.0" bottom="20.0" left="24.0"/>
+    </padding>
+
+    <StackPane styleClass="badge, badge-warning">
+        <!-- check-square -->
+        <SVGPath styleClass="badge-glyph"
+                 content="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+    </StackPane>
+
+    <Label text="Rimuovi dalla playlist" styleClass="dialog-title"/>
+
+    <Label fx:id="messageLabel" styleClass="dialog-text" wrapText="true"
+           text="Vuoi rimuovere il brano Deriva Lenta dalla playlist Serate d'Autunno?"/>
+
+    <HBox styleClass="dialog-footer">
+        <padding><Insets top="4.0"/></padding>
+        <Button text="No" styleClass="btn-secondary" onAction="#onCancel"
+                maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        <Button text="Sì, rimuovi" styleClass="btn-primary" onAction="#onConfirm"
+                maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+    </HBox>
+</VBox>

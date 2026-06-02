@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  Dialog "Aggiungi brano".
+  Campi richiesti: titolo, artista, genere, file audio, file foto.
+-->
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.gruppo19.progetto_music_player.controller.AddTrackDialogController"
+      styleClass="dialog-card" spacing="18.0" prefWidth="420.0" stylesheets="@styles.css">
+    <padding>
+        <Insets top="28.0" right="28.0" bottom="24.0" left="28.0"/>
+    </padding>
+
+    <VBox spacing="4.0">
+        <Label text="Aggiungi brano" styleClass="dialog-title"/>
+        <Label text="Inserisci i dettagli del nuovo brano" styleClass="dialog-subtitle"/>
+    </VBox>
+
+    <Region styleClass="dialog-divider"/>
+
+    <!-- Titolo -->
+    <VBox spacing="6.0">
+        <Label text="TITOLO" styleClass="field-label"/>
+        <TextField fx:id="titoloField" styleClass="form-field" promptText="Es. Deriva Lenta"/>
+    </VBox>
+
+    <!-- Artista -->
+    <VBox spacing="6.0">
+        <Label text="ARTISTA" styleClass="field-label"/>
+        <TextField fx:id="artistaField" styleClass="form-field" promptText="Es. Marco Vento"/>
+    </VBox>
+
+    <!-- Genere -->
+    <VBox spacing="6.0">
+        <Label text="GENERE" styleClass="field-label"/>
+        <ComboBox fx:id="genereCombo" styleClass="form-combo" editable="true"
+                  maxWidth="Infinity" promptText="Seleziona o digita un genere">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Ambient"/>
+                    <String fx:value="Classica"/>
+                    <String fx:value="Elettronica"/>
+                    <String fx:value="Jazz"/>
+                    <String fx:value="Pop"/>
+                    <String fx:value="Rock"/>
+                    <String fx:value="Strumentale"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+    </VBox>
+
+    <!-- File audio -->
+    <VBox spacing="6.0">
+        <Label text="FILE AUDIO" styleClass="field-label"/>
+        <HBox spacing="8.0">
+            <TextField fx:id="audioPathField" styleClass="file-path" editable="false"
+                       promptText="Nessun file selezionato" HBox.hgrow="ALWAYS"/>
+            <Button text="Sfoglia" styleClass="btn-browse" onAction="#onBrowseAudio"/>
+        </HBox>
+    </VBox>
+
+    <!-- File foto -->
+    <VBox spacing="6.0">
+        <Label text="FILE FOTO (COPERTINA)" styleClass="field-label"/>
+        <HBox spacing="8.0">
+            <TextField fx:id="fotoPathField" styleClass="file-path" editable="false"
+                       promptText="Nessuna immagine selezionata" HBox.hgrow="ALWAYS"/>
+            <Button text="Sfoglia" styleClass="btn-browse" onAction="#onBrowsePhoto"/>
+        </HBox>
+    </VBox>
+
+    <!-- messaggio di errore validazione -->
+    <Label fx:id="errorLabel" styleClass="dialog-subtitle" textFill="#c0392b"
+           visible="false" managed="false"/>
+
+    <Region styleClass="dialog-divider"/>
+
+    <HBox styleClass="dialog-footer" alignment="CENTER_RIGHT">
+        <Button text="Annulla" styleClass="btn-secondary" onAction="#onCancel"/>
+        <Button text="Aggiungi" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
+    </HBox>
+</VBox>

@@ -5,6 +5,7 @@ import it.gruppo19.progetto_music_player.storage.DummyStorage;
 import it.gruppo19.progetto_music_player.view.DummyView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -14,8 +15,9 @@ public class Controller {
 
     public void OnAppStartup() throws IOException {
         view = new DummyView();
-        //model = new DataModel();
+        model = new DataModel(new ArrayList<>(),new ArrayList<>());
         storage = new DummyStorage();
+        view.getController().setModel(model);
     }
 
     public void OnAppClose(){

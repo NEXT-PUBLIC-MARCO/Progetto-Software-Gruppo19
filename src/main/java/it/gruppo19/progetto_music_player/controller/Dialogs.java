@@ -1,0 +1,50 @@
+package it.gruppo19.progetto_music_player.controller;
+
+import it.gruppo19.progetto_music_player.MusicPlayerApplication;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
+/**
+ * Helper per aprire i popup/dialog come finestre modali.
+ * Carica l'FXML, mostra lo stage in modo bloccante e restituisce il controller,
+ * cosi' il chiamante puo' leggere l'esito (es. isConfirmed()).
+ */
+public final class Dialogs {
+
+    private Dialogs() {}
+
+    /**
+     * Apre {@code resource} come dialog modale figlio di {@code owner}.
+     *
+     * @return il controller dell'FXML caricato (per leggere il risultato)
+     */
+    public static <T> T openModal(Window owner, String resource, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MusicPlayerApplication.class.getResource(resource));
+            Parent root = loader.load();
+
+            Stage dialog = new Stage();
+            dialog.initStyle(StageStyle.UTILITY);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            if (owner != null) {
+                dialog.initOwner(owner);
+            }
+            dialog.setTitle(title);
+            dialog.setResizable(false);
+            dialog.setScene(new Scene(root));
+            dialog.showAndWait();
+
+            return loader.getController();
+        } catch (IOException e) {
+            throw new UncheckedIOException("Impossibile caricare il dialog: " + resource, e);
+        }
+    }
+}

@@ -1,11 +1,12 @@
 package it.gruppo19.progetto_music_player.controller;
 
+import it.gruppo19.progetto_music_player.model.BranoModel;
+import it.gruppo19.progetto_music_player.model.DataModel;
+import it.gruppo19.progetto_music_player.model.PlaylistModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 
 /**
  * Controller per la schermata principale (Melodia - 01 Homepage).
@@ -29,9 +30,45 @@ public class PlayerController {
     @FXML private Button playButton;
     @FXML private Button addButton;
 
+    /** Il model condiviso, iniettato da RealMainController dopo il load dell'FXML. */
+    private DataModel model;
+
+    public void setModel(DataModel model) {
+        this.model = model;
+        // appena ho il model posso disegnare la lista iniziale
+        refreshLibrary();
+    }
+
+    /** Ridisegna la lista in base al contenuto del model (stub da completare). */
+    private void refreshLibrary() {
+        if (model == null) return;
+        // TODO: svuotare songList e ricostruire una riga per ogni model.getBrani()
+        //       poi mostrare/nascondere l'empty-state di conseguenza.
+    }
+
     @FXML
     private void onAdd() {
-        // TODO: aprire il dialog "Aggiungi brano"
+        // finestra "proprietaria" del dialog (quella corrente)
+        Window owner = addButton.getScene().getWindow();
+
+        if (tabPlaylist.isSelected()) {
+            // tab Playlist -> dialog "Nuova playlist"
+            AddPlaylistDialogController dialog =
+                    Dialogs.openModal(owner, "dialog-add-playlist.fxml", "Nuova playlist");
+            if (dialog.isConfirmed()) {
+                PlaylistModel nuova = dialog.getResult();
+                // TODO: model.addPlaylist(nuova) e poi aggiornare la lista
+                model.addPlaylist(nuova);
+            }
+        } else {
+            // tab Brani -> dialog "Aggiungi brano"
+            AddTrackDialogController dialog =
+                    Dialogs.openModal(owner, "dialog-add-track.fxml", "Aggiungi brano");
+            if (dialog.isConfirmed()) {
+                BranoModel nuovo = dialog.getResult();
+                model.addBrani(nuovo);
+            }
+        }
     }
 
     @FXML
@@ -67,5 +104,10 @@ public class PlayerController {
     @FXML
     private void onDelete() {
         // TODO: aprire il popup "Elimina brano"
+    }
+
+    @FXML
+    private void onTabChanged(){
+
     }
 }

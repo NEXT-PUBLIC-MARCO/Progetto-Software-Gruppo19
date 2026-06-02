@@ -3,8 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
@@ -17,9 +15,9 @@
 <?import javafx.scene.text.TextFlow?>
 
 <!--
-  Melodia - 01 Homepage
-  Generated from the Figma design (frame "Melodia - 01 Homepage", 1280x800).
-  Left: library sidebar with the song list. Right: the now-playing card.
+  Melodia - 01 Homepage (stato vuoto)
+  Sidebar libreria con empty-state "Nessun brano" + pannello player inattivo.
+  La lista (songList) e i dati reali verranno popolati dal controller.
 -->
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="it.gruppo19.progetto_music_player.controller.PlayerController"
@@ -47,38 +45,43 @@
                     </fx:define>
                     <ToggleButton fx:id="tabBrani" text="Brani" selected="true"
                                   toggleGroup="$tabGroup" styleClass="segment-btn"
+                                  onAction="#onTabChanged"
                                   maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                     <ToggleButton fx:id="tabPlaylist" text="Playlist"
                                   toggleGroup="$tabGroup" styleClass="segment-btn"
+                                  onAction="#onTabChanged"
                                   maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                 </HBox>
             </VBox>
 
-            <!-- Section label -->
-            <Label text="LIBRERIA" styleClass="section-label">
+            <!-- Section label (cambia in base alla tab) -->
+            <Label fx:id="sectionLabel" text="LIBRERIA" styleClass="section-label">
                 <padding>
                     <Insets top="20.0" right="24.0" bottom="8.0" left="24.0"/>
                 </padding>
             </Label>
 
-            <!-- Song list -->
-            <ScrollPane fitToWidth="true" styleClass="list-scroll" VBox.vgrow="ALWAYS">
-                <VBox fx:id="songList" styleClass="song-list" spacing="2.0">
+            <!-- Area lista: la VBox songList viene popolata dal controller.
+                 Quando e' vuota mostriamo l'empty-state sovrapposto. -->
+            <StackPane fx:id="libraryArea" VBox.vgrow="ALWAYS">
+                <VBox fx:id="songList" styleClass="song-list" spacing="2.0"
+                      visible="false" managed="false">
                     <padding>
                         <Insets top="16.0" right="12.0" bottom="16.0" left="12.0"/>
                     </padding>
-
-                    <!-- Selected / now-playing row MOCK DATA -->
-                    <HBox styleClass="song-row, song-row-selected" alignment="CENTER_LEFT" spacing="12.0">
-                        <Region styleClass="thumb"/>
-                        <VBox styleClass="song-meta" HBox.hgrow="ALWAYS" spacing="1.0">
-                            <Label text="Deriva Lenta" styleClass="song-title, song-title-active"/>
-                            <Label text="Marco Vento" styleClass="song-artist"/>
-                        </VBox>
-                        <Region styleClass="now-dot"/>
-                    </HBox>
                 </VBox>
-            </ScrollPane>
+
+                <!-- EMPTY STATE - Nessun brano -->
+                <VBox fx:id="emptyLibrary" styleClass="empty-state">
+                    <StackPane styleClass="empty-icon, empty-icon-music">
+                        <Label text="♫" styleClass="empty-icon-glyph"/>
+                    </StackPane>
+                    <Label text="Nessun brano" styleClass="empty-title"/>
+                    <Label styleClass="empty-text" wrapText="true"
+                           text="La tua libreria è vuota. Aggiungi il tuo primo brano per cominciare."/>
+                    <Button styleClass="btn-primary" onAction="#onAdd" text="+  Aggiungi brano"/>
+                </VBox>
+            </StackPane>
         </VBox>
 
         <!-- Floating "add" button -->
@@ -88,60 +91,38 @@
                 <Insets bottom="24.0" right="25.0"/>
             </StackPane.margin>
             <graphic>
-                <SVGPath styleClass="fab-icon"
-                         content="M10 4.167v11.666M4.167 10h11.666"/>
+                <SVGPath styleClass="fab-icon" content="M10 4.167v11.666M4.167 10h11.666"/>
             </graphic>
         </Button>
     </StackPane>
 
-    <!-- ============================ NOW PLAYING ============================ -->
+    <!-- ============================ NOW PLAYING (player inattivo) ============================ -->
     <StackPane styleClass="content-area" HBox.hgrow="ALWAYS">
 
         <VBox fx:id="playerCard" styleClass="player-card" maxWidth="440.0" maxHeight="713.0"
-              spacing="24.0" alignment="TOP_CENTER">
+              spacing="16.0" alignment="CENTER">
             <padding>
                 <Insets top="40.0" right="40.0" bottom="40.0" left="40.0"/>
             </padding>
 
-            <!-- Album art -->
-            <Region styleClass="album-art" VBox.vgrow="ALWAYS" maxWidth="Infinity"/>
+            <StackPane styleClass="empty-icon, empty-icon-play">
+                <SVGPath styleClass="play-icon-faint" content="M7 5v14l11-7z"/>
+            </StackPane>
+            <Label text="Nessun brano selezionato" styleClass="empty-title"/>
+            <Label styleClass="empty-text" wrapText="true"
+                   text="Seleziona un brano dalla libreria per iniziare ad ascoltare."/>
 
-            <!-- Title + artist -->
-            <VBox spacing="4.0" maxWidth="Infinity">
-                <Label fx:id="nowTitle" text="Deriva Lenta" styleClass="player-title"/>
-                <Label fx:id="nowArtist" text="Marco Vento" styleClass="player-artist"/>
-            </VBox>
+            <Region styleClass="dialog-divider" maxWidth="268.0">
+                <VBox.margin><Insets top="8.0" bottom="8.0"/></VBox.margin>
+            </Region>
 
-            <!-- Progress -->
-            <VBox spacing="8.0" maxWidth="Infinity">
-                <ProgressBar fx:id="progress" progress="0.37" styleClass="player-progress"
-                             maxWidth="Infinity"/>
-                <HBox>
-                    <Label fx:id="elapsed" text="1:23" styleClass="time-label"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="total" text="3:44" styleClass="time-label"/>
-                </HBox>
-            </VBox>
-
-            <!-- Playback controls -->
-            <HBox styleClass="controls" alignment="CENTER" spacing="16.0" maxWidth="Infinity">
-                <Button fx:id="shuffleButton" text="⇄" styleClass="control-btn" onAction="#onShuffle"/>
-                <Button fx:id="prevButton" text="⏮" styleClass="control-btn" onAction="#onPrev"/>
-                <Button fx:id="playButton" styleClass="play-btn" onAction="#onPlayPause">
-                    <graphic>
-                        <SVGPath fx:id="playIcon" styleClass="play-icon" content="M5 3.5v13l11-6.5z"/>
-                    </graphic>
-                </Button>
-                <Button fx:id="nextButton" text="⏭" styleClass="control-btn" onAction="#onNext"/>
-                <Button fx:id="repeatButton" text="⟳" styleClass="control-btn" onAction="#onRepeat"/>
-            </HBox>
-
-            <!-- Actions -->
-            <HBox styleClass="actions" alignment="CENTER" spacing="16.0" maxWidth="Infinity">
-                <Button fx:id="addToPlaylistButton" text="+  Aggiungi a playlist"
-                        styleClass="action-btn" onAction="#onAddToPlaylist"/>
-                <Button fx:id="deleteButton" text="Elimina"
-                        styleClass="action-btn, action-btn-danger" onAction="#onDelete"/>
+            <!-- controlli decorativi (disattivati) -->
+            <HBox alignment="CENTER" spacing="12.0">
+                <Region styleClass="ghost-dash"/>
+                <StackPane styleClass="ghost-play">
+                    <Label text="▶" styleClass="empty-icon-glyph"/>
+                </StackPane>
+                <Region styleClass="ghost-dash"/>
             </HBox>
         </VBox>
     </StackPane>

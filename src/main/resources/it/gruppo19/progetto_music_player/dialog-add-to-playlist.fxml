@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  Popup "Aggiungi a playlist".
+  Mostra l'elenco delle playlist su cui aggiungere il brano corrente.
+  Le righe (playlistList) vengono popolate dal controller; qui c'e' un esempio statico.
+-->
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.gruppo19.progetto_music_player.controller.AddToPlaylistDialogController"
+      styleClass="dialog-card" prefWidth="360.0" stylesheets="@styles.css">
+
+    <!-- header -->
+    <VBox spacing="6.0">
+        <padding><Insets top="24.0" right="24.0" bottom="16.0" left="24.0"/></padding>
+        <Label text="Aggiungi a playlist" styleClass="dialog-title"/>
+        <Label fx:id="trackLabel" text="Deriva Lenta · Marco Vento" styleClass="dialog-subtitle"/>
+    </VBox>
+
+    <Region styleClass="dialog-divider"/>
+
+    <!-- elenco playlist -->
+    <VBox fx:id="playlistList" spacing="4.0">
+        <padding><Insets top="12.0" right="16.0" bottom="12.0" left="16.0"/></padding>
+
+        <!-- riga selezionata -->
+        <HBox styleClass="pl-row, pl-row-selected">
+            <Region styleClass="pl-thumb"/>
+            <VBox HBox.hgrow="ALWAYS" spacing="2.0">
+                <Label text="Serate d'Autunno" styleClass="pl-title"/>
+                <Label text="4 brani" styleClass="pl-count"/>
+            </VBox>
+            <StackPane styleClass="radio-on">
+                <Label text="✓" styleClass="radio-on-glyph"/>
+            </StackPane>
+        </HBox>
+
+        <!-- riga non selezionata -->
+        <HBox styleClass="pl-row">
+            <Region styleClass="pl-thumb"/>
+            <VBox HBox.hgrow="ALWAYS" spacing="2.0">
+                <Label text="Focus Profondo" styleClass="pl-title"/>
+                <Label text="2 brani" styleClass="pl-count"/>
+            </VBox>
+            <Region styleClass="radio-off"/>
+        </HBox>
+    </VBox>
+
+    <Region styleClass="dialog-divider"/>
+
+    <!-- footer -->
+    <HBox styleClass="dialog-footer">
+        <padding><Insets top="16.0" right="24.0" bottom="20.0" left="24.0"/></padding>
+        <Button text="Annulla" styleClass="btn-secondary" onAction="#onCancel"
+                maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        <Button text="Aggiungi" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"
+                maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+    </HBox>
+</VBox>

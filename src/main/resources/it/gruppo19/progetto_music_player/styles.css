@@ -16,6 +16,12 @@
     -fx-selected-bg:   #f0ebe3;
     -fx-border:        #e8e5e0;
     -fx-danger:        #c0392b;
+    -fx-danger-tint:   #f9e7e4; /* light red badge bg               */
+    -fx-warning:       #b8860b; /* gold (rimuovi)                   */
+    -fx-warning-tint:  #f5edda;
+    -fx-success-tint:  #e3ebe4; /* green badge bg (playlist)        */
+    -fx-success:       #7a9b76;
+    -fx-neutral-tint:  #ebeae8; /* grey badge bg (player off)       */
 
     -fx-font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
     -fx-background-color: -fx-app-bg;
@@ -175,6 +181,11 @@
     -fx-padding: 48px 230px;
 }
 
+/* pannello destro allineato in alto/sinistra (dettaglio brano/playlist) */
+.content-area-left {
+    -fx-background-color: -fx-app-bg;
+}
+
 .player-card {
     -fx-background-color: -fx-surface;
     -fx-background-radius: 24px;
@@ -251,6 +262,10 @@
     -fx-fill: -fx-surface;
 }
 
+.play-icon-faint {
+    -fx-fill: -fx-text-muted;
+}
+
 /* Action buttons */
 .action-btn {
     -fx-background-color: -fx-app-bg;
@@ -269,3 +284,303 @@
 .action-btn-danger {
     -fx-text-fill: -fx-danger;
 }
+
+/* ============================================================ */
+/* SHARED BUTTONS                                               */
+/* ============================================================ */
+.btn-primary {
+    -fx-background-color: -fx-text-primary;
+    -fx-background-radius: 8px;
+    -fx-text-fill: -fx-surface;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 11px 20px;
+    -fx-cursor: hand;
+}
+.btn-primary:hover { -fx-background-color: #000000; }
+
+.btn-secondary {
+    -fx-background-color: -fx-app-bg;
+    -fx-background-radius: 8px;
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 11px 20px;
+    -fx-cursor: hand;
+}
+.btn-secondary:hover { -fx-background-color: -fx-border; }
+
+.btn-danger {
+    -fx-background-color: -fx-danger;
+    -fx-background-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 11px 20px;
+    -fx-cursor: hand;
+}
+.btn-danger:hover { -fx-background-color: derive(#c0392b, -8%); }
+
+.btn-danger-soft {
+    -fx-background-color: -fx-danger-tint;
+    -fx-background-radius: 8px;
+    -fx-text-fill: -fx-danger;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 11px 20px;
+    -fx-cursor: hand;
+}
+.btn-danger-soft:hover { -fx-background-color: derive(#f9e7e4, -4%); }
+
+/* ============================================================ */
+/* EMPTY STATES                                                 */
+/* ============================================================ */
+.empty-state {
+    -fx-alignment: center;
+    -fx-spacing: 16px;
+    -fx-padding: 40px 32px;
+    -fx-max-width: 300px;
+}
+.empty-icon {
+    -fx-min-width: 64px;  -fx-min-height: 64px;
+    -fx-pref-width: 64px; -fx-pref-height: 64px;
+    -fx-max-width: 64px;  -fx-max-height: 64px;
+    -fx-background-radius: 18px;
+    -fx-alignment: center;
+}
+.empty-icon-music { -fx-background-color: -fx-selected-bg; }
+.empty-icon-list  { -fx-background-color: -fx-success-tint; }
+.empty-icon-play  { -fx-background-color: -fx-neutral-tint; }
+.empty-icon-glyph {
+    -fx-font-size: 26px;
+    -fx-text-fill: -fx-text-muted;
+}
+.empty-icon-music .empty-icon-glyph { -fx-text-fill: -fx-accent; }
+.empty-icon-list  .empty-icon-glyph { -fx-text-fill: -fx-success; }
+.empty-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+}
+.empty-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-secondary;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* decorative inactive player controls (empty player) */
+.ghost-dash {
+    -fx-min-width: 36px; -fx-pref-width: 36px; -fx-max-width: 36px;
+    -fx-min-height: 3px; -fx-pref-height: 3px; -fx-max-height: 3px;
+    -fx-background-color: -fx-border;
+    -fx-background-radius: 2px;
+}
+.ghost-play {
+    -fx-min-width: 36px;  -fx-min-height: 36px;
+    -fx-pref-width: 36px; -fx-pref-height: 36px;
+    -fx-max-width: 36px;  -fx-max-height: 36px;
+    -fx-background-radius: 18px;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 18px;
+    -fx-alignment: center;
+}
+.ghost-play .empty-icon-glyph { -fx-font-size: 12px; -fx-text-fill: -fx-text-faint; }
+
+/* ============================================================ */
+/* DIALOGS / POPUPS                                             */
+/* ============================================================ */
+.dialog-card {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 24, 0, 0, 8);
+}
+.dialog-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+}
+.dialog-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-secondary;
+}
+.dialog-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-secondary;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+.dialog-divider {
+    -fx-min-height: 1px; -fx-pref-height: 1px; -fx-max-height: 1px;
+    -fx-background-color: -fx-border;
+}
+.dialog-footer { -fx-alignment: center; -fx-spacing: 12px; }
+
+/* confirm badges */
+.badge {
+    -fx-min-width: 52px;  -fx-min-height: 52px;
+    -fx-pref-width: 52px; -fx-pref-height: 52px;
+    -fx-max-width: 52px;  -fx-max-height: 52px;
+    -fx-background-radius: 26px;
+    -fx-alignment: center;
+}
+.badge-danger  { -fx-background-color: -fx-danger-tint; }
+.badge-warning { -fx-background-color: -fx-warning-tint; }
+.badge-glyph { -fx-font-size: 22px; }
+.badge-danger  .badge-glyph { -fx-text-fill: -fx-danger; }
+.badge-warning .badge-glyph { -fx-text-fill: -fx-warning; }
+
+/* form fields */
+.field-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-text-faint;
+    -fx-font-weight: bold;
+}
+.form-field {
+    -fx-background-color: -fx-app-bg;
+    -fx-background-radius: 8px;
+    -fx-border-color: -fx-border;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-primary;
+    -fx-prompt-text-fill: -fx-text-faint;
+    -fx-padding: 9px 12px;
+}
+.form-field:focused { -fx-border-color: -fx-accent; }
+.form-combo {
+    -fx-background-color: -fx-app-bg;
+    -fx-background-radius: 8px;
+    -fx-border-color: -fx-border;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-font-size: 13px;
+}
+.form-combo .list-cell { -fx-text-fill: -fx-text-primary; -fx-font-size: 13px; }
+
+.file-path {
+    -fx-background-color: -fx-app-bg;
+    -fx-background-radius: 8px;
+    -fx-border-color: -fx-border;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-text-fill: -fx-text-secondary;
+    -fx-font-size: 12px;
+    -fx-padding: 9px 12px;
+}
+.btn-browse {
+    -fx-background-color: -fx-selected-bg;
+    -fx-background-radius: 8px;
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 9px 14px;
+    -fx-cursor: hand;
+}
+.btn-browse:hover { -fx-background-color: -fx-border; }
+
+/* playlist picker rows (add-to-playlist popup) */
+.pl-row {
+    -fx-spacing: 12px;
+    -fx-alignment: center-left;
+    -fx-padding: 10px 12px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+}
+.pl-row:hover { -fx-background-color: -fx-app-bg; }
+.pl-row-selected { -fx-background-color: -fx-selected-bg; }
+.pl-thumb {
+    -fx-min-width: 40px;  -fx-min-height: 40px;
+    -fx-pref-width: 40px; -fx-pref-height: 40px;
+    -fx-background-color: -fx-thumb-bg;
+    -fx-background-radius: 8px;
+}
+.pl-title { -fx-font-size: 14px; -fx-text-fill: -fx-text-primary; }
+.pl-count { -fx-font-size: 12px; -fx-text-fill: -fx-text-secondary; }
+.radio-on {
+    -fx-min-width: 20px; -fx-min-height: 20px; -fx-max-width: 20px; -fx-max-height: 20px;
+    -fx-background-color: -fx-text-primary;
+    -fx-background-radius: 10px;
+    -fx-alignment: center;
+}
+.radio-on-glyph { -fx-text-fill: white; -fx-font-size: 11px; }
+.radio-off {
+    -fx-min-width: 20px; -fx-min-height: 20px; -fx-max-width: 20px; -fx-max-height: 20px;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+}
+
+/* ============================================================ */
+/* DETAIL / PLAYLIST PAGES                                      */
+/* ============================================================ */
+.back-link {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-secondary;
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.back-link:hover { -fx-text-fill: -fx-text-primary; }
+
+.detail-card {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 2);
+    -fx-padding: 40px;
+}
+.detail-art {
+    -fx-min-width: 140px;  -fx-min-height: 140px;
+    -fx-pref-width: 140px; -fx-pref-height: 140px;
+    -fx-background-color: -fx-thumb-bg;
+    -fx-background-radius: 16px;
+}
+.badge-pill {
+    -fx-background-color: -fx-selected-bg;
+    -fx-background-radius: 6px;
+    -fx-padding: 3px 8px;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent;
+}
+.detail-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+}
+.detail-artist { -fx-font-size: 16px; -fx-text-fill: -fx-text-secondary; }
+.detail-meta   { -fx-font-size: 13px; -fx-text-fill: -fx-text-faint; }
+.detail-meta-strong { -fx-text-fill: -fx-text-secondary; -fx-font-weight: bold; }
+.detail-desc {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-secondary;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 4px;
+}
+
+/* playlist track rows */
+.pl-track-row {
+    -fx-spacing: 14px;
+    -fx-alignment: center-left;
+    -fx-padding: 10px 0;
+    -fx-cursor: hand;
+}
+.pl-track-row:hover { -fx-background-color: -fx-app-bg; -fx-background-radius: 8px; }
+.track-index { -fx-font-size: 13px; -fx-text-fill: -fx-text-faint; -fx-min-width: 20px; }
+.track-thumb {
+    -fx-min-width: 36px;  -fx-min-height: 36px;
+    -fx-pref-width: 36px; -fx-pref-height: 36px;
+    -fx-background-color: -fx-thumb-bg;
+    -fx-background-radius: 8px;
+}
+.icon-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+    -fx-text-fill: -fx-text-faint;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 6px 8px;
+}
+.icon-btn:hover { -fx-background-color: -fx-selected-bg; -fx-text-fill: -fx-danger; }

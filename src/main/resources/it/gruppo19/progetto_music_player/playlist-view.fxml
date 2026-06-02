@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<!--
+  Melodia - 06-07 Playlist View.
+  Sidebar con elenco playlist + scheda della playlist selezionata e relativi brani.
+-->
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.gruppo19.progetto_music_player.controller.PlaylistController"
+      styleClass="app-root" prefWidth="1280.0" prefHeight="800.0"
+      stylesheets="@styles.css">
+
+    <!-- ============================ SIDEBAR ============================ -->
+    <StackPane minWidth="380.0" prefWidth="380.0" maxWidth="380.0">
+        <VBox styleClass="sidebar">
+            <VBox styleClass="sidebar-header" spacing="24.0">
+                <padding><Insets top="28.0" right="24.0" bottom="0.0" left="24.0"/></padding>
+                <TextFlow styleClass="logo">
+                    <Text styleClass="logo-melo" text="melo"/>
+                    <Text styleClass="logo-dia" text="dia"/>
+                </TextFlow>
+                <HBox styleClass="segment">
+                    <fx:define><ToggleGroup fx:id="tabGroup"/></fx:define>
+                    <ToggleButton text="Brani" toggleGroup="$tabGroup"
+                                  styleClass="segment-btn" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                    <ToggleButton text="Playlist" selected="true" toggleGroup="$tabGroup"
+                                  styleClass="segment-btn" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </VBox>
+
+            <Label text="LE TUE PLAYLIST" styleClass="section-label">
+                <padding><Insets top="20.0" right="24.0" bottom="8.0" left="24.0"/></padding>
+            </Label>
+
+            <ScrollPane fitToWidth="true" styleClass="list-scroll" VBox.vgrow="ALWAYS">
+                <VBox fx:id="playlistSidebarList" styleClass="song-list" spacing="2.0">
+                    <padding><Insets top="16.0" right="12.0" bottom="16.0" left="12.0"/></padding>
+
+                    <!-- playlist selezionata -->
+                    <HBox styleClass="song-row, song-row-selected" alignment="CENTER_LEFT" spacing="14.0">
+                        <Region styleClass="pl-thumb" style="-fx-min-width:52; -fx-min-height:52;"/>
+                        <VBox styleClass="song-meta" HBox.hgrow="ALWAYS" spacing="1.0">
+                            <Label text="Serate d'Autunno" styleClass="song-title, song-title-active"/>
+                            <Label text="4 brani" styleClass="song-artist"/>
+                        </VBox>
+                        <Region styleClass="now-dot"/>
+                    </HBox>
+                    <HBox styleClass="song-row" alignment="CENTER_LEFT" spacing="14.0">
+                        <Region styleClass="pl-thumb" style="-fx-min-width:52; -fx-min-height:52;"/>
+                        <VBox styleClass="song-meta" HBox.hgrow="ALWAYS" spacing="1.0">
+                            <Label text="Focus Profondo" styleClass="song-title"/>
+                            <Label text="2 brani" styleClass="song-artist"/>
+                        </VBox>
+                    </HBox>
+                    <!-- crea nuova playlist -->
+                    <HBox styleClass="song-row" alignment="CENTER_LEFT" spacing="14.0" onMouseClicked="#onNewPlaylist">
+                        <StackPane styleClass="pl-thumb" style="-fx-min-width:52; -fx-min-height:52;">
+                            <Label text="+" styleClass="empty-icon-glyph"/>
+                        </StackPane>
+                        <VBox styleClass="song-meta" HBox.hgrow="ALWAYS" spacing="1.0">
+                            <Label text="Nuova playlist" styleClass="song-title"/>
+                            <Label text="Vuota" styleClass="song-artist"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+
+        <Button fx:id="addButton" styleClass="fab" onAction="#onAdd" StackPane.alignment="BOTTOM_RIGHT">
+            <StackPane.margin><Insets bottom="24.0" right="25.0"/></StackPane.margin>
+            <graphic><SVGPath styleClass="fab-icon" content="M10 4.167v11.666M4.167 10h11.666"/></graphic>
+        </Button>
+    </StackPane>
+
+    <!-- ============================ DETTAGLIO PLAYLIST ============================ -->
+    <VBox styleClass="content-area-left" HBox.hgrow="ALWAYS" spacing="0.0">
+        <padding><Insets top="48.0" right="48.0" bottom="48.0" left="48.0"/></padding>
+
+        <VBox styleClass="detail-card" spacing="0.0" maxWidth="620.0">
+
+            <!-- intestazione playlist -->
+            <HBox spacing="28.0">
+                <Region fx:id="cover" styleClass="detail-art"/>
+                <VBox HBox.hgrow="ALWAYS" spacing="8.0" alignment="CENTER_LEFT">
+                    <Label text="PLAYLIST" styleClass="badge-pill"/>
+                    <Label fx:id="titolo" text="Serate d'Autunno" styleClass="detail-title" wrapText="true"/>
+                    <Label fx:id="descrizione" styleClass="detail-desc" wrapText="true"
+                           text="Brani per le serate tranquille, quando il silenzio ha il sapore delle foglie secche e la luce è bassa."/>
+                    <HBox spacing="16.0">
+                        <Label fx:id="numBrani" text="4 brani" styleClass="detail-meta, detail-meta-strong"/>
+                        <Label fx:id="durataTotale" text="17:05 totale" styleClass="detail-meta"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <Region styleClass="dialog-divider">
+                <VBox.margin><Insets top="24.0" bottom="20.0"/></VBox.margin>
+            </Region>
+
+            <Label text="BRANI NELLA PLAYLIST" styleClass="section-label"/>
+
+            <!-- elenco brani della playlist (popolato dal controller) -->
+            <VBox fx:id="trackList" spacing="0.0">
+                <VBox.margin><Insets top="8.0"/></VBox.margin>
+
+                <HBox styleClass="pl-track-row">
+                    <Region styleClass="now-dot"/>
+                    <Region styleClass="track-thumb"/>
+                    <VBox HBox.hgrow="ALWAYS" spacing="1.0">
+                        <Label text="Deriva Lenta" styleClass="song-title, song-title-active"/>
+                        <Label text="Marco Vento" styleClass="song-artist"/>
+                    </VBox>
+                    <Label text="3:44" styleClass="song-duration"/>
+                    <Button styleClass="icon-btn" text="🗑" onAction="#onRemoveFromPlaylist"/>
+                </HBox>
+                <HBox styleClass="pl-track-row">
+                    <Label text="2" styleClass="track-index"/>
+                    <Region styleClass="track-thumb"/>
+                    <VBox HBox.hgrow="ALWAYS" spacing="1.0">
+                        <Label text="Cielo d'Inverno" styleClass="song-title"/>
+                        <Label text="Elisa Fontana" styleClass="song-artist"/>
+                    </VBox>
+                    <Label text="3:47" styleClass="song-duration"/>
+                    <Button styleClass="icon-btn" text="🗑" onAction="#onRemoveFromPlaylist"/>
+                </HBox>
+                <HBox styleClass="pl-track-row">
+                    <Label text="3" styleClass="track-index"/>
+                    <Region styleClass="track-thumb"/>
+                    <VBox HBox.hgrow="ALWAYS" spacing="1.0">
+                        <Label text="Terre di Fuoco" styleClass="song-title"/>
+                        <Label text="Nico Serrano" styleClass="song-artist"/>
+                    </VBox>
+                    <Label text="4:12" styleClass="song-duration"/>
+                    <Button styleClass="icon-btn" text="🗑" onAction="#onRemoveFromPlaylist"/>
+                </HBox>
+                <HBox styleClass="pl-track-row">
+                    <Label text="4" styleClass="track-index"/>
+                    <Region styleClass="track-thumb"/>
+                    <VBox HBox.hgrow="ALWAYS" spacing="1.0">
+                        <Label text="Silenzio Bianco" styleClass="song-title"/>
+                        <Label text="Luca Marino" styleClass="song-artist"/>
+                    </VBox>
+                    <Label text="5:02" styleClass="song-duration"/>
+                    <Button styleClass="icon-btn" text="🗑" onAction="#onRemoveFromPlaylist"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </VBox>
+</HBox>

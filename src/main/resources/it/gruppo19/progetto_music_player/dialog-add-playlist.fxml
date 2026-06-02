@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  Dialog "Nuova playlist".
+  Campi: nome, descrizione, file foto (copertina, opzionale).
+-->
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.gruppo19.progetto_music_player.controller.AddPlaylistDialogController"
+      styleClass="dialog-card" spacing="18.0" prefWidth="420.0" stylesheets="@styles.css">
+    <padding>
+        <Insets top="28.0" right="28.0" bottom="24.0" left="28.0"/>
+    </padding>
+
+    <VBox spacing="4.0">
+        <Label text="Nuova playlist" styleClass="dialog-title"/>
+        <Label text="Crea una nuova raccolta di brani" styleClass="dialog-subtitle"/>
+    </VBox>
+
+    <Region styleClass="dialog-divider"/>
+
+    <VBox spacing="6.0">
+        <Label text="NOME" styleClass="field-label"/>
+        <TextField fx:id="nomeField" styleClass="form-field" promptText="Es. Serate d'Autunno"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="DESCRIZIONE" styleClass="field-label"/>
+        <TextArea fx:id="descrizioneArea" styleClass="form-field" wrapText="true"
+                  prefRowCount="3" promptText="Una breve descrizione (opzionale)"/>
+    </VBox>
+
+    <VBox spacing="6.0">
+        <Label text="FILE FOTO (COPERTINA)" styleClass="field-label"/>
+        <HBox spacing="8.0">
+            <TextField fx:id="fotoPathField" styleClass="file-path" editable="false"
+                       promptText="Nessuna immagine selezionata" HBox.hgrow="ALWAYS"/>
+            <Button text="Sfoglia" styleClass="btn-browse" onAction="#onBrowsePhoto"/>
+        </HBox>
+    </VBox>
+
+    <Label fx:id="errorLabel" styleClass="dialog-subtitle" textFill="#c0392b"
+           visible="false" managed="false"/>
+
+    <Region styleClass="dialog-divider"/>
+
+    <HBox styleClass="dialog-footer" alignment="CENTER_RIGHT">
+        <Button text="Annulla" styleClass="btn-secondary" onAction="#onCancel"/>
+        <Button text="Crea" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
+    </HBox>
+</VBox>
