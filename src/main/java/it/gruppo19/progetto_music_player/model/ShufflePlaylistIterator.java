@@ -46,11 +46,11 @@ public class ShufflePlaylistIterator implements PlaylistIterator{
 
     @Override
     public boolean hasPrevious(){
-        return p!=null && currentIndex-1 > 0;
+        return p!=null && currentIndex-1 >= 0;
     }
     @Override
     public BranoModel previous(){
-        if(!hasNext()){
+        if(!hasPrevious()){
             return null;
         }
         currentIndex--;
