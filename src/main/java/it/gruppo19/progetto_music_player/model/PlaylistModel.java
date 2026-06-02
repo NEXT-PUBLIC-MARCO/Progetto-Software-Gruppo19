@@ -10,7 +10,7 @@ public class PlaylistModel implements Serializable {
     private String titolo;
     private String descrizione;
     private String pathImmagine;
-    private List<BranoModel> brani;
+    private final List<BranoModel> brani;
 
     public PlaylistModel(String id, String titolo, String descrizione, String pathImmagine, List<BranoModel> brani) {
         this.id = id;

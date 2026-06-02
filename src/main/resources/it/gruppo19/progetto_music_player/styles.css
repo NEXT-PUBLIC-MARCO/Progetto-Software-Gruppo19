@@ -1,0 +1,271 @@
+/*
+ * Melodia - design tokens & styles
+ * Extracted from the Figma file "Melodia" (frame 01 Homepage).
+ */
+
+.root {
+    -fx-app-bg:        #f5f3ef; /* warm off-white background        */
+    -fx-surface:       #ffffff; /* sidebar / cards                  */
+    -fx-accent:        #8b6f47; /* brand brown                      */
+    -fx-text-primary:  #1a1a1a;
+    -fx-text-secondary:#999999;
+    -fx-text-muted:    #666666;
+    -fx-text-faint:    #bbbbbb;
+    -fx-thumb-bg:      #e8e5e0;
+    -fx-thumb-empty:   #e0ddd7;
+    -fx-selected-bg:   #f0ebe3;
+    -fx-border:        #e8e5e0;
+    -fx-danger:        #c0392b;
+
+    -fx-font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+    -fx-background-color: -fx-app-bg;
+}
+
+.app-root {
+    -fx-background-color: -fx-app-bg;
+}
+
+/* ============================ SIDEBAR ============================ */
+.sidebar {
+    -fx-background-color: -fx-surface;
+    -fx-border-color: transparent -fx-border transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+.logo {
+    -fx-font-size: 18px;
+}
+
+.logo-melo {
+    -fx-font-weight: bold;
+    -fx-fill: -fx-text-primary;
+}
+
+.logo-dia {
+    -fx-font-weight: bold;
+    -fx-fill: -fx-accent;
+}
+
+/* Segmented control (Brani / Playlist) */
+.segment {
+    -fx-background-color: -fx-app-bg;
+    -fx-background-radius: 10px;
+    -fx-padding: 4px;
+    -fx-spacing: 4px;
+}
+
+.segment-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7px;
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 0;
+    -fx-cursor: hand;
+}
+
+.segment-btn:selected {
+    -fx-background-color: -fx-surface;
+    -fx-text-fill: -fx-text-primary;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 1.5, 0, 0, 1);
+}
+
+.section-label {
+    -fx-text-fill: -fx-text-faint;
+    -fx-font-size: 11px;
+}
+
+/* ============================ SONG LIST ============================ */
+.list-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-padding: 0;
+}
+
+.list-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.song-list {
+    -fx-background-color: transparent;
+}
+
+.song-row {
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 12px;
+    -fx-min-height: 64px;
+    -fx-pref-height: 64px;
+    -fx-cursor: hand;
+}
+
+.song-row:hover {
+    -fx-background-color: -fx-app-bg;
+}
+
+.song-row-selected {
+    -fx-background-color: -fx-selected-bg;
+}
+
+.thumb {
+    -fx-min-width: 44px;  -fx-min-height: 44px;
+    -fx-pref-width: 44px; -fx-pref-height: 44px;
+    -fx-background-color: -fx-thumb-bg;
+    -fx-background-radius: 8px;
+}
+
+.thumb-empty {
+    -fx-background-color: -fx-thumb-empty;
+}
+
+.song-meta {
+    -fx-padding: 4px 0;
+}
+
+.song-title {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.song-title-active {
+    -fx-text-fill: -fx-accent;
+}
+
+.song-artist {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.song-duration {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-text-faint;
+}
+
+.now-dot {
+    -fx-min-width: 6px;  -fx-min-height: 6px;
+    -fx-pref-width: 6px; -fx-pref-height: 6px;
+    -fx-max-width: 6px;  -fx-max-height: 6px;
+    -fx-background-color: -fx-accent;
+    -fx-background-radius: 3px;
+}
+
+/* Floating action button */
+.fab {
+    -fx-background-color: -fx-text-primary;
+    -fx-background-radius: 24px;
+    -fx-min-width: 48px;  -fx-min-height: 48px;
+    -fx-pref-width: 48px; -fx-pref-height: 48px;
+    -fx-max-width: 48px;  -fx-max-height: 48px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 4);
+}
+
+.fab:hover {
+    -fx-background-color: #000000;
+}
+
+.fab-icon {
+    -fx-stroke: -fx-surface;
+    -fx-stroke-width: 1.7px;
+    -fx-stroke-line-cap: round;
+    -fx-fill: transparent;
+}
+
+/* ============================ NOW PLAYING ============================ */
+.content-area {
+    -fx-background-color: -fx-app-bg;
+    -fx-padding: 48px 230px;
+}
+
+.player-card {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 2);
+}
+
+.album-art {
+    -fx-background-color: -fx-thumb-bg;
+    -fx-background-radius: 16px;
+    -fx-min-height: 200px;
+}
+
+.player-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.player-artist {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-secondary;
+}
+
+/* Progress bar */
+.player-progress {
+    -fx-pref-height: 3px;
+    -fx-min-height: 3px;
+}
+
+.player-progress > .track {
+    -fx-background-color: -fx-thumb-bg;
+    -fx-background-radius: 2px;
+}
+
+.player-progress > .bar {
+    -fx-background-color: -fx-text-primary;
+    -fx-background-radius: 2px;
+    -fx-padding: 0;
+}
+
+.time-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-text-faint;
+}
+
+/* Playback controls */
+.control-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20px;
+    -fx-min-width: 40px;  -fx-min-height: 40px;
+    -fx-pref-width: 40px; -fx-pref-height: 40px;
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-text-primary;
+    -fx-cursor: hand;
+}
+
+.control-btn:hover {
+    -fx-background-color: -fx-app-bg;
+}
+
+.play-btn {
+    -fx-background-color: -fx-text-primary;
+    -fx-background-radius: 26px;
+    -fx-min-width: 52px;  -fx-min-height: 52px;
+    -fx-pref-width: 52px; -fx-pref-height: 52px;
+    -fx-cursor: hand;
+}
+
+.play-btn:hover {
+    -fx-background-color: #000000;
+}
+
+.play-icon {
+    -fx-fill: -fx-surface;
+}
+
+/* Action buttons */
+.action-btn {
+    -fx-background-color: -fx-app-bg;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 16px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-muted;
+    -fx-cursor: hand;
+}
+
+.action-btn:hover {
+    -fx-background-color: -fx-border;
+}
+
+.action-btn-danger {
+    -fx-text-fill: -fx-danger;
+}
