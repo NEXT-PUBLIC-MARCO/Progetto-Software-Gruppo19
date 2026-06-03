@@ -18,6 +18,22 @@ public class Controller {
         model = new DataModel(new ArrayList<>(),new ArrayList<>());
         storage = new DummyStorage();
         view.getController().setModel(model);
+
+        // Aggancio il controller come Observer del model (pattern Observer).
+        //
+        // PERCHE' SERVE:
+        // DataModel.addBrani()/removeBrani() chiamano Notify("BraniChange", ...),
+        // che a sua volta scorre la lista 'observers' e invoca Update() su ognuno.
+        // Se nessuno e' agganciato, quella lista e' vuota: la notifica parte ma
+        // non raggiunge nessuno, quindi MainViewController.Update() -> refreshLibrary()
+        // (il path che ridisegna la libreria) non viene MAI eseguito.
+        //
+        // Senza questa Attach la UI si aggiorna solo perche' onAdd() richiama
+        // refreshLibrary() a mano: ogni altra modifica al model (es. fatta da
+        // un'altra parte del codice) passerebbe inosservata. Agganciando qui
+        // l'Observer, la view reagisce automaticamente a ogni cambiamento del
+        // model, che e' lo scopo del pattern.
+        model.Attach(view.getController());
     }
 
     public void OnAppClose(){

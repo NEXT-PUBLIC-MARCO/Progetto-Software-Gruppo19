@@ -14,6 +14,8 @@ public class DataModel implements Serializable, Observable {
 
     public void Attach(Observer Observer){
         observers.add(Observer);
+        System.out.println("[DEBUG] DataModel.Attach: observer agganciato = " + Observer
+                + ", totale observers = " + observers.size());
     }
 
     public void Detach(Observer Observer){
@@ -21,6 +23,8 @@ public class DataModel implements Serializable, Observable {
     }
 
     public void Notify(String event, Object object){
+        System.out.println("[DEBUG] DataModel.Notify: event=" + event
+                + ", observers da notificare = " + observers.size());
         for(Observer Observer : observers)
             Observer.Update(event, object);
     }
@@ -40,6 +44,8 @@ public class DataModel implements Serializable, Observable {
 
     public void addBrani(BranoModel b)
     {
+        System.out.println("[DEBUG] DataModel.addBrani: b=" + b
+                + ", brani totali dopo add = " + (brani.size() + 1));
         brani.add(b);
         Notify("BraniChange", brani);
     }

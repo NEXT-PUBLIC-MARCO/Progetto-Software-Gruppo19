@@ -27,6 +27,7 @@ import java.util.Objects;
  */
 public class MainViewController implements Observer {
 
+
     // ATTRIBUTI GENERICI =============================================
     private DataModel model;
 
@@ -35,6 +36,11 @@ public class MainViewController implements Observer {
     @FXML private ToggleButton tabPlaylist;
     @FXML private Label sectionLabel;
     @FXML private VBox songList;
+    @FXML private VBox emptyLibrary;
+
+
+    @FXML public Label titleLabel;
+    @FXML public Label subtitleLabel;
 
     @FXML private StackPane braniSidebar;
     @FXML private VBox playerCard;
@@ -50,6 +56,7 @@ public class MainViewController implements Observer {
 
     // METODI GENERICI ===================================================
     public void setModel(DataModel model) {
+        System.out.println("[DEBUG] setModel() chiamato. model=" + model);
         this.model = model;
         // appena ho il model posso disegnare le liste iniziali
         refreshLibrary();
@@ -57,34 +64,56 @@ public class MainViewController implements Observer {
     }
 
     private void refreshLibrary() {
+        System.out.println("[DEBUG] refreshLibrary() INIZIO. model=" + model
+                + ", songList=" + songList);
 
-        if (model == null) return;
-        // TODO: svuotare songList e ricostruire una riga per ogni model.getBrani()
-        //       poi mostrare/nascondere l'empty-state di conseguenza.
-
-        if (model == null)
+        if (model == null) {
+            System.out.println("[DEBUG] refreshLibrary: model NULL -> esco");
             return;
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/it/gruppo19/progetto_music_player/track-card.fxml")
-        );
-        for(BranoModel brano : model.getBrani()){
-            try{
-                Node card = loader.load();
+        }
+        if (songList == null) {
+            // se songList e' null l'fx:id non e' stato iniettato: NPE silenziosa piu' avanti
+            System.out.println("[DEBUG] refreshLibrary: songList NULL (fx:id non iniettato!) -> esco");
+            return;
+        }
 
-                Label title = (Label)card.lookup("titleLabel");
-                Label subtitle = (Label)card.lookup("subtitleLabel");
-                ImageView image = (ImageView)card.lookup("cardImage");
+        System.out.println("[DEBUG] refreshLibrary: numero brani = " + model.getBrani().size());
+
+        songList.getChildren().clear();// Bug C: ricostruisco da zero
+
+        boolean hasBrani = !model.getBrani().isEmpty();
+        setShown(songList, hasBrani);
+        setShown(emptyLibrary,!hasBrani);
+
+        for (BranoModel brano : model.getBrani()) {
+            System.out.println("[DEBUG] -- render brano: titolo=" + brano.getTitolo()
+                    + ", artista=" + brano.getArtista());
+            try {
+                FXMLLoader loader = new FXMLLoader( // Bug B: un loader per card
+                        getClass().getResource("/it/gruppo19/progetto_music_player/track-card.fxml")
+                );
+                System.out.println("[DEBUG]    URL track-card.fxml = " + loader.getLocation());
+                Node card = loader.load();
+                System.out.println("[DEBUG]    card caricata = " + card);
+
+                // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS)
+                Label title    = (Label) loader.getNamespace().get("titleLabel");
+                Label subtitle = (Label) loader.getNamespace().get("subtitleLabel");
+                // ImageView image = (ImageView) loader.getNamespace().get("cardImage");
+                System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
                 title.setText(brano.getTitolo());
                 subtitle.setText(brano.getArtista());
 
                 songList.getChildren().add(card);
-            }catch(Exception e){
-
+                System.out.println("[DEBUG]    card aggiunta. songList children = "
+                        + songList.getChildren().size());
+            } catch (Exception e) {
+                System.out.println("[DEBUG]    !!! ECCEZIONE durante il render:");
+                e.printStackTrace();               // così gli errori NON spariscono più
             }
         }
-
-
+        System.out.println("[DEBUG] refreshLibrary() FINE");
     }
     private void refreshPlaylists() {
         // TODO: refresh dello playlist mostrate
@@ -109,8 +138,11 @@ public class MainViewController implements Observer {
             // tab Brani -> dialog "Aggiungi brano"
             AddTrackDialogController dialog =
                     Dialogs.openModal(owner, "dialog-add-track.fxml", "Aggiungi brano");
+            System.out.println("[DEBUG] onAdd (brano): confirmed=" + dialog.isConfirmed());
             if (dialog.isConfirmed()) {
                 BranoModel nuovo = dialog.getResult();
+                System.out.println("[DEBUG] onAdd: nuovo brano = " + nuovo
+                        + (nuovo != null ? " (" + nuovo.getTitolo() + ")" : ""));
                 model.addBrani(nuovo);
                 refreshLibrary();
             }
@@ -200,6 +232,7 @@ public class MainViewController implements Observer {
 
     @Override
     public void Update(String event, Object object) {
+        System.out.println("[DEBUG] Update() ricevuto. event=" + event);
         if(!Objects.equals(event, "BraniChange")) return;
         refreshLibrary();
     }
