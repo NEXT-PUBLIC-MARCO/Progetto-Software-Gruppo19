@@ -61,6 +61,7 @@ public class MainViewController implements Observer {
         if (model == null) return;
         // TODO: svuotare songList e ricostruire una riga per ogni model.getBrani()
         //       poi mostrare/nascondere l'empty-state di conseguenza.
+
         if (model == null)
             return;
         FXMLLoader loader = new FXMLLoader(
@@ -82,9 +83,9 @@ public class MainViewController implements Observer {
 
             }
         }
-        
-    }
 
+
+    }
     private void refreshPlaylists() {
         // TODO: refresh dello playlist mostrate
     }
@@ -111,8 +112,10 @@ public class MainViewController implements Observer {
             if (dialog.isConfirmed()) {
                 BranoModel nuovo = dialog.getResult();
                 model.addBrani(nuovo);
+                refreshLibrary();
             }
         }
+
     }
 
     @FXML
@@ -200,4 +203,6 @@ public class MainViewController implements Observer {
         if(!Objects.equals(event, "BraniChange")) return;
         refreshLibrary();
     }
+
 }
+
