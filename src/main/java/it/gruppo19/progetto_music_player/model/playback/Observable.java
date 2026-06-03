@@ -2,8 +2,8 @@ package it.gruppo19.progetto_music_player.model.playback;
 
 import it.gruppo19.progetto_music_player.model.Observer;
 
-public interface Observable<T> {
-    void Attach(Observer<T> observer);
-    void Detach(Observer<T> observer);
-    void Notify();
+public interface Observable{
+    void Attach(Observer observer);
+    void Detach(Observer observer);
+    void Notify(String event, Object object);
 }
