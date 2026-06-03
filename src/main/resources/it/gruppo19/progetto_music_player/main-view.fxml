@@ -24,7 +24,7 @@
       styleClass="app-root" prefWidth="1280.0" prefHeight="800.0"
       stylesheets="@styles.css">
 
-    <!-- ============================ SIDEBAR ============================ -->
+    <!-- ============================ LEFT PANE ============================ -->
     <StackPane minWidth="380.0" prefWidth="380.0" maxWidth="380.0">
         <VBox styleClass="sidebar">
 
@@ -96,7 +96,7 @@
         </Button>
     </StackPane>
 
-    <!-- ============================ NOW PLAYING (player inattivo) ============================ -->
+    <!-- ============================ RIGHT PANE ============================ -->
     <StackPane styleClass="content-area" HBox.hgrow="ALWAYS">
 
         <VBox fx:id="playerCard" styleClass="player-card" maxWidth="440.0" maxHeight="713.0"

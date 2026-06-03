@@ -110,4 +110,19 @@ public class PlayerController {
     private void onTabChanged(){
 
     }
+
+    @FXML
+    private void onRemoveFromPlaylist(){
+
+    }
+
+    @FXML
+    private void onAddTrackToPlaylist(){
+
+    }
+
+    @FXML
+    private void onNewPlaylist(){
+
+    }
 }

@@ -20,7 +20,6 @@
   Sidebar con elenco playlist + scheda della playlist selezionata e relativi brani.
 -->
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="it.gruppo19.progetto_music_player.controller.PlaylistController"
       styleClass="app-root" prefWidth="1280.0" prefHeight="800.0"
       stylesheets="@styles.css">
 
