@@ -2,15 +2,12 @@ package it.gruppo19.progetto_music_player.controller;
 
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
-import it.gruppo19.progetto_music_player.model.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -23,7 +20,7 @@ import javafx.stage.Window;
  * Per ora gli handler sono stub: l'fxml e' stato generato dal design Figma
  * e collega gia' tutti i nodi tramite fx:id.
  */
-public class MainViewController implements Observer {
+public class MainViewController {
 
     // ATTRIBUTI GENERICI =============================================
     private DataModel model;
@@ -55,27 +52,9 @@ public class MainViewController implements Observer {
     }
 
     private void refreshLibrary() {
-        if (model == null)
-            return;
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/it/gruppo19/progetto_music_player/track-card.fxml")
-        );
-        for(BranoModel brano : model.getBrani()){
-            try{
-                Node card = loader.load();
-
-                Label title = (Label)card.lookup("#titleLabel");
-                Label subtitle = (Label)card.lookup("#subtitleLabel");
-                ImageView image = (ImageView)card.lookup("#cardImage");
-
-                title.setText(brano.getTitolo());
-                subtitle.setText(brano.getArtista());
-
-                songList.getChildren().add(card);
-            }catch(Exception e){
-
-            }
-        }
+        if (model == null) return;
+        // TODO: svuotare songList e ricostruire una riga per ogni model.getBrani()
+        //       poi mostrare/nascondere l'empty-state di conseguenza.
     }
 
     private void refreshPlaylists() {
@@ -104,10 +83,8 @@ public class MainViewController implements Observer {
             if (dialog.isConfirmed()) {
                 BranoModel nuovo = dialog.getResult();
                 model.addBrani(nuovo);
-                refreshLibrary();
             }
         }
-
     }
 
     @FXML
@@ -189,67 +166,4 @@ public class MainViewController implements Observer {
         // TODO: attiva/disattiva ripeti
     }
 
-<<<<<<< Updated upstream
-=======
-    @FXML
-    private void onAddToPlaylist() {
-        // TODO: aprire il popup "Aggiungi a playlist"
-    }
-
-    @FXML
-    private void onDelete() {
-        // TODO: aprire il popup "Elimina brano"
-    }
-
-    @FXML
-    private void onTabChanged(){
-        boolean playlist = tabPlaylist.isSelected();
-
-        // sidebar
-        setShown(braniSidebar, !playlist);
-        setShown(playlistSidebar, playlist);
-
-        // etichetta di sezione
-        if (sectionLabel != null) {
-            sectionLabel.setText(playlist ? "LE TUE PLAYLIST" : "LIBRERIA");
-        }
-    }
-
-    /** Mostra o nasconde un nodo togliendolo anche dal layout quando nascosto. */
-    private void setShown(Node node, boolean shown) {
-        if (node == null) return;
-        node.setVisible(shown);
-        node.setManaged(shown);
-    }
-
-    @FXML
-    private void onRemoveFromPlaylist(){
-
-    }
-
-    @FXML
-    private void onAddTrackToPlaylist(){
-
-    }
-
-    /** Apre il dialog "Nuova playlist" e aggiunge la playlist creata al model. */
-    @FXML
-    private void onNewPlaylist(){
-        if (model == null || addButton == null) return;
-        Window owner = addButton.getScene().getWindow();
-        AddPlaylistDialogController dialog =
-                Dialogs.openModal(owner, "dialog-add-playlist.fxml", "Nuova playlist");
-        if (dialog.isConfirmed()) {
-            PlaylistModel nuova = dialog.getResult();
-            model.addPlaylist(nuova);
-            refreshPlaylists();
-        }
-    }
-
-    @Override
-    public void Update(String event, Object object) {
-        if(event != "BraniChange") return;
-        refreshLibrary();
-    }
->>>>>>> Stashed changes
 }
