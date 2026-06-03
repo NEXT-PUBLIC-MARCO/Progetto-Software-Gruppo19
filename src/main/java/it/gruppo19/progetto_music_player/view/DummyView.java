@@ -1,7 +1,7 @@
 package it.gruppo19.progetto_music_player.view;
 
 import it.gruppo19.progetto_music_player.MusicPlayerApplication;
-import it.gruppo19.progetto_music_player.controller.PlayerController;
+import it.gruppo19.progetto_music_player.controller.MainViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class DummyView {
 
     /** Il controller creato da FXMLLoader: lo teniamo per poterci iniettare il model. */
-    private final PlayerController controller;
+    private final MainViewController controller;
 
     public DummyView() throws IOException {
         Stage stage = MusicPlayerApplication.GetStage();
@@ -25,7 +25,7 @@ public class DummyView {
         stage.setScene(scene);
     }
 
-    public PlayerController getController() {
+    public MainViewController getController() {
         return controller;
     }
 }

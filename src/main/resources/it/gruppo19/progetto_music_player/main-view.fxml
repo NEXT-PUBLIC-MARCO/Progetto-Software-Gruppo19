@@ -19,11 +19,11 @@
   Melodia - Vista principale.
   Integra in un'unica schermata sia la libreria brani (01 Homepage) sia la
   vista playlist (06-07 Playlist View). La segmented control "Brani / Playlist"
-  alterna i due contenuti: il PlayerController gestisce la visibilita' tramite
+  alterna i due contenuti: il MainViewController gestisce la visibilita' tramite
   onTabChanged.
 -->
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="it.gruppo19.progetto_music_player.controller.PlayerController"
+      fx:controller="it.gruppo19.progetto_music_player.controller.MainViewController"
       styleClass="app-root" prefWidth="1280.0" prefHeight="800.0"
       stylesheets="@styles.css">
 
@@ -91,7 +91,7 @@
 
                 <!-- - SIDEBAR PLAYLIST -
                      Le righe playlist sono costruite dinamicamente dal
-                     PlayerController: ogni box, al click, si espande in-line
+                     MainViewController: ogni box, al click, si espande in-line
                      mostrando tutti i brani della playlist (vedi refreshPlaylists). -->
                 <ScrollPane fx:id="playlistSidebar" fitToWidth="true" styleClass="list-scroll"
                             visible="false" managed="false">
