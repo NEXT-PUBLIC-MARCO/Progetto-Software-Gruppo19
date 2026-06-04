@@ -1,37 +1,204 @@
 .root {
-    -fx-bg: #f5f3ef; -fx-surf: #ffffff; -fx-acc: #8b6f47;
-    -fx-txt: #1a1a1a; -fx-mut: #999999; -fx-brd: #e8e5e0;
-    -fx-sel: #f0ebe3; /* sfondo selezionato/evidenziato */
-    -fx-font-family: "Inter", sans-serif; -fx-background-color: -fx-bg;
+    -fx-bg: #f5f3ef;
+    -fx-surf: #ffffff;
+    -fx-acc: #8b6f47;
+    -fx-txt: #1a1a1a;
+    -fx-mut: #999999;
+    -fx-brd: #e8e5e0;
+    -fx-sel: #f0ebe3;
+    /* sfondo selezionato/evidenziato */
+    -fx-font-family: "Inter", sans-serif;
+    -fx-background-color: -fx-bg;
 }
 
 /* Sfondi e Contenitori Principali */
-.app-root, .content-area, .content-area-left, .list-scroll { -fx-background-color: transparent; }
-.sidebar, .player-card, .dialog-card, .detail-card { -fx-background-color: -fx-surf; -fx-background-radius: 16px; }
+.app-root,
+.content-area,
+.content-area-left,
+.list-scroll {
+    -fx-background-color: transparent;
+}
+
+.sidebar,
+.player-card,
+.dialog-card,
+.detail-card {
+    -fx-background-color: -fx-surf;
+    -fx-background-radius: 16px;
+}
 
 /* Layout e Posizionamento */
-.segment, .song-row, .pl-row, .pl-track-row, .dialog-footer { -fx-spacing: 12px; -fx-alignment: center-left; -fx-padding: 10px; }
-.empty-state { -fx-spacing: 16px; -fx-alignment: center; -fx-padding: 30px; }
+.segment,
+.song-row,
+.pl-row,
+.pl-track-row,
+.dialog-footer {
+    -fx-spacing: 12px;
+    -fx-alignment: center-left;
+    -fx-padding: 10px;
+}
+
+.empty-state {
+    -fx-spacing: 16px;
+    -fx-alignment: center;
+    -fx-padding: 30px;
+}
 
 /* Tipografia */
-.logo-melo, .player-title, .empty-title, .dialog-title, .detail-title { -fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: -fx-txt; }
-.logo-dia, .song-title-active { -fx-font-weight: bold; -fx-text-fill: -fx-acc; }
-.song-title, .pl-title, .form-field { -fx-font-size: 13px; -fx-text-fill: -fx-txt; }
-.song-artist, .time-label, .empty-text, .dialog-text, .section-label, .detail-meta, .pl-count { -fx-font-size: 12px; -fx-text-fill: -fx-mut; }
+.logo-melo,
+.player-title,
+.empty-title,
+.dialog-title,
+.detail-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-text-fill: -fx-txt;
+}
+
+.logo-dia,
+.song-title-active {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-acc;
+}
+
+.song-title {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-txt;
+    -fx-font-weight: bold;
+}
+
+.pl-title,
+.form-field {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-txt;
+}
+
+.song-artist,
+.time-label,
+.empty-text,
+.dialog-text,
+.section-label,
+.detail-meta,
+.pl-count {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-mut;
+}
 
 /* Bottoni (Primari, Secondari) */
-.btn-primary, .fab, .play-btn { -fx-background-color: -fx-txt; -fx-text-fill: -fx-surf; -fx-background-radius: 20px; -fx-padding: 10px 16px; -fx-cursor: hand; }
-.btn-secondary, .action-btn, .btn-browse, .segment-btn { -fx-background-color: -fx-brd; -fx-text-fill: -fx-mut; -fx-background-radius: 8px; -fx-padding: 8px 16px; -fx-cursor: hand; }
-.btn-danger { -fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 8px; -fx-padding: 10px 16px; -fx-cursor: hand; }
+.btn-primary,
+.fab,
+.play-btn {
+    -fx-background-color: -fx-txt;
+    -fx-text-fill: -fx-surf;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 16px;
+    -fx-cursor: hand;
+}
+
+.btn-secondary,
+.action-btn,
+.btn-browse,
+.segment-btn {
+    -fx-background-color: -fx-brd;
+    -fx-text-fill: -fx-mut;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.btn-danger {
+    -fx-background-color: #c0392b;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 16px;
+    -fx-cursor: hand;
+}
 
 /* Placeholder Immagini (Miniature e Cover) & Icone */
-.thumb, .empty-icon, .pl-thumb, .track-thumb { -fx-background-color: -fx-brd; -fx-background-radius: 8px; -fx-min-width: 44px; -fx-min-height: 44px; }
-.album-art, .detail-art { -fx-background-color: -fx-brd; -fx-background-radius: 16px; -fx-min-width: 140px; -fx-min-height: 140px; }
-.fab-icon { -fx-shape: "M12 5v14M5 12h14"; -fx-stroke: -fx-surf; -fx-stroke-width: 2px; }
+.thumb,
+.empty-icon,
+.pl-thumb,
+.track-thumb {
+    -fx-background-color: -fx-brd;
+    -fx-background-radius: 8px;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+}
+
+.album-art,
+.detail-art {
+    -fx-background-color: -fx-brd;
+    -fx-background-radius: 16px;
+    -fx-min-width: 140px;
+    -fx-min-height: 140px;
+}
+
+.fab-icon {
+    -fx-shape: "M12 5v14M5 12h14";
+    -fx-stroke: -fx-surf;
+    -fx-stroke-width: 2px;
+}
 
 /* Interazioni e Hover Evidenti */
-.song-row:hover, .pl-row:hover, .pl-track-row:hover { -fx-background-color: -fx-sel; -fx-cursor: hand; }
-.segment-btn:selected { -fx-background-color: -fx-sel; }
-.btn-primary:hover, .fab:hover, .play-btn:hover { -fx-background-color: -fx-acc; -fx-scale-x: 1.05; -fx-scale-y: 1.05; }
-.btn-secondary:hover, .action-btn:hover, .btn-browse:hover, .segment-btn:hover { -fx-background-color: -fx-sel; -fx-text-fill: -fx-txt; -fx-scale-x: 1.03; -fx-scale-y: 1.03; }
-.btn-danger:hover { -fx-background-color: #962d22; -fx-scale-x: 1.05; -fx-scale-y: 1.05; }
+.song-row:hover,
+.pl-row:hover,
+.pl-track-row:hover {
+    -fx-background-color: -fx-sel;
+    -fx-cursor: hand;
+}
+
+.segment-btn:selected {
+    -fx-background-color: -fx-sel;
+}
+
+.btn-primary:hover,
+.fab:hover,
+.play-btn:hover {
+    -fx-background-color: -fx-acc;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btn-secondary:hover,
+.action-btn:hover,
+.btn-browse:hover,
+.segment-btn:hover {
+    -fx-background-color: -fx-sel;
+    -fx-text-fill: -fx-txt;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #962d22;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Stile per Track Card */
+.track-card {
+    -fx-background-color: -fx-surf;
+    -fx-border-color: -fx-brd;
+    -fx-border-width: 1px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px;
+    -fx-spacing: 12px;
+    -fx-alignment: center-left;
+}
+
+.track-card:hover {
+    -fx-background-color: -fx-sel;
+    -fx-border-color: -fx-acc;
+    -fx-cursor: hand;
+}
+
+.track-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-txt;
+}
+
+.track-artist {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-mut;
+}

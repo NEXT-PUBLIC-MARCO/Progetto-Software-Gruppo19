@@ -8,6 +8,7 @@
 
 <!-- card.fxml senza fx:controller -->
 <HBox xmlns:fx="http://javafx.com/fxml"
+      styleClass="track-card"
       prefHeight="80"
       maxHeight="80"
       minHeight="80"
@@ -17,8 +18,8 @@
     <ImageView fx:id="cardImage" fitWidth="60" fitHeight="60"/>
 
     <VBox spacing="4" alignment="CENTER_LEFT">
-        <Label fx:id="titleLabel" text="Titolo"/>
-        <Label fx:id="subtitleLabel" text="Sottotitolo"/>
+        <Label fx:id="titleLabel" styleClass="track-title" text="Titolo"/>
+        <Label fx:id="subtitleLabel" styleClass="track-artist" text="Sottotitolo"/>
     </VBox>
 
 </HBox>
