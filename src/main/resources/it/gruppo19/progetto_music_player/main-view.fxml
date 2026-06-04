@@ -18,11 +18,7 @@
 <?import javafx.scene.image.ImageView?>
 
 <!--
-  Music Player - Vista principale.
-  Integra in un'unica schermata sia la libreria brani (01 Homepage) sia la
-  vista playlist (06-07 Playlist View). La segmented control "Brani / Playlist"
-  alterna i due contenuti: il MainViewController gestisce la visibilita' tramite
-  onTabChanged.
+  Music Player - Unica View presente
 -->
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="it.gruppo19.progetto_music_player.controller.MainViewController"
