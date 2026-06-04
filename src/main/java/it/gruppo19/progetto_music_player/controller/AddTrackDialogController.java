@@ -42,7 +42,7 @@ public class AddTrackDialogController {
         FileChooser fc = new FileChooser();
         fc.setTitle("Seleziona file audio");
         fc.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Audio", "*.mp3", "*.wav", "*.flac", "*.m4a", "*.ogg"));
+                new FileChooser.ExtensionFilter("Audio", "*.mp3", "*.wav", "*.flac", "*.m4a", "*.ogg", "*.mpeg"));
         audio = fc.showOpenDialog(window(e));
         if (audio != null) {
             audioPathField.setText(audio.getAbsolutePath());
