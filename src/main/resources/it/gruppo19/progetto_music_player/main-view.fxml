@@ -18,7 +18,7 @@
 <?import javafx.scene.image.ImageView?>
 
 <!--
-  Melodia - Vista principale.
+  Music Player - Vista principale.
   Integra in un'unica schermata sia la libreria brani (01 Homepage) sia la
   vista playlist (06-07 Playlist View). La segmented control "Brani / Playlist"
   alterna i due contenuti: il MainViewController gestisce la visibilita' tramite
@@ -40,8 +40,7 @@
                 </padding>
 
                 <TextFlow styleClass="logo">
-                    <Text styleClass="logo-melo" text="melo"/>
-                    <Text styleClass="logo-dia" text="dia"/>
+                    <Text styleClass="logo-melo" text="Music Player Gruppo 19"/>
                 </TextFlow>
 
                 <HBox styleClass="segment" fx:id="tabSegment">

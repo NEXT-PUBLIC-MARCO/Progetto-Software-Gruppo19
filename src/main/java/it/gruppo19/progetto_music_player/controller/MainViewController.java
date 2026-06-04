@@ -115,6 +115,7 @@ public class MainViewController implements Observer {
         }
         System.out.println("[DEBUG] refreshLibrary() FINE");
     }
+
     private void refreshPlaylists() {
         // TODO: refresh dello playlist mostrate
     }
@@ -228,7 +229,6 @@ public class MainViewController implements Observer {
     private void onRepeat() {
         // TODO: attiva/disattiva ripeti
     }
-
 
     @Override
     public void Update(String event, Object object) {
