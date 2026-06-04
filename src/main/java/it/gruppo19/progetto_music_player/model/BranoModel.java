@@ -1,15 +1,17 @@
 package it.gruppo19.progetto_music_player.model;
 import java.io.Serializable;
+import java.nio.file.Path;
+
 public class BranoModel implements Serializable {
     private String id;
     private String titolo;
     private String descrizione;
     private String artista;
     private String genere;
-    private String pathImmaggine;
-    private String pathAudio;
+    private Path pathImmaggine;
+    private Path pathAudio;
 
-    public BranoModel(String id, String titolo, String descrizione, String artista, String genere, String pathImmaggine, String pathAudio) {
+    public BranoModel(String id, String titolo, String descrizione, String artista, String genere, Path pathImmaggine, Path pathAudio) {
         this.id = id;
         this.titolo = titolo;
         this.descrizione = descrizione;
@@ -59,19 +61,19 @@ public class BranoModel implements Serializable {
         this.genere = genere;
     }
 
-    public String getPathImmaggine() {
+    public Path getPathImmaggine() {
         return pathImmaggine;
     }
 
-    public void setPathImmaggine(String pathImmaggine) {
+    public void setPathImmaggine(Path pathImmaggine) {
         this.pathImmaggine = pathImmaggine;
     }
 
-    public String getPathAudio() {
+    public Path getPathAudio() {
         return pathAudio;
     }
 
-    public void setPathAudio(String pathAudio) {
+    public void setPathAudio(Path pathAudio) {
         this.pathAudio = pathAudio;
     }
 }

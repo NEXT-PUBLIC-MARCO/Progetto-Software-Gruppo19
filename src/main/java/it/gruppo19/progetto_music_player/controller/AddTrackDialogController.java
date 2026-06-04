@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.UUID;
 
 /**
@@ -30,6 +31,8 @@ public class AddTrackDialogController {
 
     private boolean confirmed = false;
     private BranoModel result;
+    private File image;
+    private File audio;
 
     public boolean isConfirmed() { return confirmed; }
     public BranoModel getResult() { return result; }
@@ -40,9 +43,9 @@ public class AddTrackDialogController {
         fc.setTitle("Seleziona file audio");
         fc.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Audio", "*.mp3", "*.wav", "*.flac", "*.m4a", "*.ogg"));
-        File f = fc.showOpenDialog(window(e));
-        if (f != null) {
-            audioPathField.setText(f.getAbsolutePath());
+        audio = fc.showOpenDialog(window(e));
+        if (audio != null) {
+            audioPathField.setText(audio.getAbsolutePath());
         }
     }
 
@@ -52,9 +55,9 @@ public class AddTrackDialogController {
         fc.setTitle("Seleziona copertina");
         fc.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Immagini", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"));
-        File f = fc.showOpenDialog(window(e));
-        if (f != null) {
-            fotoPathField.setText(f.getAbsolutePath());
+        image = fc.showOpenDialog(window(e));
+        if (image != null) {
+            fotoPathField.setText(image.getAbsolutePath());
         }
     }
 
@@ -64,10 +67,12 @@ public class AddTrackDialogController {
         String artista = trim(artistaField.getText());
         String genere = genereCombo.getValue() != null ? genereCombo.getValue()
                 : trim(genereCombo.getEditor().getText());
-        String audio = trim(audioPathField.getText());
-        String foto = trim(fotoPathField.getText());
+        Path musica = null;
+        Path foto = null;
+        if(audio != null) musica = audio.toPath();
+        if(image != null) foto = image.toPath();
 
-        if (titolo.isEmpty() || artista.isEmpty() || audio.isEmpty()) {
+        if (titolo.isEmpty() || artista.isEmpty() || audio == null || !audio.exists()) {
             showError("Titolo, artista e file audio sono obbligatori.");
             return;
         }
@@ -79,7 +84,7 @@ public class AddTrackDialogController {
                 artista,
                 genere,
                 foto,
-                audio);
+                musica);
         confirmed = true;
         close(e);
     }

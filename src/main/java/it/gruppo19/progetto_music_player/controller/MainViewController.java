@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -18,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
+import javax.imageio.ImageIO;
 import java.util.Objects;
 
 /**
@@ -99,11 +101,13 @@ public class MainViewController implements Observer {
                 // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS)
                 Label title    = (Label) loader.getNamespace().get("titleLabel");
                 Label subtitle = (Label) loader.getNamespace().get("subtitleLabel");
-                // ImageView image = (ImageView) loader.getNamespace().get("cardImage");
+                ImageView image = (ImageView) loader.getNamespace().get("cardImage");
                 System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
                 title.setText(brano.getTitolo());
                 subtitle.setText(brano.getArtista());
+                if(brano.getPathImmaggine() != null && brano.getPathImmaggine().toFile().exists())
+                    image.setImage(new Image(brano.getPathImmaggine().toUri().toString()));
 
                 songList.getChildren().add(card);
                 System.out.println("[DEBUG]    card aggiunta. songList children = "
