@@ -4,12 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+//import java.nio.file.Path;
 
 public class PlaylistModel implements Serializable {
     private String id;
     private String titolo;
     private String descrizione;
-    private String pathImmagine;
+    private String pathImmagine; //Non converrebbe usare Path anche qui come per i brani?
     private final List<BranoModel> brani;
 
     public PlaylistModel(String id, String titolo, String descrizione, String pathImmagine, List<BranoModel> brani) {

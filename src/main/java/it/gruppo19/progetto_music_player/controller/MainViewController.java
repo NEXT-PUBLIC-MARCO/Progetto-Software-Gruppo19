@@ -160,6 +160,90 @@ public class MainViewController implements Observer {
 
     private void refreshPlaylists() {
         // TODO: refresh dello playlist mostrate
+        System.out.println("[DEBUG] refreshPlaylist() INIZIO. model=" + model
+                + ", playlistSidebarList=" + playlistSidebarList);
+
+        if (model == null) {
+            System.out.println("[DEBUG] refreshPlaylist: model NULL -> esco");
+            return;
+        }
+        if (playlistSidebarList == null) {
+            // se songList e' null l'fx:id non e' stato iniettato: NPE silenziosa piu' avanti
+            System.out.println("[DEBUG] refreshPlaylist: songList NULL (fx:id non iniettato!) -> esco");
+            return;
+        }
+
+        System.out.println("[DEBUG] refreshPlaylist: numero brani = " + model.getPlaylists().size());
+
+        playlistSidebarList.getChildren().clear();// Bug C: ricostruisco da zero
+
+        boolean hasPlaylist = !model.getPlaylists().isEmpty();
+
+        for (PlaylistModel playlist : model.getPlaylists()) {
+            System.out.println("[DEBUG] -- render playlist: titolo=" + playlist.getTitolo());
+            try {
+                FXMLLoader loader = new FXMLLoader( // Bug B: un loader per card
+                        getClass().getResource("/it/gruppo19/progetto_music_player/info-card.fxml")
+                );
+                System.out.println("[DEBUG]    URL track-card.fxml = " + loader.getLocation());
+                Node card = loader.load();
+                System.out.println("[DEBUG]    card caricata = " + card);
+
+                // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS
+                Label title    = (Label) loader.getNamespace().get("titleLabel");
+                title.setText(playlist.getTitolo());
+                Label subtitle = (Label) loader.getNamespace().get("subtitleLabel");
+                if (subtitle != null) {
+                    subtitle.setText(""); // Svuota il testo di default dell'FXML
+                }
+
+                ImageView image = (ImageView) loader.getNamespace().get("cardImage");
+                if (playlist.getPathImmagine() != null && !playlist.getPathImmagine().trim().isEmpty()) {
+                    try {
+                        image.setImage(new Image(playlist.getPathImmagine()));
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("[DEBUG] Impossibile caricare l'immagine per: " + playlist.getTitolo());
+                        // Qui potresti impostare un'immagine di default (es. l'icona di un disco)
+                    }
+                }
+                System.out.println("[DEBUG]    namespace -> title=" + title);
+
+
+                //Qui viene definito il contest menu della singola playlist nella view
+                ContextMenu contextMenu = new ContextMenu();
+
+                MenuItem info = new MenuItem("Info Playlist");
+                info.setOnAction(e -> System.out.println("Apri PopUp Info"));
+                contextMenu.getItems().add(info);
+
+                /*
+                * SE DOVESSE SERVIRE, ANDREBBE AGGIUNTO IL POPUP PER INSERIRE UN BRANO NELLA PLAYLIST
+                * */
+
+                MenuItem elimina = new MenuItem("Elimina Playlist");
+                //elimina.setOnAction(e -> ContextMenuElimina(playlist));
+                /*
+                * VA AGGIUNTO IL POPUP DI ELIMINAZIONE DI UNA PLAYLIST
+                 */
+                //contextMenu.getItems().add(elimina);
+
+                //Il bottone con i 3 puntini che deve aprire il context menu
+                Button menuButton = (Button) loader.getNamespace().get("menuButton");
+                menuButton.setOnAction(e -> contextMenu.show(
+                        menuButton,
+                        javafx.geometry.Side.BOTTOM,
+                        0, 0
+                ));
+
+                playlistSidebarList.getChildren().add(card);
+                System.out.println("[DEBUG]    card aggiunta. playlistSidebarList children = "
+                        + playlistSidebarList.getChildren().size());
+            } catch (Exception e) {
+                System.out.println("[DEBUG]    !!! ECCEZIONE durante il render delle playlist:");
+                e.printStackTrace();               // così gli errori NON spariscono più
+            }
+        }
+        System.out.println("[DEBUG] refreshPlaylist() FINE");
     }
 
     // METODI LEFT PANE ===================================================
