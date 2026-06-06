@@ -29,6 +29,8 @@ public class AddTrackDialogController {
     @FXML private TextField fotoPathField;
     @FXML private Label errorLabel;
 
+
+    private BranoModel editing;
     private boolean confirmed = false;
     private BranoModel result;
     private File image;
@@ -76,17 +78,28 @@ public class AddTrackDialogController {
             showError("Titolo, artista e file audio sono obbligatori.");
             return;
         }
+        if(editing != null){
+            editing.setTitolo(titolo);
+            editing.setArtista(artista);
+            editing.setGenere(genere);
+            editing.setPathAudio(musica);
+            editing.setPathImmaggine(foto);
+            result = editing;
+            confirmed = true;
+            close(e);
+        }else{
+            result = new BranoModel(
+                    UUID.randomUUID().toString(),
+                    titolo,
+                    "",          // descrizione: non richiesta in questo dialog
+                    artista,
+                    genere,
+                    foto,
+                    musica);
+            confirmed = true;
+            close(e);
+        }
 
-        result = new BranoModel(
-                UUID.randomUUID().toString(),
-                titolo,
-                "",          // descrizione: non richiesta in questo dialog
-                artista,
-                genere,
-                foto,
-                musica);
-        confirmed = true;
-        close(e);
     }
 
     @FXML
@@ -99,6 +112,49 @@ public class AddTrackDialogController {
         errorLabel.setText(msg);
         errorLabel.setVisible(true);
         errorLabel.setManaged(true);
+    }
+
+    public void setBrano(BranoModel b) {
+        System.out.println("[DEBUG] Entrato in setBrano(). Oggetto ricevuto: " + b);
+
+        // Controllo di sicurezza se l'oggetto b è null
+        if (b == null) {
+            System.out.println("[DEBUG] ATTENZIONE: Il BranoModel passato è NULL! Esco dalla funzione.");
+            return;
+        }
+
+        this.editing = b;
+        System.out.println("[DEBUG] Impostato questo.editing con il brano ID: " + b.getId()); // Assumendo che ci sia un getId()
+
+        // Caricamento testi e combo
+        titoloField.setText(b.getTitolo());
+        artistaField.setText(b.getArtista());
+        genereCombo.setValue(b.getGenere());
+        System.out.println("[DEBUG] Campi testo impostati -> Titolo: " + b.getTitolo() + " | Artista: " + b.getArtista() + " | Genere: " + b.getGenere());
+
+        // Debug della sezione Audio
+        if (b.getPathAudio() != null) {
+            this.audio = b.getPathAudio().toFile();
+            audioPathField.setText(this.audio.getAbsolutePath());
+            System.out.println("[DEBUG] Audio trovato: " + this.audio.getAbsolutePath());
+        } else {
+            this.audio = null;
+            audioPathField.setText("");
+            System.out.println("[DEBUG] Audio NON presente (null). Campo di testo svuotato.");
+        }
+
+        // Debug della sezione Immagine (corretto typo 'Immaggine')
+        if (b.getPathImmaggine() != null) {
+            this.image = b.getPathImmaggine().toFile();
+            fotoPathField.setText(this.image.getAbsolutePath());
+            System.out.println("[DEBUG] Immagine trovata: " + this.image.getAbsolutePath());
+        } else {
+            this.image = null;
+            fotoPathField.setText("");
+            System.out.println("[DEBUG] Immagine NON presente (null). Campo di testo svuotato.");
+        }
+
+        System.out.println("[DEBUG] Esecuzione setBrano() completata con successo.\n");
     }
 
     private static String trim(String s) { return s == null ? "" : s.trim(); }
