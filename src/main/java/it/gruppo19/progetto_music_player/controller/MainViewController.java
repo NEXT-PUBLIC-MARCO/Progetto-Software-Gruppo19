@@ -48,8 +48,9 @@ public class MainViewController implements Observer {
     @FXML private Button addButton;
 
 
+
     //ATTRIBUTI RIGHT PANE ================================================
-   // to do
+    // to do
 
     // METODI GENERICI ===================================================
     public void setModel(DataModel model) {
@@ -107,7 +108,7 @@ public class MainViewController implements Observer {
                 System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
 
-                ToggleButton search = (ToggleButton) loader.getNamespace().get("searchToggle");
+             /*   ToggleButton search = (ToggleButton) loader.getNamespace().get("searchToggle");
                 VBox expandedSection = (VBox) loader.getNamespace().get("expandedSection");
                 TextField editTitleField = (TextField) loader.getNamespace().get("editTitleField");
                 search.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
@@ -116,9 +117,15 @@ public class MainViewController implements Observer {
                     title.setVisible(!isSelected);
                     subtitle.setVisible(!isSelected);
                 });
-
+                    */
                 //Qui viene definito il contest menu del singolo brano nella view
                 ContextMenu contextMenu = new ContextMenu();
+
+
+                MenuItem modify = new MenuItem("Modifica");
+                modify.setOnAction(e -> ContextMenuModify(brano));
+                contextMenu.getItems().add(modify);
+
 
                 Menu aggiungiPlaylist = new Menu("Aggiungi a playlist");
                 for(PlaylistModel playlist : model.getPlaylists()){
@@ -158,6 +165,13 @@ public class MainViewController implements Observer {
         if(controller.hasDeleted()) model.removeBrani(brano);
     }
 
+
+    private void ContextMenuModify(BranoModel brano){
+        Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
+        AddTrackDialogController controller = Dialogs.openModal1(owner, "dialog-add-track.fxml", "Modifica brano", (AddTrackDialogController c) -> c.setBrano(brano));
+        if(controller.isConfirmed()) model.updateBrani(brano);
+    }
+
     private void refreshPlaylists() {
         // TODO: refresh dello playlist mostrate
         System.out.println("[DEBUG] refreshPlaylist() INIZIO. model=" + model
@@ -177,7 +191,7 @@ public class MainViewController implements Observer {
 
         playlistSidebarList.getChildren().clear();// Bug C: ricostruisco da zero
 
-        boolean hasPlaylist = !model.getPlaylists().isEmpty();
+        //boolean hasPlaylist = !model.getPlaylists().isEmpty(); nel caso in cui metteremo emptyState
 
         for (PlaylistModel playlist : model.getPlaylists()) {
             System.out.println("[DEBUG] -- render playlist: titolo=" + playlist.getTitolo());
@@ -217,13 +231,13 @@ public class MainViewController implements Observer {
                 contextMenu.getItems().add(info);
 
                 /*
-                * SE DOVESSE SERVIRE, ANDREBBE AGGIUNTO IL POPUP PER INSERIRE UN BRANO NELLA PLAYLIST
-                * */
+                 * SE DOVESSE SERVIRE, ANDREBBE AGGIUNTO IL POPUP PER INSERIRE UN BRANO NELLA PLAYLIST
+                 * */
 
                 MenuItem elimina = new MenuItem("Elimina Playlist");
                 //elimina.setOnAction(e -> ContextMenuElimina(playlist));
                 /*
-                * VA AGGIUNTO IL POPUP DI ELIMINAZIONE DI UNA PLAYLIST
+                 * VA AGGIUNTO IL POPUP DI ELIMINAZIONE DI UNA PLAYLIST
                  */
                 //contextMenu.getItems().add(elimina);
 

@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -28,6 +29,10 @@ public class AddTrackDialogController {
     @FXML private TextField audioPathField;
     @FXML private TextField fotoPathField;
     @FXML private Label errorLabel;
+
+    @FXML private Label changeActionText;
+    @FXML private Label changeActionDesc;
+
 
 
     private BranoModel editing;
@@ -79,6 +84,7 @@ public class AddTrackDialogController {
             return;
         }
         if(editing != null){
+
             editing.setTitolo(titolo);
             editing.setArtista(artista);
             editing.setGenere(genere);
@@ -124,6 +130,9 @@ public class AddTrackDialogController {
         }
 
         this.editing = b;
+        changeActionText.setText("Modifica Brano");
+        changeActionDesc.setText("Modifica i campi del brano");
+
         System.out.println("[DEBUG] Impostato questo.editing con il brano ID: " + b.getId()); // Assumendo che ci sia un getId()
 
         // Caricamento testi e combo
