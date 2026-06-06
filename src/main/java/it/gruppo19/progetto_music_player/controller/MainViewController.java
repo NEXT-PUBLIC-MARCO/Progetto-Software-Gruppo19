@@ -106,7 +106,20 @@ public class MainViewController implements Observer {
                     image.setImage(new Image(brano.getPathImmaggine().toUri().toString()));
                 System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
-
+                /*
+                ToggleButton search = (ToggleButton) loader.getNamespace().get("searchToggle");
+                VBox expandedSection = (VBox) loader.getNamespace().get("expandedSection");
+                TextField editTitleField = (TextField) loader.getNamespace().get("editTitleField");
+                search.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                    expandedSection.setVisible(isSelected);
+                    expandedSection.setManaged(isSelected);
+                    title.setVisible(!isSelected);
+                    subtitle.setVisible(!isSelected);
+                    if(isSelected){
+                        editTitleField.setText(brano.getTitolo());
+                    }
+                });
+                */
                 //Qui viene definito il contest menu del singolo brano nella view
                 ContextMenu contextMenu = new ContextMenu();
 
@@ -120,7 +133,6 @@ public class MainViewController implements Observer {
                     item.setOnAction(e -> {});
                     aggiungiPlaylist.getItems().add(item);
                 }
-                aggiungiPlaylist.setOnAction(e -> System.out.println("Apri PopUp aggiungi a playlist!"));
                 contextMenu.getItems().add(aggiungiPlaylist);
 
                 MenuItem elimina = new MenuItem("Elimina Brano");
@@ -147,13 +159,6 @@ public class MainViewController implements Observer {
     }
 
     private void ContextMenuElimina(BranoModel brano){
-        Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
-        DeleteTrackDialogController controller =
-                Dialogs.openModal(owner, "dialog-delete-track.fxml", "");
-        if(controller.hasDeleted()) model.removeBrani(brano);
-    }
-
-    private void ContextMenuModify(BranoModel brano){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
         DeleteTrackDialogController controller =
                 Dialogs.openModal(owner, "dialog-delete-track.fxml", "");
