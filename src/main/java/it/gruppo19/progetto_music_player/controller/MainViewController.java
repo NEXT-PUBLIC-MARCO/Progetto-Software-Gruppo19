@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
+import javax.swing.*;
 import java.util.Objects;
 
 /**
@@ -109,11 +110,16 @@ public class MainViewController implements Observer {
                 //Qui viene definito il contest menu del singolo brano nella view
                 ContextMenu contextMenu = new ContextMenu();
 
-                MenuItem info = new MenuItem("Info Brano");
-                info.setOnAction(e -> System.out.println("Apri PopUp Info"));
-                contextMenu.getItems().add(info);
+                MenuItem modify = new MenuItem("Modifica");
+                modify.setOnAction(e -> System.out.println("Apri PopUp Modifica"));
+                contextMenu.getItems().add(modify);
 
-                MenuItem aggiungiPlaylist = new MenuItem("Aggiungi a Playlist");
+                Menu aggiungiPlaylist = new Menu("Aggiungi a playlist");
+                for(PlaylistModel playlist : model.getPlaylists()){
+                    MenuItem item = new MenuItem(playlist.getTitolo());
+                    item.setOnAction(e -> {});
+                    aggiungiPlaylist.getItems().add(item);
+                }
                 aggiungiPlaylist.setOnAction(e -> System.out.println("Apri PopUp aggiungi a playlist!"));
                 contextMenu.getItems().add(aggiungiPlaylist);
 
@@ -141,6 +147,13 @@ public class MainViewController implements Observer {
     }
 
     private void ContextMenuElimina(BranoModel brano){
+        Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
+        DeleteTrackDialogController controller =
+                Dialogs.openModal(owner, "dialog-delete-track.fxml", "");
+        if(controller.hasDeleted()) model.removeBrani(brano);
+    }
+
+    private void ContextMenuModify(BranoModel brano){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
         DeleteTrackDialogController controller =
                 Dialogs.openModal(owner, "dialog-delete-track.fxml", "");
