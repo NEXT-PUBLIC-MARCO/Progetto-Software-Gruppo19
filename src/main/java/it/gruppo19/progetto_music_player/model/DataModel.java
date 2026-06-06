@@ -70,4 +70,8 @@ public class DataModel implements Serializable, Observable {
     public List<PlaylistModel> getPlaylists() {
         return playlists;
     }
+
+    public void updateBrani(BranoModel b){
+        Notify("BraniChange", b);
+    }
 }

@@ -47,4 +47,26 @@ public final class Dialogs {
             throw new UncheckedIOException("Impossibile caricare il dialog: " + resource, e);
         }
     }
+
+    public static <T> T openModal1(Window owner, String resource, String title, java.util.function.Consumer<T> init) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MusicPlayerApplication.class.getResource(resource));
+            Parent root = loader.load();
+
+            Stage dialog = new Stage();
+            dialog.initStyle(StageStyle.UTILITY);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            if (owner != null) {
+                dialog.initOwner(owner);
+            }
+            dialog.setTitle(title);
+            dialog.setResizable(false);
+            dialog.setScene(new Scene(root));
+            dialog.showAndWait();
+
+            return loader.getController();
+        } catch (IOException e) {
+            throw new UncheckedIOException("Impossibile caricare il dialog: " + resource, e);
+        }
+    }
 }

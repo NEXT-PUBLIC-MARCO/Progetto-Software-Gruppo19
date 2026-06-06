@@ -48,6 +48,7 @@ public class MainViewController implements Observer {
     @FXML private Button addButton;
 
 
+
     //ATTRIBUTI RIGHT PANE ================================================
    // to do
 
@@ -111,7 +112,7 @@ public class MainViewController implements Observer {
                 ContextMenu contextMenu = new ContextMenu();
 
                 MenuItem modify = new MenuItem("Modifica");
-                modify.setOnAction(e -> System.out.println("Apri PopUp Modifica"));
+                modify.setOnAction(e -> ContextMenuModify(brano));
                 contextMenu.getItems().add(modify);
 
                 Menu aggiungiPlaylist = new Menu("Aggiungi a playlist");
@@ -155,9 +156,8 @@ public class MainViewController implements Observer {
 
     private void ContextMenuModify(BranoModel brano){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
-        DeleteTrackDialogController controller =
-                Dialogs.openModal(owner, "dialog-delete-track.fxml", "");
-        if(controller.hasDeleted()) model.removeBrani(brano);
+        AddTrackDialogController controller = Dialogs.openModal1(owner, "dialog-add-track.fxml", "Modifica brano", (AddTrackDialogController c) -> c.setBrano(brano));
+        if(controller.isConfirmed()) model.updateBrani(brano);
     }
 
     private void refreshPlaylists() {
