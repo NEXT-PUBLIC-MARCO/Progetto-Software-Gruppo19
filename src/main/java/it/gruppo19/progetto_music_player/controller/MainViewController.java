@@ -6,20 +6,14 @@ import it.gruppo19.progetto_music_player.model.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
-import javax.imageio.ImageIO;
 import java.util.Objects;
 
 /**
@@ -92,22 +86,47 @@ public class MainViewController implements Observer {
                     + ", artista=" + brano.getArtista());
             try {
                 FXMLLoader loader = new FXMLLoader( // Bug B: un loader per card
-                        getClass().getResource("/it/gruppo19/progetto_music_player/track-card.fxml")
+                        getClass().getResource("/it/gruppo19/progetto_music_player/info-card.fxml")
                 );
                 System.out.println("[DEBUG]    URL track-card.fxml = " + loader.getLocation());
                 Node card = loader.load();
                 System.out.println("[DEBUG]    card caricata = " + card);
 
-                // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS)
+                // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS
                 Label title    = (Label) loader.getNamespace().get("titleLabel");
-                Label subtitle = (Label) loader.getNamespace().get("subtitleLabel");
-                ImageView image = (ImageView) loader.getNamespace().get("cardImage");
-                System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
-
                 title.setText(brano.getTitolo());
+
+                Label subtitle = (Label) loader.getNamespace().get("subtitleLabel");
                 subtitle.setText(brano.getArtista());
+
+                ImageView image = (ImageView) loader.getNamespace().get("cardImage");
                 if(brano.getPathImmaggine() != null && brano.getPathImmaggine().toFile().exists())
                     image.setImage(new Image(brano.getPathImmaggine().toUri().toString()));
+                System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
+
+
+                //Qui viene definito il contest menu del singolo brano nella view
+                ContextMenu contextMenu = new ContextMenu();
+
+                MenuItem info = new MenuItem("Info Brano");
+                info.setOnAction(e -> System.out.println("Apri PopUp Info"));
+                contextMenu.getItems().add(info);
+
+                MenuItem elimina = new MenuItem("Elimina Brano");
+                elimina.setOnAction(e -> System.out.println("Apri PopUp Elimina!"));
+                contextMenu.getItems().add(elimina);
+
+                MenuItem aggiungiPlaylist = new MenuItem("Aggiungi a Playlist");
+                aggiungiPlaylist.setOnAction(e -> System.out.println("Apri PopUp aggiungi a playlist!"));
+                contextMenu.getItems().add(aggiungiPlaylist);
+
+                //Il bottone con i 3 puntini che deve aprire il context menu
+                Button menuButton = (Button) loader.getNamespace().get("menuButton");
+                menuButton.setOnAction(e -> contextMenu.show(
+                        menuButton,
+                        javafx.geometry.Side.BOTTOM,
+                        0, 0
+                ));
 
                 songList.getChildren().add(card);
                 System.out.println("[DEBUG]    card aggiunta. songList children = "
