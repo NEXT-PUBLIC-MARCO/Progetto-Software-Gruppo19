@@ -52,6 +52,8 @@ public final class Dialogs {
         try {
             FXMLLoader loader = new FXMLLoader(MusicPlayerApplication.class.getResource(resource));
             Parent root = loader.load();
+            T controller = loader.getController();   // ① prendi il controller
+            init.accept(controller);
 
             Stage dialog = new Stage();
             dialog.initStyle(StageStyle.UTILITY);
@@ -64,7 +66,7 @@ public final class Dialogs {
             dialog.setScene(new Scene(root));
             dialog.showAndWait();
 
-            return loader.getController();
+            return controller;
         } catch (IOException e) {
             throw new UncheckedIOException("Impossibile caricare il dialog: " + resource, e);
         }

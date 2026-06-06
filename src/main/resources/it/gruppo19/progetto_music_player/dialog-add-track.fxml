@@ -25,8 +25,8 @@
     </padding>
 
     <VBox spacing="4.0">
-        <Label fx:id="changeInfo" text="Aggiungi brano" styleClass="dialog-title"/>
-        <Label text="Inserisci i dettagli del nuovo brano" styleClass="dialog-subtitle"/>
+        <Label fx:id="changeActionText" text="Aggiungi brano" styleClass="dialog-title"/>
+        <Label fx:id="changeActionDesc" text="Inserisci i dettagli del nuovo brano" styleClass="dialog-subtitle"/>
     </VBox>
 
     <Region styleClass="dialog-divider"/>

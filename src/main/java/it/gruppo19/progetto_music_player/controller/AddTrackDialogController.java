@@ -86,6 +86,7 @@ public class AddTrackDialogController {
             editing.setPathImmaggine(foto);
             result = editing;
             confirmed = true;
+            close(e);
         }else{
             result = new BranoModel(
                     UUID.randomUUID().toString(),
