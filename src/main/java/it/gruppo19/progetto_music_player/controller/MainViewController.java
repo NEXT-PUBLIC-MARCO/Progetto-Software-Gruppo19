@@ -106,7 +106,7 @@ public class MainViewController implements Observer {
                     image.setImage(new Image(brano.getPathImmaggine().toUri().toString()));
                 System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
-                /*
+
                 ToggleButton search = (ToggleButton) loader.getNamespace().get("searchToggle");
                 VBox expandedSection = (VBox) loader.getNamespace().get("expandedSection");
                 TextField editTitleField = (TextField) loader.getNamespace().get("editTitleField");
@@ -115,11 +115,8 @@ public class MainViewController implements Observer {
                     expandedSection.setManaged(isSelected);
                     title.setVisible(!isSelected);
                     subtitle.setVisible(!isSelected);
-                    if(isSelected){
-                        editTitleField.setText(brano.getTitolo());
-                    }
                 });
-                */
+
                 //Qui viene definito il contest menu del singolo brano nella view
                 ContextMenu contextMenu = new ContextMenu();
 
