@@ -120,10 +120,6 @@ public class MainViewController implements Observer {
                 //Qui viene definito il contest menu del singolo brano nella view
                 ContextMenu contextMenu = new ContextMenu();
 
-                MenuItem modify = new MenuItem("Modifica");
-                modify.setOnAction(e -> System.out.println("Apri PopUp Modifica"));
-                contextMenu.getItems().add(modify);
-
                 Menu aggiungiPlaylist = new Menu("Aggiungi a playlist");
                 for(PlaylistModel playlist : model.getPlaylists()){
                     MenuItem item = new MenuItem(playlist.getTitolo());
