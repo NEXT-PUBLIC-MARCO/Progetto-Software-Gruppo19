@@ -113,13 +113,13 @@ public class MainViewController implements Observer {
                 info.setOnAction(e -> System.out.println("Apri PopUp Info"));
                 contextMenu.getItems().add(info);
 
-                MenuItem elimina = new MenuItem("Elimina Brano");
-                elimina.setOnAction(e -> System.out.println("Apri PopUp Elimina!"));
-                contextMenu.getItems().add(elimina);
-
                 MenuItem aggiungiPlaylist = new MenuItem("Aggiungi a Playlist");
                 aggiungiPlaylist.setOnAction(e -> System.out.println("Apri PopUp aggiungi a playlist!"));
                 contextMenu.getItems().add(aggiungiPlaylist);
+
+                MenuItem elimina = new MenuItem("Elimina Brano");
+                elimina.setOnAction(e -> ContextMenuElimina(brano));
+                contextMenu.getItems().add(elimina);
 
                 //Il bottone con i 3 puntini che deve aprire il context menu
                 Button menuButton = (Button) loader.getNamespace().get("menuButton");
@@ -138,6 +138,13 @@ public class MainViewController implements Observer {
             }
         }
         System.out.println("[DEBUG] refreshLibrary() FINE");
+    }
+
+    private void ContextMenuElimina(BranoModel brano){
+        Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
+        DeleteTrackDialogController controller =
+                Dialogs.openModal(owner, "dialog-delete-track.fxml", "");
+        if(controller.hasDeleted()) model.removeBrani(brano);
     }
 
     private void refreshPlaylists() {

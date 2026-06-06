@@ -15,9 +15,9 @@ public class Controller {
 
     public void OnAppStartup() throws IOException {
         storage = new Storage();
+        view = new DummyView();
         model = new DataModel(storage.LoadBrani(),storage.LoadPlaylist());
         model.Attach(view.getController());
-        view = new DummyView();
         view.getController().setModel(model);
 
         // Aggancio il controller come Observer del model (pattern Observer).
