@@ -57,6 +57,7 @@ public class MainViewController implements Observer {
         // appena ho il model posso disegnare le liste iniziali
         refreshLibrary();
         refreshPlaylists();
+        //model.Attach(this);
     }
 
     private void refreshLibrary() {
@@ -156,7 +157,7 @@ public class MainViewController implements Observer {
             if (dialog.isConfirmed()) {
                 PlaylistModel nuova = dialog.getResult();
                 model.addPlaylist(nuova);
-                refreshPlaylists();
+                //refreshPlaylists();
             }
         } else {
             // tab Brani -> dialog "Aggiungi brano"
@@ -168,7 +169,7 @@ public class MainViewController implements Observer {
                 System.out.println("[DEBUG] onAdd: nuovo brano = " + nuovo
                         + (nuovo != null ? " (" + nuovo.getTitolo() + ")" : ""));
                 model.addBrani(nuovo);
-                refreshLibrary();
+                //refreshLibrary();
             }
         }
 
@@ -223,7 +224,7 @@ public class MainViewController implements Observer {
         if (dialog.isConfirmed()) {
             PlaylistModel nuova = dialog.getResult();
             model.addPlaylist(nuova);
-            refreshPlaylists();
+            //refreshPlaylists();
         }
     }
 
@@ -256,8 +257,8 @@ public class MainViewController implements Observer {
     @Override
     public void Update(String event, Object object) {
         System.out.println("[DEBUG] Update() ricevuto. event=" + event);
-        if(!Objects.equals(event, "BraniChange")) return;
-        refreshLibrary();
+        if(Objects.equals(event, "BraniChange")) refreshLibrary();
+        if(Objects.equals(event, "PlaylistChange")) refreshPlaylists();
     }
 
 }

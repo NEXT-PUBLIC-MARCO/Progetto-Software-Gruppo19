@@ -1,7 +1,7 @@
 package it.gruppo19.progetto_music_player.controller;
 
 import it.gruppo19.progetto_music_player.model.DataModel;
-import it.gruppo19.progetto_music_player.storage.DummyStorage;
+import it.gruppo19.progetto_music_player.storage.Storage;
 import it.gruppo19.progetto_music_player.view.DummyView;
 
 import java.io.IOException;
@@ -10,13 +10,14 @@ import java.util.ArrayList;
 public class Controller {
 
     private DataModel model;
-    private DummyStorage storage;
+    private Storage storage;
     private DummyView view;
 
     public void OnAppStartup() throws IOException {
+        storage = new Storage();
+        model = new DataModel(storage.LoadBrani(),storage.LoadPlaylist());
+        model.Attach(view.getController());
         view = new DummyView();
-        model = new DataModel(new ArrayList<>(),new ArrayList<>());
-        storage = new DummyStorage();
         view.getController().setModel(model);
 
         // Aggancio il controller come Observer del model (pattern Observer).
@@ -33,7 +34,6 @@ public class Controller {
         // un'altra parte del codice) passerebbe inosservata. Agganciando qui
         // l'Observer, la view reagisce automaticamente a ogni cambiamento del
         // model, che e' lo scopo del pattern.
-        model.Attach(view.getController());
     }
 
     public void OnAppClose(){
