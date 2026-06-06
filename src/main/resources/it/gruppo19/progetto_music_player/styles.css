@@ -305,6 +305,37 @@
     -fx-text-fill: white;
 }
 
+/* ============ CONTEXT MENU ============ */
+.context-menu {
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fx-brd;
+    -fx-border-radius: 10px;
+    -fx-padding: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 18, 0, 0, 6);
+}
+
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 14px;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: -fx-txt;
+    -fx-font-size: 12px;
+}
+
+.context-menu .menu-item:focused,
+.context-menu .menu-item:hover {
+    -fx-background-color: -fx-sel;
+}
+
+.context-menu .menu-item:focused .label,
+.context-menu .menu-item:hover .label {
+    -fx-text-fill: -fx-acc;
+}
+
 /* ============ SCROLLBAR ============ */
 .scroll-bar {
     -fx-background-color: transparent;
