@@ -40,6 +40,17 @@ public class DataModel implements Serializable, Observable {
         if (playlists != null) {
             this.playlists.addAll(playlists);
         }
+
+        //-------- TEST --------
+        addBrani(new BranoModel(
+                "",
+                "Numb",
+                "Una canzone fenomenale",
+                "Linkin Park",
+                "Pop",
+                null,
+                null)
+        );
     }
 
     public void addBrani(BranoModel b)

@@ -10,9 +10,18 @@ import java.awt.*;
 public class DeleteTrackDialogController {
 
     @FXML private Label messageLabel;
+    @FXML private Label mainLabel;
     private boolean delete;
 
     public boolean hasDeleted(){ return delete; }
+
+    public void setMessageLabel(String text){
+        messageLabel.setText(text);
+    }
+
+    public void setMainLabel(String text){
+        mainLabel.setText(text);
+    }
 
     @FXML
     private void onCancel(){

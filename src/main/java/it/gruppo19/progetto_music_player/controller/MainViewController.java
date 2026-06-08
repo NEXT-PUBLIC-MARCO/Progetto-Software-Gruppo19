@@ -7,14 +7,17 @@ import it.gruppo19.progetto_music_player.model.PlaylistModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import javax.swing.*;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -123,9 +126,8 @@ public class MainViewController implements Observer {
 
 
                 MenuItem modify = new MenuItem("Modifica");
-                modify.setOnAction(e -> ContextMenuModify(brano));
+                modify.setOnAction(e -> ContextMenuModifyBrano(brano));
                 contextMenu.getItems().add(modify);
-
 
                 Menu aggiungiPlaylist = new Menu("Aggiungi a playlist");
                 for(PlaylistModel playlist : model.getPlaylists()){
@@ -136,7 +138,7 @@ public class MainViewController implements Observer {
                 contextMenu.getItems().add(aggiungiPlaylist);
 
                 MenuItem elimina = new MenuItem("Elimina Brano");
-                elimina.setOnAction(e -> ContextMenuElimina(brano));
+                elimina.setOnAction(e -> ContextMenuEliminaBrano(brano));
                 contextMenu.getItems().add(elimina);
 
                 //Il bottone con i 3 puntini che deve aprire il context menu
@@ -158,18 +160,54 @@ public class MainViewController implements Observer {
         System.out.println("[DEBUG] refreshLibrary() FINE");
     }
 
-    private void ContextMenuElimina(BranoModel brano){
+    private void ContextMenuEliminaBrano(BranoModel brano){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
-        DeleteTrackDialogController controller =
-                Dialogs.openModal(owner, "dialog-delete-track.fxml", "");
-        if(controller.hasDeleted()) model.removeBrani(brano);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/gruppo19/progetto_music_player/dialog-delete.fxml"));
+            Parent root = loader.load();
+            DeleteTrackDialogController controller = loader.getController();
+            controller.setMainLabel("Elimina brano");
+            controller.setMessageLabel(
+                    "Vuoi eliminare definitivamente il brano " + brano.getTitolo() + "? Questa azione non può essere annullata."
+            );
+
+            Stage dialog = new Stage();
+            dialog.initOwner(owner);
+            dialog.setScene(new Scene(root));
+            dialog.showAndWait();
+
+            if(controller.hasDeleted()) model.removeBrani(brano);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-
-    private void ContextMenuModify(BranoModel brano){
+    private void ContextMenuModifyBrano(BranoModel brano){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
         AddTrackDialogController controller = Dialogs.openModal1(owner, "dialog-add-track.fxml", "Modifica brano", (AddTrackDialogController c) -> c.setBrano(brano));
         if(controller.isConfirmed()) model.updateBrani(brano);
+    }
+
+    private void ContextMenuEliminaPlaylist(PlaylistModel playlist){
+        Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/gruppo19/progetto_music_player/dialog-delete.fxml"));
+            Parent root = loader.load();
+            DeleteTrackDialogController controller = loader.getController();
+            controller.setMainLabel("Elimina playlist");
+            controller.setMessageLabel(
+                    "Vuoi eliminare definitivamente la playlist " + playlist.getTitolo() + "? Questa azione non può essere annullata."
+            );
+
+            Stage dialog = new Stage();
+            dialog.initOwner(owner);
+            dialog.setScene(new Scene(root));
+            dialog.showAndWait();
+
+            if(controller.hasDeleted()) model.removePlaylist(playlist);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshPlaylists() {
@@ -235,11 +273,8 @@ public class MainViewController implements Observer {
                  * */
 
                 MenuItem elimina = new MenuItem("Elimina Playlist");
-                //elimina.setOnAction(e -> ContextMenuElimina(playlist));
-                /*
-                 * VA AGGIUNTO IL POPUP DI ELIMINAZIONE DI UNA PLAYLIST
-                 */
-                //contextMenu.getItems().add(elimina);
+                elimina.setOnAction(e -> ContextMenuEliminaPlaylist(playlist));
+                contextMenu.getItems().add(elimina);
 
                 //Il bottone con i 3 puntini che deve aprire il context menu
                 Button menuButton = (Button) loader.getNamespace().get("menuButton");
