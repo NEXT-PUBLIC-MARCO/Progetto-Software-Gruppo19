@@ -1,8 +1,9 @@
 package it.gruppo19.progetto_music_player.model;
 import java.io.*;
 import java.nio.file.Path;
+import java.util.Iterator;
 
-public class BranoModel implements Serializable {
+public class BranoModel implements Serializable, Iterable<BranoModel> {
     private String id;
     private String titolo;
     private String descrizione;
@@ -96,5 +97,10 @@ public class BranoModel implements Serializable {
         this.pathImmaggine = (b == null ? null : Path.of(b));
 
 
+    }
+
+    @Override
+    public Iterator<BranoModel> iterator() {
+        return null;
     }
 }
