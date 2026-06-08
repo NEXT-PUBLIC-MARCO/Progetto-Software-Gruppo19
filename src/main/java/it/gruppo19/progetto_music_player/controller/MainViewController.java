@@ -66,6 +66,7 @@ public class MainViewController implements Observer {
     }
 
     private void refreshLibrary() {
+        // SEZIONE 1: Validazione e Inizializzazione ---------------------------------------------------------
         System.out.println("[DEBUG] refreshLibrary() INIZIO. model=" + model
                 + ", songList=" + songList);
 
@@ -79,6 +80,7 @@ public class MainViewController implements Observer {
             return;
         }
 
+        // SEZIONE 2: Reset UI e Gestione Visibilità --------------------------------------------------------------
         System.out.println("[DEBUG] refreshLibrary: numero brani = " + model.getBrani().size());
 
         songList.getChildren().clear();// Bug C: ricostruisco da zero
@@ -87,10 +89,13 @@ public class MainViewController implements Observer {
         setShown(songList, hasBrani);
         setShown(emptyLibrary,!hasBrani);
 
+        // SEZIONE 3: Rendering Dinamico dei Brani -----------------------------------------------------------------
         for (BranoModel brano : model.getBrani()) {
             System.out.println("[DEBUG] -- render brano: titolo=" + brano.getTitolo()
                     + ", artista=" + brano.getArtista());
             try {
+                // --- SEZIONE 3.1: Caricamento Layout Card ---
+                // Istanzia un nuovo FXMLLoader per generare una card indipendente per il brano corrente.
                 FXMLLoader loader = new FXMLLoader( // Bug B: un loader per card
                         getClass().getResource("/it/gruppo19/progetto_music_player/info-card.fxml")
                 );
@@ -98,6 +103,8 @@ public class MainViewController implements Observer {
                 Node card = loader.load();
                 System.out.println("[DEBUG]    card caricata = " + card);
 
+                // --- SEZIONE 3.2: Popolamento Dati Interfaccia ---
+                // Recupera gli elementi grafici via namespace e inietta i dati del brano (titolo, artista, immagine).
                 // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS
                 Label title    = (Label) loader.getNamespace().get("titleLabel");
                 title.setText(brano.getTitolo());
@@ -110,55 +117,29 @@ public class MainViewController implements Observer {
                     image.setImage(new Image(brano.getPathImmaggine().toUri().toString()));
                 System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
+                // --- SEZIONE 3.3: Configurazione Eventi (Listener) ---
+                // Associa le lambda function ai pulsanti della card per gestire Modifica ed Eliminazione.
+                Button editButton = (Button) loader.getNamespace().get("editButton");
+                editButton.setOnAction(e ->modifyBrano(brano));
 
-             /*   ToggleButton search = (ToggleButton) loader.getNamespace().get("searchToggle");
-                VBox expandedSection = (VBox) loader.getNamespace().get("expandedSection");
-                TextField editTitleField = (TextField) loader.getNamespace().get("editTitleField");
-                search.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-                    expandedSection.setVisible(isSelected);
-                    expandedSection.setManaged(isSelected);
-                    title.setVisible(!isSelected);
-                    subtitle.setVisible(!isSelected);
-                });
-                    */
-                //Qui viene definito il contest menu del singolo brano nella view
-                ContextMenu contextMenu = new ContextMenu();
+                Button deleteButton = (Button) loader.getNamespace().get("deleteButton");
+                deleteButton.setOnAction(e ->eliminaBrano(brano));
 
-
-                MenuItem modify = new MenuItem("Modifica");
-                modify.setOnAction(e -> ContextMenuModifyBrano(brano));
-                contextMenu.getItems().add(modify);
-
-                Menu aggiungiPlaylist = new Menu("Aggiungi a playlist");
-                for(PlaylistModel playlist : model.getPlaylists()){
-                    MenuItem item = new MenuItem(playlist.getTitolo());
-                    item.setOnAction(e -> {});
-                    aggiungiPlaylist.getItems().add(item);
-                }
-                contextMenu.getItems().add(aggiungiPlaylist);
-
-                MenuItem elimina = new MenuItem("Elimina Brano");
-                elimina.setOnAction(e -> ContextMenuEliminaBrano(brano));
-                contextMenu.getItems().add(elimina);
-
-                //Il bottone con i 3 puntini che deve aprire il context menu
-                Button menuButton = (Button) loader.getNamespace().get("menuButton");
-                menuButton.setOnAction(e -> contextMenu.show(
-                        menuButton,
-                        javafx.geometry.Side.BOTTOM,
-                        0, 0
-                ));
-
+                // --- SEZIONE 3.4: Aggiornamento Scena ---
+                // Aggiunge la card finita e configurata alla lista visibile a schermo.
                 songList.getChildren().add(card);
                 System.out.println("[DEBUG]    card aggiunta. songList children = "
                         + songList.getChildren().size());
             } catch (Exception e) {
+                // --- SEZIONE 3.5: Gestione Errori Rendering ---
+                // Intercetta eccezioni isolate per singola card, impedendo che l'intero ciclo di render si blocchi.
                 System.out.println("[DEBUG]    !!! ECCEZIONE durante il render:");
                 e.printStackTrace();               // così gli errori NON spariscono più
             }
         }
         System.out.println("[DEBUG] refreshLibrary() FINE");
     }
+
 
     boolean DeletePopup(String mainLabel, String messageLabel){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
@@ -181,14 +162,14 @@ public class MainViewController implements Observer {
         return controller.hasDeleted();
     }
 
-    private void ContextMenuEliminaBrano(BranoModel brano){
+    private void eliminaBrano(BranoModel brano){
         if(DeletePopup(
                 "Elimina brano",
                 "Vuoi eliminare definitivamente il brano " + brano.getTitolo() + "? Questa azione non può essere annullata."
         )) model.removeBrani(brano);
     }
 
-    private void ContextMenuModifyBrano(BranoModel brano){
+    private void modifyBrano(BranoModel brano){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
         AddTrackDialogController controller = Dialogs.openModal1(owner, "dialog-add-track.fxml", "Modifica brano", (AddTrackDialogController c) -> c.setBrano(brano));
         if(controller.isConfirmed()) model.updateBrani(brano);

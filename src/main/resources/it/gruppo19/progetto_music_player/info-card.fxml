@@ -7,7 +7,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fillWidth="true" maxWidth="Infinity" styleClass="track-card" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12">
+<VBox fillWidth="true" maxWidth="Infinity" styleClass="track-card" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12"
+      fx:controller="it.gruppo19.progetto_music_player.controller.MainViewController">
 
     <!-- Riga principale -->
     <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="80" prefHeight="80" spacing="12">
@@ -18,7 +19,17 @@
             <Label fx:id="titleLabel" styleClass="track-title" text="Titolo" />
             <Label fx:id="subtitleLabel" styleClass="track-artist" text="Sottotitolo" />
         </VBox>
-        <Button fx:id="menuButton" style="-fx-font-size: 12px;" text="☰" />
+
+        <HBox alignment="CENTER_RIGHT" spacing="8">
+            <!-- Bottone Modifica (Matita) -->
+            <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
+
+            <!-- Bottone Aggiungi a Playlist (+) -->
+            <Button fx:id="addPlaylistButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="+" />
+
+            <!-- Bottone Elimina (Trash) -->
+            <Button fx:id="deleteButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="🗑" />
+        </HBox>
 
     </HBox>
 
