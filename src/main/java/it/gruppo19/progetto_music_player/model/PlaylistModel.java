@@ -1,6 +1,6 @@
 package it.gruppo19.progetto_music_player.model;
 
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,5 +81,23 @@ public class PlaylistModel implements Serializable {
             return null;
         }
         return brani.get(index);
+    }
+
+    //Chiamato da ObjectOutputStream durante writeObject
+    @Serial
+    private void writeObject(ObjectOutputStream obj) throws IOException {
+        obj.defaultWriteObject();
+        obj.writeObject(pathImmagine == null ? null : pathImmagine.toString());
+
+    }
+
+    //Chiamato da ObjectOutputStream durante writeObject
+    @Serial
+    private void readObject(ObjectInputStream obj) throws  IOException, ClassNotFoundException {
+        obj.defaultReadObject();
+        String a = (String) obj.readObject();
+        this.pathImmagine = (a == null ? null : Path.of(a));
+
+
     }
 }

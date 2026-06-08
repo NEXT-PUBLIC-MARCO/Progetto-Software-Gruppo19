@@ -22,14 +22,24 @@ public class Storage {
         }
     }
 
-    public ArrayList<PlaylistModel> LoadPlaylist(){
-        return new ArrayList<PlaylistModel>();
+    public ArrayList<PlaylistModel> LoadPlaylist() {
+        try (FileInputStream fis = new FileInputStream("playlist.dat");
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+            return (ArrayList<PlaylistModel>) ois.readObject();   // cast necessario
+
+        } catch (FileNotFoundException e) {
+            return new ArrayList<>();   // primo avvio: file non esiste ancora → lista vuota
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
-    public void SaveBrani(ArrayList<BranoModel> brani)  {
-        try(FileOutputStream fc = new FileOutputStream("brani.dat");
-            ObjectOutputStream obj = new ObjectOutputStream(fc);
-        ){
+    public void SaveBrani(ArrayList<BranoModel> brani) {
+        try (FileOutputStream fc = new FileOutputStream("brani.dat");
+             ObjectOutputStream obj = new ObjectOutputStream(fc);
+        ) {
 
             obj.writeObject(brani);
 
@@ -39,8 +49,15 @@ public class Storage {
 
     }
 
-    public void SavePlaylist(ArrayList<PlaylistModel> playlists){
+    public void SavePlaylist(ArrayList<PlaylistModel> playlists) {
+        try (FileOutputStream fc = new FileOutputStream("playlist.dat");
+             ObjectOutputStream obj = new ObjectOutputStream(fc);
+        ) {
 
+            obj.writeObject(playlists);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
 }
