@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.Iterator;
 
 public class BranoModel implements Serializable, Iterable<BranoModel> {
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String titolo;
     private String descrizione;
