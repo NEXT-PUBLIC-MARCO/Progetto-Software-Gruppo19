@@ -1,6 +1,7 @@
 package it.gruppo19.progetto_music_player.model;
 
-import it.gruppo19.progetto_music_player.model.playback.Observable;
+import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
+import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
 
 import java.io.Serializable;
 import java.util.ArrayList;

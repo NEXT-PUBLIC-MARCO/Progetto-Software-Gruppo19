@@ -1,6 +1,4 @@
-package it.gruppo19.progetto_music_player.model.playback;
-
-import it.gruppo19.progetto_music_player.model.Observer;
+package it.gruppo19.progetto_music_player.model.observerPattern;
 
 public interface Observable{
     void Attach(Observer observer);

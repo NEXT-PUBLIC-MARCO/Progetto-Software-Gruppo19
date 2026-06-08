@@ -2,7 +2,7 @@ package it.gruppo19.progetto_music_player.controller;
 
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
-import it.gruppo19.progetto_music_player.model.Observer;
+import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
 import it.gruppo19.progetto_music_player.storage.Storage;
 import javafx.fxml.FXML;

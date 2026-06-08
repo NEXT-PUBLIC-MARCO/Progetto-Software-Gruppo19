@@ -1,5 +1,7 @@
-package it.gruppo19.progetto_music_player.model;
+package it.gruppo19.progetto_music_player.model.iteratorPattern;
 
+
+import it.gruppo19.progetto_music_player.model.BranoModel;
 
 import java.util.Iterator;
 

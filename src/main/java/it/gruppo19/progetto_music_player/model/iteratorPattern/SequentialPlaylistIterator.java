@@ -1,4 +1,7 @@
-package it.gruppo19.progetto_music_player.model;
+package it.gruppo19.progetto_music_player.model.iteratorPattern;
+
+import it.gruppo19.progetto_music_player.model.BranoModel;
+import it.gruppo19.progetto_music_player.model.PlaylistModel;
 
 public class SequentialPlaylistIterator implements PlaylistIterator {
     private final PlaylistModel p;
@@ -20,7 +23,7 @@ public class SequentialPlaylistIterator implements PlaylistIterator {
     }
 
     @Override
-    public  BranoModel next(){
+    public BranoModel next(){
         if(!hasNext()){
             return null;
         }

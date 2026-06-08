@@ -1,4 +1,7 @@
-package it.gruppo19.progetto_music_player.model;
+package it.gruppo19.progetto_music_player.model.iteratorPattern;
+
+import it.gruppo19.progetto_music_player.model.BranoModel;
+import it.gruppo19.progetto_music_player.model.PlaylistModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
