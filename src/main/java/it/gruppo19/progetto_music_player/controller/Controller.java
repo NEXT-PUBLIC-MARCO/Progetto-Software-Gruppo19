@@ -19,6 +19,7 @@ public class Controller {
         model = new DataModel(storage.LoadBrani(),storage.LoadPlaylist());
         model.Attach(view.getController());
         view.getController().setModel(model);
+        view.getController().setStorage(storage);
 
         // Aggancio il controller come Observer del model (pattern Observer).
         //

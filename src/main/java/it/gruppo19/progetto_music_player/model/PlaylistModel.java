@@ -1,6 +1,7 @@
 package it.gruppo19.progetto_music_player.model;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,10 +11,10 @@ public class PlaylistModel implements Serializable {
     private String id;
     private String titolo;
     private String descrizione;
-    private String pathImmagine; //Non converrebbe usare Path anche qui come per i brani?
+    private transient Path pathImmagine; //Non converrebbe usare Path anche qui come per i brani?
     private final List<BranoModel> brani;
 
-    public PlaylistModel(String id, String titolo, String descrizione, String pathImmagine, List<BranoModel> brani) {
+    public PlaylistModel(String id, String titolo, String descrizione, Path pathImmagine, List<BranoModel> brani) {
         this.id = id;
         this.titolo = titolo;
         this.descrizione = descrizione;
@@ -49,11 +50,11 @@ public class PlaylistModel implements Serializable {
         this.descrizione = descrizione;
     }
 
-    public String getPathImmagine() {
+    public Path getPathImmagine() {
         return pathImmagine;
     }
 
-    public void setPathImmagine(String pathImmagine) {
+    public void setPathImmagine(Path pathImmagine) {
         this.pathImmagine = pathImmagine;
     }
 

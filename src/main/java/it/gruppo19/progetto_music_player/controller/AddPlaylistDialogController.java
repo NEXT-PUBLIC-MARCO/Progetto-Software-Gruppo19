@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ public class AddPlaylistDialogController {
 
     private boolean confirmed = false;
     private PlaylistModel result;
+    private File foto;
 
     public boolean isConfirmed() { return confirmed; }
     public PlaylistModel getResult() { return result; }
@@ -37,15 +39,20 @@ public class AddPlaylistDialogController {
         fc.setTitle("Seleziona copertina");
         fc.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Immagini", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"));
-        File f = fc.showOpenDialog(window(e));
-        if (f != null) {
-            fotoPathField.setText(f.getAbsolutePath());
+        foto = fc.showOpenDialog(window(e));
+        if (foto != null) {
+            fotoPathField.setText(foto.getAbsolutePath());
         }
     }
 
     @FXML
     private void onConfirm(ActionEvent e) {
         String nome = trim(nomeField.getText());
+        Path  f = null;
+        if ( foto != null){
+                f =  foto.toPath();
+
+        }
         if (nome.isEmpty()) {
             errorLabel.setText("Il nome della playlist è obbligatorio.");
             errorLabel.setVisible(true);
@@ -57,7 +64,7 @@ public class AddPlaylistDialogController {
                 UUID.randomUUID().toString(),
                 nome,
                 trim(descrizioneArea.getText()),
-                trim(fotoPathField.getText()),
+                f,
                 new ArrayList<>());
         confirmed = true;
         close(e);
