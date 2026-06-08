@@ -1,5 +1,5 @@
 package it.gruppo19.progetto_music_player.model;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Path;
 
 public class BranoModel implements Serializable {
@@ -8,8 +8,8 @@ public class BranoModel implements Serializable {
     private String descrizione;
     private String artista;
     private String genere;
-    private Path pathImmaggine;
-    private Path pathAudio;
+    private transient Path pathImmaggine;
+    private transient Path pathAudio;
 
     public BranoModel(String id, String titolo, String descrizione, String artista, String genere, Path pathImmaggine, Path pathAudio) {
         this.id = id;
@@ -75,5 +75,26 @@ public class BranoModel implements Serializable {
 
     public void setPathAudio(Path pathAudio) {
         this.pathAudio = pathAudio;
+    }
+
+    //Chiamato da ObjectOutputStream durante writeObject
+    @Serial
+    private void writeObject(ObjectOutputStream obj) throws IOException  {
+        obj.defaultWriteObject();
+        obj.writeObject(pathAudio == null ? null : pathAudio.toString());
+        obj.writeObject(pathImmaggine == null ? null : pathImmaggine.toString());
+
+    }
+
+    //Chiamato da ObjectOutputStream durante writeObject
+    @Serial
+    private void readObject(ObjectInputStream obj) throws  IOException, ClassNotFoundException {
+        obj.defaultReadObject();
+        String a = (String) obj.readObject();
+        String b = (String) obj.readObject();
+        this.pathAudio = (a == null ? null : Path.of(a));
+        this.pathImmaggine = (b == null ? null : Path.of(b));
+
+
     }
 }
