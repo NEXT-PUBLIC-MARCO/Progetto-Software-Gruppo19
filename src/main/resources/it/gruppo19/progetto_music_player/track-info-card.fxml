@@ -20,7 +20,7 @@
             <Label fx:id="subtitleLabel" maxWidth="Infinity" styleClass="track-artist" text="Sottotitolo" />
         </VBox>
 
-        <HBox alignment="CENTER_RIGHT" spacing="8" minWidth="USE_PREF_SIZE" HBox.hgrow="NEVER">
+        <HBox alignment="CENTER_RIGHT" spacing="8" minWidth="-Infinity" HBox.hgrow="NEVER">
             <!-- Bottone Modifica (Matita) -->
             <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
 
