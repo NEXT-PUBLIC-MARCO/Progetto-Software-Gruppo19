@@ -15,12 +15,12 @@
 
         <ImageView fx:id="cardImage" fitHeight="60" fitWidth="60" />
 
-        <VBox alignment="CENTER_LEFT" spacing="4" HBox.hgrow="ALWAYS">
-            <Label fx:id="titleLabel" styleClass="track-title" text="Titolo" />
-            <Label fx:id="subtitleLabel" styleClass="track-artist" text="Sottotitolo" />
+        <VBox alignment="CENTER_LEFT" spacing="4" minWidth="0" HBox.hgrow="ALWAYS">
+            <Label fx:id="titleLabel" maxWidth="Infinity" styleClass="track-title" text="Titolo" />
+            <Label fx:id="subtitleLabel" maxWidth="Infinity" styleClass="track-artist" text="Sottotitolo" />
         </VBox>
 
-        <HBox alignment="CENTER_RIGHT" spacing="8">
+        <HBox alignment="CENTER_RIGHT" spacing="8" minWidth="USE_PREF_SIZE" HBox.hgrow="NEVER">
             <!-- Bottone Modifica (Matita) -->
             <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
 
