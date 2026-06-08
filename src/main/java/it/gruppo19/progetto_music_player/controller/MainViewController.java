@@ -4,6 +4,7 @@ import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
 import it.gruppo19.progetto_music_player.model.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
+import it.gruppo19.progetto_music_player.storage.Storage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -30,6 +32,7 @@ public class MainViewController implements Observer {
 
     // ATTRIBUTI GENERICI =============================================
     private DataModel model;
+    private  Storage storage;
 
     // ATTRIBUTI LEFT PANE ============================================
     @FXML private ToggleButton tabBrani;
@@ -63,6 +66,10 @@ public class MainViewController implements Observer {
         refreshLibrary();
         refreshPlaylists();
         //model.Attach(this);
+    }
+
+    public void setStorage(Storage storage){
+        this.storage = storage;
     }
 
     private void refreshLibrary() {
@@ -222,9 +229,9 @@ public class MainViewController implements Observer {
                 }
 
                 ImageView image = (ImageView) loader.getNamespace().get("cardImage");
-                if (playlist.getPathImmagine() != null && !playlist.getPathImmagine().trim().isEmpty()) {
+                if (playlist.getPathImmagine() != null && !playlist.getPathImmagine().toUri().toString().isEmpty()) {
                     try {
-                        image.setImage(new Image(playlist.getPathImmagine()));
+                        image.setImage(new Image(playlist.getPathImmagine().toUri().toString()));
                     } catch (IllegalArgumentException ex) {
                         System.out.println("[DEBUG] Impossibile caricare l'immagine per: " + playlist.getTitolo());
                         // Qui potresti impostare un'immagine di default (es. l'icona di un disco)
@@ -292,6 +299,8 @@ public class MainViewController implements Observer {
                 System.out.println("[DEBUG] onAdd: nuovo brano = " + nuovo
                         + (nuovo != null ? " (" + nuovo.getTitolo() + ")" : ""));
                 model.addBrani(nuovo);
+                storage.SaveBrani((ArrayList<BranoModel>) model.getBrani());
+
                 //refreshLibrary();
             }
         }
