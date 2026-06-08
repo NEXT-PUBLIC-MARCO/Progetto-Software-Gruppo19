@@ -169,6 +169,7 @@ public class MainViewController implements Observer {
                 "Elimina brano",
                 "Vuoi eliminare definitivamente il brano " + brano.getTitolo() + "? Questa azione non può essere annullata."
         )) model.removeBrani(brano);
+        storage.SaveBrani(new ArrayList<>( model.getBrani()) );
     }
 
     private void modifyBrano(BranoModel brano){
@@ -182,6 +183,7 @@ public class MainViewController implements Observer {
                 "Elimina playlist",
                 "Vuoi eliminare definitivamente la playlist " + playlist.getTitolo() + "? Questa azione non può essere annullata."
         )) model.removePlaylist(playlist);
+        storage.SavePlaylist( new ArrayList<>( model.getPlaylists()));
     }
 
     private void modifyPlaylist(PlaylistModel playlist){

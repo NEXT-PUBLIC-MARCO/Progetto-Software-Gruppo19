@@ -4,10 +4,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 //import java.nio.file.Path;
 
-public class PlaylistModel implements Serializable {
+public class PlaylistModel implements Serializable, Iterable<BranoModel> {
     private String id;
     private String titolo;
     private String descrizione;
@@ -99,5 +100,10 @@ public class PlaylistModel implements Serializable {
         this.pathImmagine = (a == null ? null : Path.of(a));
 
 
+    }
+
+    @Override
+    public Iterator<BranoModel> iterator() {
+        return null;
     }
 }
