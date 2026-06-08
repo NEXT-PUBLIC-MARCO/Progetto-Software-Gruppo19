@@ -160,26 +160,32 @@ public class MainViewController implements Observer {
         System.out.println("[DEBUG] refreshLibrary() FINE");
     }
 
-    private void ContextMenuEliminaBrano(BranoModel brano){
+    boolean DeletePopup(String mainLabel, String messageLabel){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/gruppo19/progetto_music_player/dialog-delete.fxml"));
+        Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/gruppo19/progetto_music_player/dialog-delete.fxml"));
-            Parent root = loader.load();
-            DeleteTrackDialogController controller = loader.getController();
-            controller.setMainLabel("Elimina brano");
-            controller.setMessageLabel(
-                    "Vuoi eliminare definitivamente il brano " + brano.getTitolo() + "? Questa azione non può essere annullata."
-            );
-
-            Stage dialog = new Stage();
-            dialog.initOwner(owner);
-            dialog.setScene(new Scene(root));
-            dialog.showAndWait();
-
-            if(controller.hasDeleted()) model.removeBrani(brano);
+            root = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        DeleteTrackDialogController controller = loader.getController();
+        controller.setMainLabel(mainLabel);
+        controller.setMessageLabel(messageLabel);
+
+        Stage dialog = new Stage();
+        dialog.initOwner(owner);
+        dialog.setScene(new Scene(root));
+        dialog.showAndWait();
+
+        return controller.hasDeleted();
+    }
+
+    private void ContextMenuEliminaBrano(BranoModel brano){
+        if(DeletePopup(
+                "Elimina brano",
+                "Vuoi eliminare definitivamente il brano " + brano.getTitolo() + "? Questa azione non può essere annullata."
+        )) model.removeBrani(brano);
     }
 
     private void ContextMenuModifyBrano(BranoModel brano){
@@ -189,25 +195,10 @@ public class MainViewController implements Observer {
     }
 
     private void ContextMenuEliminaPlaylist(PlaylistModel playlist){
-        Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/gruppo19/progetto_music_player/dialog-delete.fxml"));
-            Parent root = loader.load();
-            DeleteTrackDialogController controller = loader.getController();
-            controller.setMainLabel("Elimina playlist");
-            controller.setMessageLabel(
-                    "Vuoi eliminare definitivamente la playlist " + playlist.getTitolo() + "? Questa azione non può essere annullata."
-            );
-
-            Stage dialog = new Stage();
-            dialog.initOwner(owner);
-            dialog.setScene(new Scene(root));
-            dialog.showAndWait();
-
-            if(controller.hasDeleted()) model.removePlaylist(playlist);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if(DeletePopup(
+                "Elimina playlist",
+                "Vuoi eliminare definitivamente la playlist " + playlist.getTitolo() + "? Questa azione non può essere annullata."
+        )) model.removePlaylist(playlist);
     }
 
     private void refreshPlaylists() {
