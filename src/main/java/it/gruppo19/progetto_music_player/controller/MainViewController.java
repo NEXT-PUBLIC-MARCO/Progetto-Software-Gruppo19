@@ -102,17 +102,14 @@ public class MainViewController implements Observer {
                     + ", artista=" + brano.getArtista());
             try {
                 // --- SEZIONE 3.1: Caricamento Layout Card ---
-                // Istanzia un nuovo FXMLLoader per generare una card indipendente per il brano corrente.
                 FXMLLoader loader = new FXMLLoader( // Bug B: un loader per card
-                        getClass().getResource("/it/gruppo19/progetto_music_player/info-card.fxml")
+                        getClass().getResource("/it/gruppo19/progetto_music_player/track-info-card.fxml")
                 );
                 System.out.println("[DEBUG]    URL track-card.fxml = " + loader.getLocation());
                 Node card = loader.load();
                 System.out.println("[DEBUG]    card caricata = " + card);
 
                 // --- SEZIONE 3.2: Popolamento Dati Interfaccia ---
-                // Recupera gli elementi grafici via namespace e inietta i dati del brano (titolo, artista, immagine).
-                // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS
                 Label title    = (Label) loader.getNamespace().get("titleLabel");
                 title.setText(brano.getTitolo());
 
@@ -125,7 +122,6 @@ public class MainViewController implements Observer {
                 System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
                 // --- SEZIONE 3.3: Configurazione Eventi (Listener) ---
-                // Associa le lambda function ai pulsanti della card per gestire Modifica ed Eliminazione.
                 Button editButton = (Button) loader.getNamespace().get("editButton");
                 editButton.setOnAction(e ->modifyBrano(brano));
 
@@ -133,7 +129,6 @@ public class MainViewController implements Observer {
                 deleteButton.setOnAction(e ->eliminaBrano(brano));
 
                 // --- SEZIONE 3.4: Aggiornamento Scena ---
-                // Aggiunge la card finita e configurata alla lista visibile a schermo.
                 songList.getChildren().add(card);
                 System.out.println("[DEBUG]    card aggiunta. songList children = "
                         + songList.getChildren().size());
@@ -182,15 +177,26 @@ public class MainViewController implements Observer {
         if(controller.isConfirmed()) model.updateBrani(brano);
     }
 
-    private void ContextMenuEliminaPlaylist(PlaylistModel playlist){
+    private void eliminaPlaylist(PlaylistModel playlist){
         if(DeletePopup(
                 "Elimina playlist",
                 "Vuoi eliminare definitivamente la playlist " + playlist.getTitolo() + "? Questa azione non può essere annullata."
         )) model.removePlaylist(playlist);
     }
 
+    private void modifyPlaylist(PlaylistModel playlist){
+        // TODO: Aggiungere logica di modifica per le playlist analoga a modifyBrano,
+        // aprendo il AddPlaylistDialogController e creando un metodo setPlaylist(...)
+        System.out.println("[DEBUG] Apertura pannello di modifica per la playlist: " + playlist.getTitolo());
+    }
+
+    private void infoPlaylist(PlaylistModel playlist){
+        // TODO: Logica per aprire le info / vista dettaglio della playlist
+        System.out.println("[DEBUG] Apri PopUp Info per la playlist: " + playlist.getTitolo());
+    }
+
     private void refreshPlaylists() {
-        // TODO: refresh dello playlist mostrate
+        // SEZIONE 1: Validazione e Inizializzazione ---------------------------------------------------------
         System.out.println("[DEBUG] refreshPlaylist() INIZIO. model=" + model
                 + ", playlistSidebarList=" + playlistSidebarList);
 
@@ -199,74 +205,67 @@ public class MainViewController implements Observer {
             return;
         }
         if (playlistSidebarList == null) {
-            // se songList e' null l'fx:id non e' stato iniettato: NPE silenziosa piu' avanti
-            System.out.println("[DEBUG] refreshPlaylist: songList NULL (fx:id non iniettato!) -> esco");
+            // se playlistSidebarList e' null l'fx:id non e' stato iniettato
+            System.out.println("[DEBUG] refreshPlaylist: playlistSidebarList NULL (fx:id non iniettato!) -> esco");
             return;
         }
 
-        System.out.println("[DEBUG] refreshPlaylist: numero brani = " + model.getPlaylists().size());
+        // SEZIONE 2: Reset UI e Gestione Visibilità --------------------------------------------------------------
+        System.out.println("[DEBUG] refreshPlaylist: numero playlist = " + model.getPlaylists().size());
 
-        playlistSidebarList.getChildren().clear();// Bug C: ricostruisco da zero
+        playlistSidebarList.getChildren().clear();// ricostruisco da zero
 
-        //boolean hasPlaylist = !model.getPlaylists().isEmpty(); nel caso in cui metteremo emptyState
+        // boolean hasPlaylist = !model.getPlaylists().isEmpty(); // Nel caso in cui metteremo emptyState
 
+        // SEZIONE 3: Rendering Dinamico delle Playlist -----------------------------------------------------------------
         for (PlaylistModel playlist : model.getPlaylists()) {
             System.out.println("[DEBUG] -- render playlist: titolo=" + playlist.getTitolo());
             try {
-                FXMLLoader loader = new FXMLLoader( // Bug B: un loader per card
-                        getClass().getResource("/it/gruppo19/progetto_music_player/info-card.fxml")
+                // --- SEZIONE 3.1: Caricamento Layout Card ---
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/it/gruppo19/progetto_music_player/playlist-info-card.fxml")
                 );
-                System.out.println("[DEBUG]    URL track-card.fxml = " + loader.getLocation());
+                System.out.println("[DEBUG]    URL playlist-info-card.fxml = " + loader.getLocation());
                 Node card = loader.load();
                 System.out.println("[DEBUG]    card caricata = " + card);
 
-                // Bug A: leggo i nodi via namespace fx:id (niente lookup CSS
-                Label title    = (Label) loader.getNamespace().get("titleLabel");
+                // --- SEZIONE 3.2: Popolamento Dati Interfaccia ---
+                Label title = (Label) loader.getNamespace().get("titleLabel");
                 title.setText(playlist.getTitolo());
+
                 Label subtitle = (Label) loader.getNamespace().get("subtitleLabel");
                 if (subtitle != null) {
-                    subtitle.setText(""); // Svuota il testo di default dell'FXML
+                    // Mostriamo il numero di brani come sottotitolo o la descrizione
+                    subtitle.setText(playlist.getBrani().size() + " brani");
                 }
 
                 ImageView image = (ImageView) loader.getNamespace().get("cardImage");
-                if (playlist.getPathImmagine() != null && !playlist.getPathImmagine().toUri().toString().isEmpty()) {
+                if (playlist.getPathImmagine() != null && playlist.getPathImmagine().toFile().exists()) {
                     try {
                         image.setImage(new Image(playlist.getPathImmagine().toUri().toString()));
                     } catch (IllegalArgumentException ex) {
                         System.out.println("[DEBUG] Impossibile caricare l'immagine per: " + playlist.getTitolo());
-                        // Qui potresti impostare un'immagine di default (es. l'icona di un disco)
                     }
                 }
-                System.out.println("[DEBUG]    namespace -> title=" + title);
+                System.out.println("[DEBUG]    namespace -> title=" + title + ", subtitle=" + subtitle);
 
+                // --- SEZIONE 3.3: Configurazione Eventi (Listener) ---
+                Button editButton = (Button) loader.getNamespace().get("editButton");
+                editButton.setOnAction(e -> modifyPlaylist(playlist));
 
-                //Qui viene definito il contest menu della singola playlist nella view
-                ContextMenu contextMenu = new ContextMenu();
+                Button infoButton = (Button) loader.getNamespace().get("infoButton");
+                infoButton.setOnAction(e -> infoPlaylist(playlist));
 
-                MenuItem info = new MenuItem("Info Playlist");
-                info.setOnAction(e -> System.out.println("Apri PopUp Info"));
-                contextMenu.getItems().add(info);
+                Button deleteButton = (Button) loader.getNamespace().get("deleteButton");
+                deleteButton.setOnAction(e -> eliminaPlaylist(playlist));
 
-                /*
-                 * SE DOVESSE SERVIRE, ANDREBBE AGGIUNTO IL POPUP PER INSERIRE UN BRANO NELLA PLAYLIST
-                 * */
-
-                MenuItem elimina = new MenuItem("Elimina Playlist");
-                elimina.setOnAction(e -> ContextMenuEliminaPlaylist(playlist));
-                contextMenu.getItems().add(elimina);
-
-                //Il bottone con i 3 puntini che deve aprire il context menu
-                Button menuButton = (Button) loader.getNamespace().get("menuButton");
-                menuButton.setOnAction(e -> contextMenu.show(
-                        menuButton,
-                        javafx.geometry.Side.BOTTOM,
-                        0, 0
-                ));
-
+                // --- SEZIONE 3.4: Aggiornamento Scena ---
                 playlistSidebarList.getChildren().add(card);
                 System.out.println("[DEBUG]    card aggiunta. playlistSidebarList children = "
                         + playlistSidebarList.getChildren().size());
+
             } catch (Exception e) {
+                // --- SEZIONE 3.5: Gestione Errori Rendering ---
                 System.out.println("[DEBUG]    !!! ECCEZIONE durante il render delle playlist:");
                 e.printStackTrace();               // così gli errori NON spariscono più
             }

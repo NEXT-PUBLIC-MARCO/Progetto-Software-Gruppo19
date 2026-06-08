@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fillWidth="true" maxWidth="Infinity" styleClass="track-card" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12"
+      fx:controller="it.gruppo19.progetto_music_player.controller.MainViewController">
+
+    <!-- Riga principale della Playlist -->
+    <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="80" prefHeight="80" spacing="12">
+
+        <ImageView fx:id="cardImage" fitHeight="60" fitWidth="60" />
+
+        <VBox alignment="CENTER_LEFT" spacing="4" HBox.hgrow="ALWAYS">
+            <Label fx:id="titleLabel" styleClass="pl-title" text="Titolo Playlist" />
+            <Label fx:id="subtitleLabel" styleClass="pl-count" text="Sottotitolo" />
+        </VBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="8">
+            <!-- Bottone Modifica (Matita) -->
+            <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
+
+            <!-- Bottone Info (i) - Analogo a 'Aggiungi a playlist' delle track -->
+            <Button fx:id="infoButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="ℹ" />
+
+            <!-- Bottone Elimina (Trash) -->
+            <Button fx:id="deleteButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="🗑" />
+        </HBox>
+
+    </HBox>
+
+    <!-- Sezione espandibile per la modifica inline -->
+    <VBox fx:id="expandedSection" managed="false" maxWidth="Infinity" spacing="8" style="-fx-border-color: #e8e8e8; -fx-border-width: 1 0 0 0;" visible="false">
+        <padding>
+            <Insets bottom="14" left="16" right="16" top="10" />
+        </padding>
+
+        <!-- Riga 1: Titolo e Descrizione -->
+        <HBox spacing="10">
+            <VBox spacing="3" HBox.hgrow="ALWAYS">
+                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="TITOLO" />
+                <TextField fx:id="editTitoloField" maxWidth="Infinity" promptText="Titolo Playlist" style="-fx-font-size: 12px;" styleClass="form-field" />
+            </VBox>
+            <VBox spacing="3" HBox.hgrow="ALWAYS">
+                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="DESCRIZIONE" />
+                <TextField fx:id="editDescrizioneField" maxWidth="Infinity" promptText="Breve descrizione" style="-fx-font-size: 12px;" styleClass="form-field" />
+            </VBox>
+        </HBox>
+
+        <!-- Riga 2: Copertina -->
+        <VBox spacing="3">
+            <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="COPERTINA" />
+            <HBox spacing="6">
+                <TextField fx:id="editFotoPathField" editable="false" promptText="Nessuna immagine" style="-fx-font-size: 11px;" HBox.hgrow="ALWAYS" />
+                <Button fx:id="editBrowsePhoto" style="-fx-font-size: 11px;" text="…" />
+            </HBox>
+        </VBox>
+
+        <Label fx:id="editErrorLabel" managed="false" style="-fx-font-size: 11px; -fx-text-fill: #c0392b;" visible="false" />
+
+    </VBox>
+
+</VBox>
