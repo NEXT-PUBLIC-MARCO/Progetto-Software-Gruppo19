@@ -287,6 +287,7 @@ public class MainViewController implements Observer {
             if (dialog.isConfirmed()) {
                 PlaylistModel nuova = dialog.getResult();
                 model.addPlaylist(nuova);
+                storage.SavePlaylist((ArrayList<PlaylistModel>) model.getPlaylists());
                 //refreshPlaylists();
             }
         } else {
