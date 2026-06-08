@@ -90,6 +90,6 @@
 
     <HBox styleClass="dialog-footer" alignment="CENTER_RIGHT">
         <Button text="Annulla" styleClass="btn-secondary" onAction="#onCancel"/>
-        <Button text="Aggiungi" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
+        <Button fx:id="changeButtonName" text="Aggiungi" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
     </HBox>
 </VBox>

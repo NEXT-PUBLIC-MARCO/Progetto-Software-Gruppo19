@@ -4,6 +4,7 @@ import it.gruppo19.progetto_music_player.model.BranoModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -32,6 +33,7 @@ public class AddTrackDialogController {
 
     @FXML private Label changeActionText;
     @FXML private Label changeActionDesc;
+    @FXML private Button changeButtonName;
 
 
 
@@ -132,7 +134,7 @@ public class AddTrackDialogController {
         this.editing = b;
         changeActionText.setText("Modifica Brano");
         changeActionDesc.setText("Modifica i campi del brano");
-
+        changeButtonName.setText("Salva");
         System.out.println("[DEBUG] Impostato questo.editing con il brano ID: " + b.getId()); // Assumendo che ci sia un getId()
 
         // Caricamento testi e combo
