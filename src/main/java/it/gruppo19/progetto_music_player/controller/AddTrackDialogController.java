@@ -27,6 +27,7 @@ public class AddTrackDialogController {
     @FXML private TextField titoloField;
     @FXML private TextField artistaField;
     @FXML private ComboBox<String> genereCombo;
+    @FXML private TextField annoField;
     @FXML private TextField audioPathField;
     @FXML private TextField fotoPathField;
     @FXML private Label errorLabel;
@@ -34,6 +35,7 @@ public class AddTrackDialogController {
     @FXML private Label changeActionText;
     @FXML private Label changeActionDesc;
     @FXML private Button changeButtonName;
+
 
 
 
@@ -76,7 +78,7 @@ public class AddTrackDialogController {
         String artista = trim(artistaField.getText());
         String genere = genereCombo.getValue() != null ? genereCombo.getValue()
                 : trim(genereCombo.getEditor().getText());
-        int anno = 1900;
+        int anno = Integer.parseInt(trim(annoField.getText()));
         Path musica = null;
         Path foto = null;
         if(audio != null) musica = audio.toPath();
