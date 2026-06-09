@@ -9,6 +9,8 @@ import java.util.List;
 //import java.nio.file.Path;
 
 public class PlaylistModel implements Serializable, Iterable<BranoModel> {
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String titolo;
     private String descrizione;

@@ -4,6 +4,7 @@ import it.gruppo19.progetto_music_player.model.BranoModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -26,12 +27,15 @@ public class AddTrackDialogController {
     @FXML private TextField titoloField;
     @FXML private TextField artistaField;
     @FXML private ComboBox<String> genereCombo;
+    @FXML private TextField annoField;
     @FXML private TextField audioPathField;
     @FXML private TextField fotoPathField;
     @FXML private Label errorLabel;
 
     @FXML private Label changeActionText;
     @FXML private Label changeActionDesc;
+    @FXML private Button changeButtonName;
+
 
 
 
@@ -74,6 +78,7 @@ public class AddTrackDialogController {
         String artista = trim(artistaField.getText());
         String genere = genereCombo.getValue() != null ? genereCombo.getValue()
                 : trim(genereCombo.getEditor().getText());
+        int anno = Integer.parseInt(trim(annoField.getText()));
         Path musica = null;
         Path foto = null;
         if(audio != null) musica = audio.toPath();
@@ -88,6 +93,7 @@ public class AddTrackDialogController {
             editing.setTitolo(titolo);
             editing.setArtista(artista);
             editing.setGenere(genere);
+            editing.setAnno(anno);
             editing.setPathAudio(musica);
             editing.setPathImmaggine(foto);
             result = editing;
@@ -100,11 +106,13 @@ public class AddTrackDialogController {
                     "",          // descrizione: non richiesta in questo dialog
                     artista,
                     genere,
+                    anno,
                     foto,
                     musica);
             confirmed = true;
             close(e);
         }
+        //System.out.println("[DEBUG] anno inserito: " + anno);
 
     }
 
@@ -132,7 +140,7 @@ public class AddTrackDialogController {
         this.editing = b;
         changeActionText.setText("Modifica Brano");
         changeActionDesc.setText("Modifica i campi del brano");
-
+        changeButtonName.setText("Salva");
         System.out.println("[DEBUG] Impostato questo.editing con il brano ID: " + b.getId()); // Assumendo che ci sia un getId()
 
         // Caricamento testi e combo

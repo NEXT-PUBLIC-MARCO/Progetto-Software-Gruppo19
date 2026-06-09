@@ -62,6 +62,12 @@
         </ComboBox>
     </VBox>
 
+    <!-- Anno -->
+    <VBox spacing="6.0">
+        <Label text="ANNO" styleClass="field-label"/>
+        <TextField fx:id="annoField" styleClass="form-field" promptText="Es. 1980"/>
+    </VBox>
+
     <!-- File audio -->
     <VBox spacing="6.0">
         <Label text="FILE AUDIO" styleClass="field-label"/>
@@ -90,6 +96,6 @@
 
     <HBox styleClass="dialog-footer" alignment="CENTER_RIGHT">
         <Button text="Annulla" styleClass="btn-secondary" onAction="#onCancel"/>
-        <Button text="Aggiungi" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
+        <Button fx:id="changeButtonName" text="Aggiungi" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
     </HBox>
 </VBox>

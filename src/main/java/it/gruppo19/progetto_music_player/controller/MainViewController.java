@@ -44,6 +44,7 @@ public class MainViewController implements Observer {
 
     @FXML public Label titleLabel;
     @FXML public Label subtitleLabel;
+    @FXML public Label annoLabel;
 
     @FXML private StackPane braniSidebar;
     @FXML private VBox playerCard;
@@ -115,6 +116,9 @@ public class MainViewController implements Observer {
 
                 Label subtitle = (Label) loader.getNamespace().get("subtitleLabel");
                 subtitle.setText(brano.getArtista());
+
+                Label anno = (Label) loader.getNamespace().get("annoLabel");
+                anno.setText(Integer.toString(brano.getAnno()));
 
                 ImageView image = (ImageView) loader.getNamespace().get("cardImage");
                 if(brano.getPathImmaggine() != null && brano.getPathImmaggine().toFile().exists())
@@ -192,6 +196,9 @@ public class MainViewController implements Observer {
         // TODO: Aggiungere logica di modifica per le playlist analoga a modifyBrano,
         // aprendo il AddPlaylistDialogController e creando un metodo setPlaylist(...)
         System.out.println("[DEBUG] Apertura pannello di modifica per la playlist: " + playlist.getTitolo());
+        Window owner = addButton.getScene().getWindow();
+        AddPlaylistDialogController controller = Dialogs.openModal1(owner, "dialog-add-playlist.fxml", "Modifica playlist", (AddPlaylistDialogController c) -> c.setPlaylist(playlist));
+        if(controller.isConfirmed()) model.updatePlaylist(playlist);
     }
 
     private void infoPlaylist(PlaylistModel playlist){

@@ -21,8 +21,8 @@
     </padding>
 
     <VBox spacing="4.0">
-        <Label text="Nuova playlist" styleClass="dialog-title"/>
-        <Label text="Crea una nuova raccolta di brani" styleClass="dialog-subtitle"/>
+        <Label fx:id="changeActionText" text="Nuova playlist" styleClass="dialog-title"/>
+        <Label fx:id="changeDescription" text="Crea una nuova raccolta di brani" styleClass="dialog-subtitle"/>
     </VBox>
 
     <Region styleClass="dialog-divider"/>
@@ -54,6 +54,6 @@
 
     <HBox styleClass="dialog-footer" alignment="CENTER_RIGHT">
         <Button text="Annulla" styleClass="btn-secondary" onAction="#onCancel"/>
-        <Button text="Crea" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
+        <Button fx:id="changeButtonName" text="Crea" styleClass="btn-primary" onAction="#onConfirm" defaultButton="true"/>
     </HBox>
 </VBox>

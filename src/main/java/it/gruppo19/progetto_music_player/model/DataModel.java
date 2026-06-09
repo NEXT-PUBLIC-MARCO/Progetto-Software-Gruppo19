@@ -52,7 +52,6 @@ public class DataModel implements Serializable, Observable {
         brani.add(b);
         Notify("BraniChange", brani);
     }
-
     public void removeBrani (BranoModel b){
         brani.remove(b);
         Notify("BraniChange", brani);
@@ -62,7 +61,6 @@ public class DataModel implements Serializable, Observable {
         playlists.add(p);
         Notify("PlaylistChange", playlists);
     }
-
     public void removePlaylist (PlaylistModel p){
         playlists.remove(p);
         Notify("PlaylistChange", playlists);
@@ -79,6 +77,4 @@ public class DataModel implements Serializable, Observable {
     public void updateBrani(BranoModel b){
         Notify("BraniChange", b);
     }
-
-    public void updatePlaylist(PlaylistModel p) {Notify("PlaylistChang", p);}
 }
