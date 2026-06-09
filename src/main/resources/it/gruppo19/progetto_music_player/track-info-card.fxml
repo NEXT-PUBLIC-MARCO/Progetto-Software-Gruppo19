@@ -25,7 +25,7 @@
             <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
 
             <!-- Bottone Aggiungi a Playlist (+) -->
-            <Button fx:id="addPlaylistButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="+" />
+            <Button fx:id="addToPlaylistButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="+" />
 
             <!-- Bottone Elimina (Trash) -->
             <Button fx:id="deleteButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="🗑" />

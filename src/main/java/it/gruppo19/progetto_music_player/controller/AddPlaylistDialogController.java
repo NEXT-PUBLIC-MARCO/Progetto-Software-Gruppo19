@@ -31,6 +31,7 @@ public class AddPlaylistDialogController {
     private File foto;
 
     public boolean isConfirmed() { return confirmed; }
+
     public PlaylistModel getResult() { return result; }
 
     @FXML

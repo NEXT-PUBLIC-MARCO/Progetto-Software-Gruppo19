@@ -72,7 +72,7 @@ public class MainViewController implements Observer {
         this.storage = storage;
     }
 
-    private void refreshLibrary() {
+    public void refreshLibrary() {
         // SEZIONE 1: Validazione e Inizializzazione ---------------------------------------------------------
         System.out.println("[DEBUG] refreshLibrary() INIZIO. model=" + model
                 + ", songList=" + songList);
@@ -125,6 +125,9 @@ public class MainViewController implements Observer {
                 Button editButton = (Button) loader.getNamespace().get("editButton");
                 editButton.setOnAction(e ->modifyBrano(brano));
 
+                Button addToPlaylistButton = (Button) loader.getNamespace().get("addToPlaylistButton");
+                addToPlaylistButton.setOnAction(e ->addTrackToPlaylist(brano));
+
                 Button deleteButton = (Button) loader.getNamespace().get("deleteButton");
                 deleteButton.setOnAction(e ->eliminaBrano(brano));
 
@@ -141,7 +144,6 @@ public class MainViewController implements Observer {
         }
         System.out.println("[DEBUG] refreshLibrary() FINE");
     }
-
 
     boolean DeletePopup(String mainLabel, String messageLabel){
         Window owner = addButton.getScene().getWindow(); //Non è sempre lo stesso l'owner?
@@ -197,7 +199,7 @@ public class MainViewController implements Observer {
         System.out.println("[DEBUG] Apri PopUp Info per la playlist: " + playlist.getTitolo());
     }
 
-    private void refreshPlaylists() {
+    public void refreshPlaylists() {
         // SEZIONE 1: Validazione e Inizializzazione ---------------------------------------------------------
         System.out.println("[DEBUG] refreshPlaylist() INIZIO. model=" + model
                 + ", playlistSidebarList=" + playlistSidebarList);
@@ -275,6 +277,16 @@ public class MainViewController implements Observer {
         System.out.println("[DEBUG] refreshPlaylist() FINE");
     }
 
+    @FXML
+    private void addTrackToPlaylist(BranoModel brano){
+        Window owner = addButton.getScene().getWindow();
+        Dialogs.openModal1(owner, "dialog-add-to-playlist.fxml", "Aggiungi a una Playlist", (AddToPlaylistDialogController c) -> {
+            c.setModel(model);
+            c.addBranoToPlaylist(brano);
+        });
+
+    }
+
     // METODI LEFT PANE ===================================================
     @FXML
     private void onAdd() {
@@ -330,22 +342,12 @@ public class MainViewController implements Observer {
     }
 
     @FXML
-    private void onAddToPlaylist() {
-        // TODO: aprire il popup "Aggiungi a playlist"
-    }
-
-    @FXML
     private void onDelete() {
         // TODO: aprire il popup "Elimina brano"
     }
 
     @FXML
     private void onRemoveFromPlaylist(){
-
-    }
-
-    @FXML
-    private void onAddTrackToPlaylist(){
 
     }
 

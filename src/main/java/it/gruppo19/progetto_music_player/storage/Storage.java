@@ -21,7 +21,6 @@ public class Storage {
             return new ArrayList<>();
         }
     }
-
     public ArrayList<PlaylistModel> LoadPlaylist() {
         try (FileInputStream fis = new FileInputStream("playlist.dat");
              ObjectInputStream ois = new ObjectInputStream(fis)) {

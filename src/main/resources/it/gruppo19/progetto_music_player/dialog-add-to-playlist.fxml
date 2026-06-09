@@ -2,17 +2,19 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <!--
   Popup "Aggiungi a playlist".
   Mostra l'elenco delle playlist su cui aggiungere il brano corrente.
-  Le righe (playlistList) vengono popolate dal controller; qui c'e' un esempio statico.
+  Le righe (playlistList) vengono popolate dinamicamente dal controller.
 -->
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="it.gruppo19.progetto_music_player.controller.AddToPlaylistDialogController"
@@ -28,31 +30,12 @@
     <Region styleClass="dialog-divider"/>
 
     <!-- elenco playlist -->
-    <VBox fx:id="playlistList" spacing="4.0">
-        <padding><Insets top="12.0" right="16.0" bottom="12.0" left="16.0"/></padding>
-
-        <!-- riga selezionata -->
-        <HBox styleClass="pl-row, pl-row-selected">
-            <Region styleClass="pl-thumb"/>
-            <VBox HBox.hgrow="ALWAYS" spacing="2.0">
-                <Label text="Serate d'Autunno" styleClass="pl-title"/>
-                <Label text="4 brani" styleClass="pl-count"/>
-            </VBox>
-            <StackPane styleClass="radio-on">
-                <Label text="✓" styleClass="radio-on-glyph"/>
-            </StackPane>
-        </HBox>
-
-        <!-- riga non selezionata -->
-        <HBox styleClass="pl-row">
-            <Region styleClass="pl-thumb"/>
-            <VBox HBox.hgrow="ALWAYS" spacing="2.0">
-                <Label text="Focus Profondo" styleClass="pl-title"/>
-                <Label text="2 brani" styleClass="pl-count"/>
-            </VBox>
-            <Region styleClass="radio-off"/>
-        </HBox>
-    </VBox>
+    <ScrollPane fitToWidth="true" fitToHeight="false" VBox.vgrow="ALWAYS" style="-fx-border-color: transparent; -fx-background-color: transparent;">
+        <VBox fx:id="playlistList" spacing="8.0">
+            <padding><Insets top="12.0" right="12.0" bottom="12.0" left="16.0"/></padding>
+            <!-- Gli HBox delle playlist vengono generati qui dal controller -->
+        </VBox>
+    </ScrollPane>
 
     <Region styleClass="dialog-divider"/>
 
