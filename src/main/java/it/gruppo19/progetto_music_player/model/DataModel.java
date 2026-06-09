@@ -1,5 +1,7 @@
 package it.gruppo19.progetto_music_player.model;
 
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
 
@@ -50,19 +52,24 @@ public class DataModel implements Serializable, Observable {
         System.out.println("[DEBUG] DataModel.addBrani: b=" + b
                 + ", brani totali dopo add = " + (brani.size() + 1));
         brani.add(b);
+        //Notify("BraniChange", brani);
+        Notify("BranoAdd", b);
         Notify("BraniChange", brani);
     }
     public void removeBrani (BranoModel b){
         brani.remove(b);
+        Notify("BranoRemove", b);
         Notify("BraniChange", brani);
     }
 
     public void addPlaylist (PlaylistModel p){
         playlists.add(p);
+        Notify("PlaylistAdd", p);
         Notify("PlaylistChange", playlists);
     }
     public void removePlaylist (PlaylistModel p){
         playlists.remove(p);
+        Notify("PlaylistRemove", p);
         Notify("PlaylistChange", playlists);
     }
 
@@ -75,10 +82,17 @@ public class DataModel implements Serializable, Observable {
     }
 
     public void updateBrani(BranoModel b){
-        Notify("BraniChange", b);
+        // Questa cosa è sbagliata.
+        // Tutte le chiamate di "BraniChange" passano come Object una List non un singolo BranoModel.
+        //Notify("BraniChange", b);
+        Notify("BranoUpdate", b);
+        Notify("BraniChange", brani);
     }
 
     public void updatePlaylist(PlaylistModel p){
-        Notify("PlaylistChange", p);
+        // Stesso cosa qui di sopra.
+        //Notify("PlaylistChange", p);
+        Notify("PlaylistUpdate", p);
+        Notify("PlaylistsChange", playlists);
     }
 }

@@ -1,20 +1,24 @@
 package it.gruppo19.progetto_music_player.model;
 
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlaylistIterator;
+import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 //import java.nio.file.Path;
 
-public class PlaylistModel implements Serializable, Iterable<BranoModel> {
+public class PlaylistModel implements Serializable, PlayerIterable {
     private static final long serialVersionUID = 1L;
 
     private String id;
     private String titolo;
     private String descrizione;
-    private transient Path pathImmagine; //Non converrebbe usare Path anche qui come per i brani?
+    private transient Path pathImmagine;
     private final List<BranoModel> brani;
 
     public PlaylistModel(String id, String titolo, String descrizione, Path pathImmagine, List<BranoModel> brani) {
@@ -105,7 +109,9 @@ public class PlaylistModel implements Serializable, Iterable<BranoModel> {
     }
 
     @Override
-    public Iterator<BranoModel> iterator() {
-        return null;
+    public PlayerIterator createIterator(Observable model) {
+        PlaylistIterator iterator = new PlaylistIterator(this);
+        if(model != null)  model.Attach(iterator);
+        return iterator;
     }
 }

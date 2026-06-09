@@ -1,9 +1,13 @@
 package it.gruppo19.progetto_music_player.model;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.BranoIterator;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
+import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
+
 import java.io.*;
 import java.nio.file.Path;
-import java.util.Iterator;
 
-public class BranoModel implements Serializable, Iterable<BranoModel> {
+public class BranoModel implements Serializable, PlayerIterable {
     private static final long serialVersionUID = 1L;
 
     private String id;
@@ -113,7 +117,9 @@ public class BranoModel implements Serializable, Iterable<BranoModel> {
     }
 
     @Override
-    public Iterator<BranoModel> iterator() {
-        return null;
+    public PlayerIterator createIterator(Observable model) {
+        BranoIterator iterator = new BranoIterator(this);
+        if(model != null) model.Attach(iterator);
+        return iterator;
     }
 }
