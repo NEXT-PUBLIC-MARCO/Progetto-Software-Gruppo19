@@ -78,7 +78,16 @@ public class AddTrackDialogController {
         String artista = trim(artistaField.getText());
         String genere = genereCombo.getValue() != null ? genereCombo.getValue()
                 : trim(genereCombo.getEditor().getText());
-        int anno = Integer.parseInt(trim(annoField.getText()));
+
+        //-- Anno --
+        int anno = 0;
+        String annoTxt = annoField.getText().trim();
+
+        if (!annoTxt.isEmpty()) {
+            anno = Integer.parseInt(annoTxt);
+        }
+        //----------
+
         Path musica = null;
         Path foto = null;
         if(audio != null) musica = audio.toPath();
