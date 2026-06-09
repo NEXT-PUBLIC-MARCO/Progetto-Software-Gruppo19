@@ -18,6 +18,7 @@
         <VBox alignment="CENTER_LEFT" spacing="4" minWidth="0" HBox.hgrow="ALWAYS">
             <Label fx:id="titleLabel" maxWidth="Infinity" styleClass="track-title" text="Titolo" />
             <Label fx:id="subtitleLabel" maxWidth="Infinity" styleClass="track-artist" text="Sottotitolo" />
+            <Label fx:id="annoLabel" maxWidth="Infinity" styleClass="track-anno" text="Anno" />
         </VBox>
 
         <HBox alignment="CENTER_RIGHT" spacing="8" minWidth="-Infinity" HBox.hgrow="NEVER">
