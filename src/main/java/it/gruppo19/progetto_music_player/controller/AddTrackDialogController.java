@@ -76,6 +76,7 @@ public class AddTrackDialogController {
         String artista = trim(artistaField.getText());
         String genere = genereCombo.getValue() != null ? genereCombo.getValue()
                 : trim(genereCombo.getEditor().getText());
+        int anno = 1900;
         Path musica = null;
         Path foto = null;
         if(audio != null) musica = audio.toPath();
@@ -90,6 +91,7 @@ public class AddTrackDialogController {
             editing.setTitolo(titolo);
             editing.setArtista(artista);
             editing.setGenere(genere);
+            editing.setAnno(anno);
             editing.setPathAudio(musica);
             editing.setPathImmaggine(foto);
             result = editing;
@@ -102,11 +104,13 @@ public class AddTrackDialogController {
                     "",          // descrizione: non richiesta in questo dialog
                     artista,
                     genere,
+                    anno,
                     foto,
                     musica);
             confirmed = true;
             close(e);
         }
+        //System.out.println("[DEBUG] anno inserito: " + anno);
 
     }
 

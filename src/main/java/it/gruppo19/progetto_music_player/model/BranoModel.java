@@ -11,15 +11,17 @@ public class BranoModel implements Serializable, Iterable<BranoModel> {
     private String descrizione;
     private String artista;
     private String genere;
+    private int anno;
     private transient Path pathImmaggine;
     private transient Path pathAudio;
 
-    public BranoModel(String id, String titolo, String descrizione, String artista, String genere, Path pathImmaggine, Path pathAudio) {
+    public BranoModel(String id, String titolo, String descrizione, String artista, String genere, int anno, Path pathImmaggine, Path pathAudio) {
         this.id = id;
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.artista = artista;
         this.genere = genere;
+        this.anno=anno;
         this.pathImmaggine = pathImmaggine;
         this.pathAudio = pathAudio;
     }
@@ -63,6 +65,15 @@ public class BranoModel implements Serializable, Iterable<BranoModel> {
     public void setGenere(String genere) {
         this.genere = genere;
     }
+
+    public int getAnno(){
+        return anno;
+    }
+
+    public void setAnno(int anno){
+        this.anno=anno;
+    }
+
 
     public Path getPathImmaggine() {
         return pathImmaggine;
