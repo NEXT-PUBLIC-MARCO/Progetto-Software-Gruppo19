@@ -190,6 +190,9 @@ public class MainViewController implements Observer {
         // TODO: Aggiungere logica di modifica per le playlist analoga a modifyBrano,
         // aprendo il AddPlaylistDialogController e creando un metodo setPlaylist(...)
         System.out.println("[DEBUG] Apertura pannello di modifica per la playlist: " + playlist.getTitolo());
+        Window owner = addButton.getScene().getWindow();
+        AddPlaylistDialogController controller = Dialogs.openModal1(owner, "dialog-add-playlist.fxml", "Modifica playlist", (AddPlaylistDialogController c) -> c.setPlaylist(playlist));
+        if(controller.isConfirmed()) model.updatePlaylist(playlist);
     }
 
     private void infoPlaylist(PlaylistModel playlist){
