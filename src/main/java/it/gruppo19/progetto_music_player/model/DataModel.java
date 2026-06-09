@@ -77,4 +77,8 @@ public class DataModel implements Serializable, Observable {
     public void updateBrani(BranoModel b){
         Notify("BraniChange", b);
     }
+
+    public void updatePlaylist(PlaylistModel p){
+        Notify("PlaylistChange", p);
+    }
 }
