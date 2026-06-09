@@ -196,6 +196,11 @@
     -fx-border-color: -fx-acc;
 }
 
+.form-field {
+    -fx-control-inner-background: black;
+    -fx-text-fill: white;
+}
+
 /* ============ IMMAGINI & ICONE ============ */
 .song-row .thumb,
 .empty-icon,
