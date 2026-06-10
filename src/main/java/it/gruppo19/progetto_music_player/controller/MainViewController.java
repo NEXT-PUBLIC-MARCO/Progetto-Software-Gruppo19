@@ -2,6 +2,7 @@ package it.gruppo19.progetto_music_player.controller;
 
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
+import it.gruppo19.progetto_music_player.model.commandPattern.*;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
@@ -24,6 +25,7 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Stack;
 
 /**
  * Controller per la schermata principale (Melodia - 01 Homepage).
@@ -38,6 +40,7 @@ public class MainViewController implements Observer {
     private  Storage storage;
     private final ObservableList<BranoModel> braniItems = FXCollections.observableArrayList();
     private final ObservableList<PlaylistModel> playlistItems = FXCollections.observableArrayList();
+    private final Stack<Command> commands = new Stack<>();
     // ATTRIBUTI LEFT PANE ============================================
     @FXML private ToggleButton tabBrani;
     @FXML private ToggleButton tabPlaylist;
@@ -65,6 +68,11 @@ public class MainViewController implements Observer {
     // to do
 
     // METODI GENERICI ===================================================
+
+    public void Undo(){
+        Command command = commands.pop();
+        if(command != null) command.undo();
+    }
 
     @FXML
     public void initialize() {
@@ -230,7 +238,10 @@ public class MainViewController implements Observer {
         if(DeletePopup(
                 "Elimina brano",
                 "Vuoi eliminare definitivamente il brano " + brano.getTitolo() + "? Questa azione non può essere annullata."
-        )) model.removeBrani(brano);
+        )) {
+            commands.add(new RemoveBrano(brano, model));
+            commands.getFirst().execute();
+        }
         storage.SaveBrani(new ArrayList<>( model.getBrani()) );
     }
 
@@ -244,7 +255,10 @@ public class MainViewController implements Observer {
         if(DeletePopup(
                 "Elimina playlist",
                 "Vuoi eliminare definitivamente la playlist " + playlist.getTitolo() + "? Questa azione non può essere annullata."
-        )) model.removePlaylist(playlist);
+        )){
+            commands.add(new RemovePlaylist(playlist, model));
+            commands.getFirst().execute();
+        }
         storage.SavePlaylist( new ArrayList<>( model.getPlaylists()));
     }
 
@@ -290,7 +304,8 @@ public class MainViewController implements Observer {
                     Dialogs.openModal(owner, "dialog-add-playlist.fxml", "Nuova playlist");
             if (dialog.isConfirmed()) {
                 PlaylistModel nuova = dialog.getResult();
-                model.addPlaylist(nuova);
+                commands.add(new AddPlaylist(nuova, model));
+                commands.getFirst().execute();
                 storage.SavePlaylist((ArrayList<PlaylistModel>) model.getPlaylists());
                 //refreshPlaylists();
             }
@@ -303,7 +318,8 @@ public class MainViewController implements Observer {
                 BranoModel nuovo = dialog.getResult();
                 System.out.println("[DEBUG] onAdd: nuovo brano = " + nuovo
                         + (nuovo != null ? " (" + nuovo.getTitolo() + ")" : ""));
-                model.addBrani(nuovo);
+                commands.add(new AddBrano(nuovo, model));
+                commands.getFirst().execute();
                 storage.SaveBrani((ArrayList<BranoModel>) model.getBrani());
 
                 //refreshLibrary();
@@ -350,7 +366,8 @@ public class MainViewController implements Observer {
                 Dialogs.openModal(owner, "dialog-add-playlist.fxml", "Nuova playlist");
         if (dialog.isConfirmed()) {
             PlaylistModel nuova = dialog.getResult();
-            model.addPlaylist(nuova);
+            commands.add(new AddPlaylist(nuova, model));
+            commands.getFirst().execute();
             //refreshPlaylists();
         }
     }
