@@ -89,12 +89,20 @@ public class MainViewController implements Observer {
 
     // METODI GENERICI ===================================================
 
-    public void Undo(){
-        Command command = commands.pop();
-        if(command != null) command.undo();
-        storage.SaveBrani(new ArrayList<>(model.getBrani()));
-        storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
+    public void Undo() {
+        // Command command = commands.pop();
+        // if(command != null) command.undo();
+        // storage.SaveBrani(new ArrayList<>(model.getBrani()));
+        // storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
+        if (!commands.isEmpty()) {
+            Command command = commands.pop();
+            command.undo();
+
+            storage.SaveBrani(new ArrayList<>(model.getBrani()));
+            storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
+        }
     }
+
     private String formatTime(javafx.util.Duration d) {
         int sec = (int) d.toSeconds();
         return String.format("%d:%02d", sec / 60, sec % 60);
@@ -335,8 +343,10 @@ public class MainViewController implements Observer {
                 "Elimina brano",
                 "Vuoi eliminare definitivamente il brano " + brano.getTitolo() + "? Questa azione non può essere annullata."
         )) {
-            commands.add(new RemoveBrano(brano, model));
-            commands.getFirst().execute();
+            //commands.add(new RemoveBrano(brano, model));
+            //commands.getFirst().execute();
+            commands.push(new RemoveBrano(brano, model));
+            commands.peek().execute();   // Esegue l’ultimo comando inserito
         }
         storage.SaveBrani(new ArrayList<>( model.getBrani()) );
     }
@@ -352,8 +362,12 @@ public class MainViewController implements Observer {
                 "Elimina playlist",
                 "Vuoi eliminare definitivamente la playlist " + playlist.getTitolo() + "? Questa azione non può essere annullata."
         )){
-            commands.add(new RemovePlaylist(playlist, model));
-            commands.getFirst().execute();
+            // commands.add(new RemovePlaylist(playlist, model));
+            // commands.getFirst().execute();
+
+            commands.push(new RemovePlaylist(playlist, model));
+            commands.peek().execute();
+
         }
         storage.SavePlaylist( new ArrayList<>( model.getPlaylists()));
     }
@@ -400,8 +414,12 @@ public class MainViewController implements Observer {
                     Dialogs.openModal(owner, "dialog-add-playlist.fxml", "Nuova playlist");
             if (dialog.isConfirmed()) {
                 PlaylistModel nuova = dialog.getResult();
-                commands.add(new AddPlaylist(nuova, model));
-                commands.getFirst().execute();
+                // commands.add(new AddPlaylist(nuova, model));
+                // commands.getFirst().execute();
+
+                commands.push(new AddPlaylist(nuova, model));
+                commands.peek().execute();
+
                 storage.SavePlaylist((ArrayList<PlaylistModel>) model.getPlaylists());
                 //refreshPlaylists();
             }
@@ -414,8 +432,12 @@ public class MainViewController implements Observer {
                 BranoModel nuovo = dialog.getResult();
                 System.out.println("[DEBUG] onAdd: nuovo brano = " + nuovo
                         + (nuovo != null ? " (" + nuovo.getTitolo() + ")" : ""));
-                commands.add(new AddBrano(nuovo, model));
-                commands.getFirst().execute();
+                // commands.add(new AddBrano(nuovo, model));
+                // commands.getFirst().execute();
+
+                commands.push(new AddBrano(nuovo, model));
+                commands.peek().execute();
+
                 storage.SaveBrani((ArrayList<BranoModel>) model.getBrani());
 
                 //refreshLibrary();
