@@ -22,8 +22,11 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,6 +81,11 @@ public class MainViewController implements Observer {
     @FXML private Label playerCurrentTime;
     @FXML private Label playerDurata;
 
+    @FXML private Slider playerSlider;
+    @FXML private Button playPauseButton;
+
+    private MediaPlayer mediaPlayer;       // player corrente
+    private boolean isUserSeeking = false;
 
     // METODI GENERICI ===================================================
 
@@ -87,9 +95,18 @@ public class MainViewController implements Observer {
         storage.SaveBrani(new ArrayList<>(model.getBrani()));
         storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
     }
+    private String formatTime(javafx.util.Duration d) {
+        int sec = (int) d.toSeconds();
+        return String.format("%d:%02d", sec / 60, sec % 60);
+    }
 
     @FXML
     public void initialize() {
+        playerSlider.setOnMousePressed(e -> isUserSeeking = true);
+        playerSlider.setOnMouseReleased(e -> {
+            if(mediaPlayer != null) mediaPlayer.seek(Duration.seconds(playerSlider.getValue()));
+            isUserSeeking = false;
+        });
         songListView.setItems(braniItems);
         songListView.setCellFactory(lv -> new ListCell<BranoModel>(){
             private Node card;
@@ -252,8 +269,34 @@ public class MainViewController implements Observer {
         else{
             playerImage.setImage(null);
         }
-
+        caricaAudio(b);
     }
+
+    private void caricaAudio(BranoModel b){
+        if(mediaPlayer != null){
+            mediaPlayer.dispose();
+            mediaPlayer = null;
+        }
+        if(b.getPathAudio() == null || !b.getPathAudio().toFile().exists()) return;
+        Media media = new Media(b.getPathAudio().toUri().toString());
+        mediaPlayer = new MediaPlayer(media);
+
+        // quando il media è pronto conosco la durata reale → imposto il max dello slider
+        mediaPlayer.setOnReady(() -> {
+            playerSlider.setMax(media.getDuration().toSeconds());
+
+        });
+
+        // avanzamento: aggiorna slider + tempo corrente (solo se l'utente non sta trascinando)
+        mediaPlayer.currentTimeProperty().addListener((obs, old, cur) -> {
+            if (!isUserSeeking) playerSlider.setValue(cur.toSeconds());
+            playerCurrentTime.setText(formatTime(cur));
+        });
+
+        // a fine brano: torna su play
+        mediaPlayer.setOnEndOfMedia(() -> playPauseButton.setText("▶"));
+    }
+
 
 
     public void refreshLibrary() {
@@ -428,10 +471,15 @@ public class MainViewController implements Observer {
     // METODI RIGHT PANE ===================================================
     @FXML
     private void onPlayPause() {
-        // TODO: play/pausa del brano corrente
+        if (mediaPlayer == null) return;
 
-
-
+        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            mediaPlayer.pause();
+            playPauseButton.setText("▶");
+        } else {
+            mediaPlayer.play();
+            playPauseButton.setText("⏸");
+        }
     }
 
     @FXML

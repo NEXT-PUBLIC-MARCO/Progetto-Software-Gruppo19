@@ -3,6 +3,7 @@ module it.gruppo19.progetto_music_player {
     requires javafx.fxml;
     requires java.desktop;
     requires java.sql;
+    requires javafx.media;
 
 
     opens it.gruppo19.progetto_music_player to javafx.fxml;
