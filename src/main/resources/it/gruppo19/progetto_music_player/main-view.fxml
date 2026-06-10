@@ -185,5 +185,37 @@
 
         </VBox>
 
+        <!-- CONTENUTO PLAYLIST (player) - playlist con i suoi brani -->
+        <VBox fx:id="playlistCardActive" styleClass="player-card" maxWidth="440.0" maxHeight="713.0"
+              spacing="16.0" alignment="TOP_CENTER" visible="false" managed="false">
+            <padding>
+                <Insets top="32.0" right="28.0" bottom="28.0" left="28.0"/>
+            </padding>
+
+            <!-- Intestazione: copertina + titolo + conteggio -->
+            <HBox spacing="16.0" alignment="CENTER_LEFT" maxWidth="Infinity">
+                <StackPane styleClass="player-cover">
+                    <ImageView fx:id="playlistImage" fitWidth="96.0" fitHeight="96.0"
+                               preserveRatio="true" pickOnBounds="true"/>
+                </StackPane>
+
+                <VBox spacing="6.0" alignment="CENTER_LEFT" minWidth="0" HBox.hgrow="ALWAYS">
+                    <Label styleClass="section-label" text="PLAYLIST"/>
+                    <Label fx:id="playlistTitle" styleClass="detail-title" text="Titolo playlist"
+                           maxWidth="Infinity" wrapText="true"/>
+                    <Label fx:id="playlistCount" styleClass="pl-count" text="0 brani"/>
+                </VBox>
+            </HBox>
+
+            <Region styleClass="dialog-divider" maxWidth="Infinity">
+                <VBox.margin><Insets top="4.0" bottom="4.0"/></VBox.margin>
+            </Region>
+
+            <!-- Lista dei brani della playlist -->
+            <Label styleClass="section-label" text="BRANI" maxWidth="Infinity"/>
+            <ListView fx:id="playlistSongsList" styleClass="song-list" VBox.vgrow="ALWAYS" maxWidth="Infinity"/>
+
+        </VBox>
+
     </StackPane>
 </HBox>
