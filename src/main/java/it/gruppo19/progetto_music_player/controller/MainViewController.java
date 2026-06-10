@@ -84,6 +84,13 @@ public class MainViewController implements Observer {
     @FXML private Slider playerSlider;
     @FXML private Button playPauseButton;
 
+    @FXML private VBox playlistCardActive;
+    @FXML private ImageView playlistImage;
+    @FXML private Label playlistTitle;
+    @FXML private Label playlistCount;
+    @FXML private ListView<BranoModel> playlistSongsList;
+
+
     private MediaPlayer mediaPlayer;       // player corrente
     private boolean isUserSeeking = false;
 
@@ -192,6 +199,33 @@ public class MainViewController implements Observer {
 
 
         playlistSidebarList.setItems(playlistItems);
+        playlistSidebarList.getSelectionModel().selectedItemProperty().addListener((obs,vecchio, nuovo)->{
+            if(nuovo != null){
+                mostraPlaylist(nuovo);
+            }
+        });
+
+        playlistSongsList.setCellFactory(lv -> new ListCell<BranoModel>() {
+            private final Label t = new Label();
+            private final Label s = new Label();
+            private final VBox box = new VBox(2, t, s);
+            {
+                t.getStyleClass().add("track-title");
+                s.getStyleClass().add("track-artist");
+            }
+            @Override
+            protected void updateItem(BranoModel b, boolean empty) {
+                super.updateItem(b, empty);
+                if (empty || b == null) {
+                    setGraphic(null);
+                    return;
+                }
+                t.setText(b.getTitolo());
+                s.setText(b.getArtista() + " · " + b.getDurataFormattata());
+                setGraphic(box);
+            }
+        });
+
         playlistSidebarList.setCellFactory(lv -> new ListCell<PlaylistModel>(){
             private Node card;
             private Label title, subtitle;
@@ -278,6 +312,27 @@ public class MainViewController implements Observer {
             playerImage.setImage(null);
         }
         caricaAudio(b);
+    }
+
+    public void mostraPlaylist(PlaylistModel p){
+        playerCardEmpty.setVisible(false);
+        playerCardEmpty.setManaged(false);
+        playerCardActive.setVisible(false);
+        playerCardActive.setManaged(false);
+        playlistCardActive.setVisible(true);
+        playlistCardActive.setManaged(true);
+
+        // intestazione: titolo, conteggio brani, copertina
+        playlistTitle.setText(p.getTitolo());
+        playlistCount.setText(p.getBrani().size() + " brani");
+        if (p.getPathImmagine() != null && p.getPathImmagine().toFile().exists()) {
+            playlistImage.setImage(new Image(p.getPathImmagine().toUri().toString(), true));
+        } else {
+            playlistImage.setImage(null);
+        }
+
+        // riempio la lista centrale con i brani della playlist
+        playlistSongsList.setItems(FXCollections.observableArrayList(p.getBrani()));
     }
 
     private void caricaAudio(BranoModel b){
