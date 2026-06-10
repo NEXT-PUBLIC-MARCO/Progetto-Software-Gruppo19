@@ -17,6 +17,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -81,6 +84,8 @@ public class MainViewController implements Observer {
     public void Undo(){
         Command command = commands.pop();
         if(command != null) command.undo();
+        storage.SaveBrani(new ArrayList<>(model.getBrani()));
+        storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
     }
 
     @FXML
@@ -149,6 +154,15 @@ public class MainViewController implements Observer {
 
         songListView.getSelectionModel().selectedItemProperty().addListener((obs,vecchio,nuovo )-> {
             if(nuovo != null) mostraPlayer(nuovo);
+        });
+
+        songListView.sceneProperty().addListener((obs, oldScene, scene) -> {
+            if (scene != null) {
+                scene.getAccelerators().put(
+                        new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN),
+                        this::Undo
+                );
+            }
         });
 
 
