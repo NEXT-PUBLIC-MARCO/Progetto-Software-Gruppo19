@@ -6,8 +6,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fillWidth="true" maxWidth="Infinity" styleClass="track-card" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12"
-      fx:controller="it.gruppo19.progetto_music_player.controller.MainViewController">
+<VBox fillWidth="true" maxWidth="Infinity" styleClass="track-card" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12">
 
     <!-- Riga principale della Playlist -->
     <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="80" prefHeight="80" spacing="12">

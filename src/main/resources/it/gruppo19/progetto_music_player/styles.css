@@ -25,6 +25,38 @@
     -fx-background-color: transparent;
 }
 
+/* ListView usato come lista di card: niente cornice/sfondo/evidenziazione di default */
+.song-list,
+.song-list .viewport,
+.song-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.song-list {
+    -fx-padding: 16px 12px;          /* stesso padding del vecchio VBox */
+}
+
+.song-list .list-cell {
+    -fx-padding: 2px 0;              /* spacing tra le card */
+}
+
+/* via l'highlight blu su selezione/hover: la .track-card gestisce già il suo hover */
+.song-list .list-cell:filled:selected,
+.song-list .list-cell:filled:selected:focused,
+.song-list .list-cell:filled:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-txt;
+}
+
+/* via l'anello di focus attorno al ListView */
+.song-list:focused {
+    -fx-background-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: transparent;
+}
+
 /* ============ CONTENITORI ============ */
 .sidebar {
     -fx-background-color: -fx-surf;
