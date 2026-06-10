@@ -4,8 +4,12 @@ import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class BranoModel implements Serializable, PlayerIterable {
     private static final long serialVersionUID = 1L;
@@ -16,6 +20,7 @@ public class BranoModel implements Serializable, PlayerIterable {
     private String artista;
     private String genere;
     private int anno;
+    private long durata;
     private transient Path pathImmaggine;
     private transient Path pathAudio;
 
@@ -28,6 +33,7 @@ public class BranoModel implements Serializable, PlayerIterable {
         this.anno=anno;
         this.pathImmaggine = pathImmaggine;
         this.pathAudio = pathAudio;
+        this.durata = calcolaDurata(pathAudio);
     }
 
     public String getId() {
@@ -78,6 +84,7 @@ public class BranoModel implements Serializable, PlayerIterable {
         this.anno=anno;
     }
 
+    public long getDurata(){return durata;}
 
     public Path getPathImmaggine() {
         return pathImmaggine;
@@ -122,4 +129,27 @@ public class BranoModel implements Serializable, PlayerIterable {
         if(model != null) model.Attach(iterator);
         return iterator;
     }
+
+    //calcola la durata della canzone partendo dal fileAudio impostato
+    private static long calcolaDurata(Path pathAudio){
+        if(pathAudio == null) return -1 ;
+        try{
+            AudioFileFormat f = AudioSystem.getAudioFileFormat(pathAudio.toFile());
+            Map<String,Object> props  = f.properties();
+            Object micros = props.get("duration");
+            if(micros instanceof Long l){
+                return l/1_000_000L;
+            }
+        }catch(UnsupportedAudioFileException  | IOException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public String getDurataFormattata(){
+        if(durata <= 0) return "--:--";
+        return String.format("%d:%02d",durata / 60 , durata % 60);
+    }
+
+
 }

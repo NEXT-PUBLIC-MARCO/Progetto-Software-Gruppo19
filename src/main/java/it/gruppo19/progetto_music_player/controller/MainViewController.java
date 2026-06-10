@@ -59,10 +59,19 @@ public class MainViewController implements Observer {
 
     @FXML private Button addButton;
 
+    @FXML private Label durataLabel;
+
 
 
     //ATTRIBUTI RIGHT PANE ================================================
-    // to do
+    @FXML private VBox playerCardEmpty;
+    @FXML private VBox playerCardActive;
+    @FXML private ImageView playerImage;
+    @FXML private Label playerTitle;
+    @FXML private Label playerArtist;
+    @FXML private Label playerCurrentTime;
+    @FXML private Label playerDurata;
+
 
     // METODI GENERICI ===================================================
 
@@ -71,7 +80,7 @@ public class MainViewController implements Observer {
         songListView.setItems(braniItems);
         songListView.setCellFactory(lv -> new ListCell<BranoModel>(){
             private Node card;
-            private Label title, subtitle, anno;
+            private Label title, subtitle, anno, durata;
             private ImageView image;
 
             // blocco di inizializzazione: eseguito una volta alla creazione della cella
@@ -82,10 +91,16 @@ public class MainViewController implements Observer {
                     );
                     card = loader.load();
 
+                    // la cella non impone larghezza propria e la card non supera la ListView:
+                    // così i Label troncano con "..." invece di sforare a destra
+                    setPrefWidth(0);
+                    ((VBox) card).maxWidthProperty().bind(songListView.widthProperty().subtract(30));
+
                     title    = (Label) loader.getNamespace().get("titleLabel");
                     subtitle = (Label) loader.getNamespace().get("subtitleLabel");
                     anno     = (Label) loader.getNamespace().get("annoLabel");
                     image    = (ImageView) loader.getNamespace().get("cardImage");
+                    durata = (Label) loader.getNamespace().get("durataLabel");
 
                     // handler impostati UNA volta: usano getItem() = brano corrente della cella
                     Button editButton = (Button) loader.getNamespace().get("editButton");
@@ -113,6 +128,7 @@ public class MainViewController implements Observer {
                 title.setText(brano.getTitolo());
                 subtitle.setText(brano.getArtista());
                 anno.setText(Integer.toString(brano.getAnno()));
+                durata.setText(brano.getDurataFormattata());
 
                 if (brano.getPathImmaggine() != null && brano.getPathImmaggine().toFile().exists())
                     image.setImage(new Image(brano.getPathImmaggine().toUri().toString(), true));
@@ -122,6 +138,11 @@ public class MainViewController implements Observer {
                 setGraphic(card);
             }
         });
+
+        songListView.getSelectionModel().selectedItemProperty().addListener((obs,vecchio,nuovo )-> {
+            if(nuovo != null) mostraPlayer(nuovo);
+        });
+
 
         playlistSidebarList.setItems(playlistItems);
         playlistSidebarList.setCellFactory(lv -> new ListCell<PlaylistModel>(){
@@ -192,6 +213,24 @@ public class MainViewController implements Observer {
 
     public void setStorage(Storage storage){
         this.storage = storage;
+    }
+
+
+    public void mostraPlayer(BranoModel b){
+        playerCardEmpty.setVisible(false);
+        playerCardEmpty.setManaged(false);
+        playerCardActive.setVisible(true);
+        playerCardActive.setManaged(true);
+        playerTitle.setText(b.getTitolo());
+        playerArtist.setText(b.getArtista());
+        playerDurata.setText(b.getDurataFormattata());
+        if(b.getPathImmaggine() != null && b.getPathImmaggine().toFile().exists()){
+            playerImage.setImage(new Image(b.getPathImmaggine().toUri().toString(),true));
+        }
+        else{
+            playerImage.setImage(null);
+        }
+
     }
 
 
@@ -359,6 +398,8 @@ public class MainViewController implements Observer {
     @FXML
     private void onPlayPause() {
         // TODO: play/pausa del brano corrente
+
+
     }
 
     @FXML
