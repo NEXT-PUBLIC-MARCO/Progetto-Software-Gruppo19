@@ -10,7 +10,7 @@
 <VBox fillWidth="true" maxWidth="Infinity" styleClass="track-card" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12">
 
     <!-- Riga principale -->
-    <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="80" prefHeight="80" spacing="12">
+    <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="80" prefHeight="80" spacing="12" >
 
         <ImageView fx:id="cardImage" fitHeight="60" fitWidth="60" />
 
@@ -20,16 +20,20 @@
             <Label fx:id="annoLabel" maxWidth="Infinity" styleClass="track-anno" text="Anno" />
         </VBox>
 
-        <HBox alignment="CENTER_RIGHT" spacing="8" minWidth="-Infinity" HBox.hgrow="NEVER">
-            <!-- Bottone Modifica (Matita) -->
-            <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
+        <VBox alignment="BOTTOM_RIGHT" spacing="6" minWidth="-Infinity" HBox.hgrow="NEVER">
+            <Label fx:id="durataLabel" styleClass="song-duration" text="--:--" />
 
-            <!-- Bottone Aggiungi a Playlist (+) -->
-            <Button fx:id="addToPlaylistButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="+" />
+            <HBox alignment="CENTER_RIGHT" spacing="8">
+                <!-- Bottone Modifica (Matita) -->
+                <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
 
-            <!-- Bottone Elimina (Trash) -->
-            <Button fx:id="deleteButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="🗑" />
-        </HBox>
+                <!-- Bottone Aggiungi a Playlist (+) -->
+                <Button fx:id="addToPlaylistButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="+" />
+
+                <!-- Bottone Elimina (Trash) -->
+                <Button fx:id="deleteButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="🗑" />
+            </HBox>
+        </VBox>
 
     </HBox>
 
