@@ -56,10 +56,21 @@ public class DataModel implements Serializable, Observable {
         Notify("BranoAdd", b);
         Notify("BraniChange", brani);
     }
-    public void removeBrani (BranoModel b){
+
+    public void addBrani(BranoModel b, int index)
+    {
+        brani.add(index, b);
+        //Notify("BraniChange", brani);
+        Notify("BranoAdd", b);
+        Notify("BraniChange", brani);
+    }
+
+    public int removeBrani (BranoModel b){
+        int index = brani.indexOf(b);
         brani.remove(b);
         Notify("BranoRemove", b);
         Notify("BraniChange", brani);
+        return index;
     }
 
     public void addPlaylist (PlaylistModel p){
@@ -67,10 +78,19 @@ public class DataModel implements Serializable, Observable {
         Notify("PlaylistAdd", p);
         Notify("PlaylistChange", playlists);
     }
-    public void removePlaylist (PlaylistModel p){
+
+    public void addPlaylist (PlaylistModel p, int index){
+        playlists.add(index, p);
+        Notify("PlaylistAdd", p);
+        Notify("PlaylistChange", playlists);
+    }
+
+    public int removePlaylist (PlaylistModel p){
+        int index = playlists.indexOf(p);
         playlists.remove(p);
         Notify("PlaylistRemove", p);
         Notify("PlaylistChange", playlists);
+        return index;
     }
 
     public List<BranoModel> getBrani() {

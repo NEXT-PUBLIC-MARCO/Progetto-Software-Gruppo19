@@ -74,9 +74,16 @@ public class PlaylistModel implements Serializable, PlayerIterable {
             brani.add(b);
         }
     }
+    public void addBrano(BranoModel b, int index) {
+        if (b != null && !brani.contains(b)) {
+            brani.add(index, b);
+        }
+    }
 
-    public void removeBrano(BranoModel b) {
+    public int removeBrano(BranoModel b) {
+        int index = brani.indexOf(b);
         brani.remove(b);
+        return index;
     }
 
     public int size() {
