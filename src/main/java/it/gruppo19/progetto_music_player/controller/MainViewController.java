@@ -376,7 +376,7 @@ public class MainViewController implements Observer {
             mediaPlayer.dispose();
             mediaPlayer = null;
         }
-        if(b.getPathAudio() == null || !b.getPathAudio().toFile().exists()) return;
+        if(b == null || b.getPathAudio() == null || !b.getPathAudio().toFile().exists()) return;
         Media media = new Media(b.getPathAudio().toUri().toString());
         mediaPlayer = new MediaPlayer(media);
 
