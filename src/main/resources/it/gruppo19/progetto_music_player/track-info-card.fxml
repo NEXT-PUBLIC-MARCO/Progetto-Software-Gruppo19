@@ -31,7 +31,7 @@
                 <Button fx:id="addToPlaylistButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="+" />
 
                 <!-- Bottone Elimina (Trash) -->
-                <Button fx:id="deleteButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="🗑" />
+                <Button fx:id="deleteButton" minWidth="36" minHeight="36" styleClass="track-delete" text="🗑" />
             </HBox>
         </VBox>
 

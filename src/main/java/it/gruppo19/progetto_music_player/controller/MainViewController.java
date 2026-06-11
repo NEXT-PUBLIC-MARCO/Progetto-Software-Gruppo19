@@ -3,12 +3,13 @@ package it.gruppo19.progetto_music_player.controller;
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
 import it.gruppo19.progetto_music_player.model.commandPattern.*;
-import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
 import it.gruppo19.progetto_music_player.storage.Storage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -208,10 +209,14 @@ public class MainViewController implements Observer {
         playlistSongsList.setCellFactory(lv -> new ListCell<BranoModel>() {
             private final Label t = new Label();
             private final Label s = new Label();
-            private final VBox box = new VBox(2, t, s);
+            private final Button deleteTrackFromPlaylist = new Button("Delete");
+            private final VBox box = new VBox(2, t, s,deleteTrackFromPlaylist);
             {
                 t.getStyleClass().add("track-title");
                 s.getStyleClass().add("track-artist");
+                deleteTrackFromPlaylist.getStyleClass().add("track-delete");
+
+
             }
             @Override
             protected void updateItem(BranoModel b, boolean empty) {
@@ -223,6 +228,16 @@ public class MainViewController implements Observer {
                 t.setText(b.getTitolo());
                 s.setText(b.getArtista() + " · " + b.getDurataFormattata());
                 setGraphic(box);
+                deleteTrackFromPlaylist.setOnAction(e -> {
+                    PlaylistModel currentPlaylist =
+                            playlistSidebarList.getSelectionModel().getSelectedItem();
+                    if (currentPlaylist != null) {
+                        commands.push(new RemoveBranoFromPlaylist(b, currentPlaylist));
+                        commands.peek().execute();
+                        // qui probabilmente vorrai anche aggiornare la lista:
+                        playlistSongsList.getItems().remove(b);
+                    }
+                });
             }
         });
 
@@ -456,7 +471,7 @@ public class MainViewController implements Observer {
         });
 
     }
-
+    
     // METODI LEFT PANE ===================================================
     @FXML
     private void onAdd() {
@@ -526,10 +541,8 @@ public class MainViewController implements Observer {
         // TODO: aprire il popup "Elimina brano"
     }
 
-    @FXML
-    private void onRemoveFromPlaylist(){
 
-    }
+
 
     @FXML
     private void onNewPlaylist(){
