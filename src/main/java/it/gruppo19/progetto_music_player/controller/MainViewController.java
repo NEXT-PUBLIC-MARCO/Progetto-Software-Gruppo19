@@ -21,13 +21,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,6 +89,7 @@ public class MainViewController implements Observer {
 
     @FXML private Slider playerSlider;
     @FXML private Button playPauseButton;
+    @FXML private FontIcon playPauseIcon;
 
     @FXML private VBox playlistCardActive;
     @FXML private ImageView playlistImage;
@@ -185,8 +191,11 @@ public class MainViewController implements Observer {
             }
         });
 
-        songListView.getSelectionModel().selectedItemProperty().addListener((obs,vecchio,nuovo )-> {
-            if(nuovo != null) mostraPlayer(nuovo);
+        // Reagisce al click (non al cambio di selezione): così funziona anche
+        // ri-cliccando l'elemento già selezionato.
+        songListView.setOnMouseClicked(e -> {
+            BranoModel sel = songListView.getSelectionModel().getSelectedItem();
+            if (sel != null) mostraPlayer(sel);
         });
 
         songListView.sceneProperty().addListener((obs, oldScene, scene) -> {
@@ -200,23 +209,30 @@ public class MainViewController implements Observer {
 
 
         playlistSidebarList.setItems(playlistItems);
-        playlistSidebarList.getSelectionModel().selectedItemProperty().addListener((obs,vecchio, nuovo)->{
-            if(nuovo != null){
-                mostraPlaylist(nuovo);
-            }
+        // Reagisce al click (non al cambio di selezione): così tornare sulla
+        // playlist già selezionata mostra di nuovo la sua card.
+        playlistSidebarList.setOnMouseClicked(e -> {
+            PlaylistModel sel = playlistSidebarList.getSelectionModel().getSelectedItem();
+            if (sel != null) mostraPlaylist(sel);
         });
 
         playlistSongsList.setCellFactory(lv -> new ListCell<BranoModel>() {
             private final Label t = new Label();
             private final Label s = new Label();
-            private final Button deleteTrackFromPlaylist = new Button("Delete");
-            private final VBox box = new VBox(2, t, s,deleteTrackFromPlaylist);
+            private final Button deleteTrackFromPlaylist = new Button();
+            private final VBox texts = new VBox(2, t, s);
+            private final Region spacer = new Region();
+            private final HBox box = new HBox(8, texts, spacer, deleteTrackFromPlaylist);
             {
                 t.getStyleClass().add("track-title");
                 s.getStyleClass().add("track-artist");
                 deleteTrackFromPlaylist.getStyleClass().add("track-delete");
+                deleteTrackFromPlaylist.setGraphic(new FontIcon("fas-trash"));
+                ((FontIcon) deleteTrackFromPlaylist.getGraphic()).setIconSize(16);
 
-
+                HBox.setHgrow(texts, Priority.ALWAYS);
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+                box.setAlignment(Pos.CENTER_LEFT);
             }
             @Override
             protected void updateItem(BranoModel b, boolean empty) {
@@ -236,6 +252,7 @@ public class MainViewController implements Observer {
                         commands.peek().execute();
                         // qui probabilmente vorrai anche aggiornare la lista:
                         playlistSongsList.getItems().remove(b);
+                        storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
                     }
                 });
             }
@@ -313,10 +330,13 @@ public class MainViewController implements Observer {
 
 
     public void mostraPlayer(BranoModel b){
+        playlistCardActive.setVisible(false);
+        playlistCardActive.setManaged(false);
         playerCardEmpty.setVisible(false);
         playerCardEmpty.setManaged(false);
         playerCardActive.setVisible(true);
         playerCardActive.setManaged(true);
+        playlistSidebarList.getSelectionModel().clearSelection();
         playerTitle.setText(b.getTitolo());
         playerArtist.setText(b.getArtista());
         playerDurata.setText(b.getDurataFormattata());
@@ -336,6 +356,7 @@ public class MainViewController implements Observer {
         playerCardActive.setManaged(false);
         playlistCardActive.setVisible(true);
         playlistCardActive.setManaged(true);
+        playlistSidebarList.getSelectionModel().clearSelection();
 
         // intestazione: titolo, conteggio brani, copertina
         playlistTitle.setText(p.getTitolo());
@@ -372,7 +393,7 @@ public class MainViewController implements Observer {
         });
 
         // a fine brano: torna su play
-        mediaPlayer.setOnEndOfMedia(() -> playPauseButton.setText("▶"));
+        mediaPlayer.setOnEndOfMedia(() -> playPauseIcon.setIconLiteral("fas-play"));
     }
 
 
@@ -469,9 +490,9 @@ public class MainViewController implements Observer {
             c.setModel(model);
             c.addBranoToPlaylist(brano);
         });
-
+        storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
     }
-    
+
     // METODI LEFT PANE ===================================================
     @FXML
     private void onAdd() {
@@ -565,10 +586,10 @@ public class MainViewController implements Observer {
 
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
-            playPauseButton.setText("▶");
+            playPauseIcon.setIconLiteral("fas-play");
         } else {
             mediaPlayer.play();
-            playPauseButton.setText("⏸");
+            playPauseIcon.setIconLiteral("fas-pause");
         }
     }
 

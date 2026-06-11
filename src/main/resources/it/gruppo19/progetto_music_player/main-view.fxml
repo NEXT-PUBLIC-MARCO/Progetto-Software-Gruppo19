@@ -16,6 +16,7 @@
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <!--
   Music Player - Unica View presente
@@ -110,7 +111,7 @@
                 <Insets bottom="24.0" right="25.0"/>
             </StackPane.margin>
             <graphic>
-                <SVGPath styleClass="fab-icon" content="M10 4.167v11.666M4.167 10h11.666"/>
+                <FontIcon iconLiteral="fas-plus" iconSize="20" styleClass="fab-icon"/>
             </graphic>
         </Button>
     </StackPane>
@@ -178,9 +179,21 @@
 
             <!-- Controlli di riproduzione -->
             <HBox alignment="CENTER" spacing="24.0">
-                <Button fx:id="prevButton" styleClass="player-ctrl" text="⏮"/>
-                <Button fx:id="playPauseButton" styleClass="player-ctrl, player-ctrl-main" text="▶" onMouseClicked="#onPlayPause"/>
-                <Button fx:id="nextButton" styleClass="player-ctrl" text="⏭"/>
+                <Button fx:id="prevButton" styleClass="player-ctrl">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-step-backward" iconSize="18"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="playPauseButton" styleClass="player-ctrl, player-ctrl-main" onMouseClicked="#onPlayPause">
+                    <graphic>
+                        <FontIcon fx:id="playPauseIcon" iconLiteral="fas-play" iconSize="22"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="nextButton" styleClass="player-ctrl">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-step-forward" iconSize="18"/>
+                    </graphic>
+                </Button>
             </HBox>
 
         </VBox>

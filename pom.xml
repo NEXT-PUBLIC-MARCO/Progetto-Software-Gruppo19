@@ -53,6 +53,17 @@
             <artifactId>tritonus-share</artifactId>
             <version>0.3.7.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>12.3.0</version> <!-- Usa l'ultima versione disponibile -->
+        </dependency>
+        <!-- Il pacchetto specifico di icone che vuoi usare -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-fontawesome5-pack</artifactId>
+            <version>12.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>

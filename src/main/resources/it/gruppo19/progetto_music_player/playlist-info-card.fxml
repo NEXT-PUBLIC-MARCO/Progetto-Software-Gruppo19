@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox fillWidth="true" maxWidth="Infinity" styleClass="track-card" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12">
 
@@ -20,13 +21,19 @@
 
         <HBox alignment="CENTER_RIGHT" spacing="8" minWidth="-Infinity" HBox.hgrow="NEVER">
             <!-- Bottone Modifica (Matita) -->
-            <Button fx:id="editButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="✎" />
+            <Button fx:id="editButton" minWidth="36" minHeight="36">
+                <graphic><FontIcon iconLiteral="fas-pen" iconSize="16" /></graphic>
+            </Button>
 
             <!-- Bottone Info (i) - Analogo a 'Aggiungi a playlist' delle track -->
-            <Button fx:id="infoButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="ℹ" />
+            <Button fx:id="infoButton" minWidth="36" minHeight="36">
+                <graphic><FontIcon iconLiteral="fas-info-circle" iconSize="16" /></graphic>
+            </Button>
 
             <!-- Bottone Elimina (Trash) -->
-            <Button fx:id="deleteButton" minWidth="36" minHeight="36" style="-fx-font-size: 18px;" text="🗑" />
+            <Button fx:id="deleteButton" minWidth="36" minHeight="36" styleClass="track-delete">
+                <graphic><FontIcon iconLiteral="fas-trash" iconSize="16" /></graphic>
+            </Button>
         </HBox>
 
     </HBox>
