@@ -97,6 +97,14 @@ public class PlaylistModel implements Serializable, PlayerIterable {
         return brani.get(index);
     }
 
+    public int getAscoltiTotali() {
+        int somma = 0;
+        for (BranoModel b : brani) {
+            somma += b.getAscolti();
+        }
+        return somma;
+    }
+
     //Chiamato da ObjectOutputStream durante writeObject
     @Serial
     private void writeObject(ObjectOutputStream obj) throws IOException {

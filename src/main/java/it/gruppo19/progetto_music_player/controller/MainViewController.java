@@ -195,7 +195,17 @@ public class MainViewController implements Observer {
         // ri-cliccando l'elemento già selezionato.
         songListView.setOnMouseClicked(e -> {
             BranoModel sel = songListView.getSelectionModel().getSelectedItem();
-            if (sel != null) mostraPlayer(sel);
+            if (sel != null){
+                sel.incrementaAscolti();
+                if(storage != null && model != null){
+                    storage.SaveBrani(new java.util.ArrayList<>(model.getBrani()));
+                }
+                refreshLibrary();
+
+                refreshPlaylists();
+
+                mostraPlayer(sel);
+            }
         });
 
         songListView.sceneProperty().addListener((obs, oldScene, scene) -> {

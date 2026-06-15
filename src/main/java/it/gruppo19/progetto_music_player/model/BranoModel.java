@@ -23,6 +23,7 @@ public class BranoModel implements Serializable, PlayerIterable {
     private long durata;
     private transient Path pathImmaggine;
     private transient Path pathAudio;
+    private int ascolti=0;
 
     public BranoModel(String id, String titolo, String descrizione, String artista, String genere, int anno, Path pathImmaggine, Path pathAudio) {
         this.id = id;
@@ -100,6 +101,14 @@ public class BranoModel implements Serializable, PlayerIterable {
 
     public void setPathAudio(Path pathAudio) {
         this.pathAudio = pathAudio;
+    }
+
+    public int getAscolti() {
+        return ascolti;
+    }
+
+    public void incrementaAscolti() {
+        this.ascolti++;
     }
 
     //Chiamato da ObjectOutputStream durante writeObject

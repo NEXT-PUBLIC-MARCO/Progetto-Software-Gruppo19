@@ -94,11 +94,15 @@ public class DataModel implements Serializable, Observable {
     }
 
     public List<BranoModel> getBrani() {
-        return brani;
+        return brani.stream()
+                .sorted((b1, b2) ->Integer.compare(b2.getAscolti(), b1.getAscolti()))
+                .collect(java.util.stream.Collectors.toList());
     }
 
     public List<PlaylistModel> getPlaylists() {
-        return playlists;
+        return playlists.stream()
+                .sorted((p1, p2) -> Integer.compare(p2.getAscoltiTotali(), p1.getAscoltiTotali()))
+                .collect(java.util.stream.Collectors.toList());
     }
 
     public void updateBrani(BranoModel b){
