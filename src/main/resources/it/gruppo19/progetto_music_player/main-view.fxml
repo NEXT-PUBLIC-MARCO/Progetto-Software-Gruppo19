@@ -117,13 +117,19 @@
     </StackPane>
 
     <!-- ============================ RIGHT PANE ============================ -->
+    <!-- Gutter orizzontale per dare respiro e non lasciare la card "appesa": le
+         card sono più larghe (560) cosi' la fascia laterale vuota si compatta. -->
     <StackPane styleClass="content-area" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets top="32.0" right="48.0" bottom="32.0" left="48.0"/>
+        </padding>
 
-        <!-- CONTENUTO BRANI (player)- -->
-        <VBox fx:id="playerCardEmpty" styleClass="player-card" maxWidth="440.0" maxHeight="713.0"
-              spacing="16.0" alignment="CENTER">
+        <!-- CONTENUTO BRANI (player) - stato vuoto -->
+        <VBox fx:id="playerCardEmpty" styleClass="player-card" maxWidth="560.0" maxHeight="720.0"
+              spacing="16.0" alignment="CENTER"
+              style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #21212c, #16161d);">
             <padding>
-                <Insets top="40.0" right="40.0" bottom="40.0" left="40.0"/>
+                <Insets top="48.0" right="48.0" bottom="48.0" left="48.0"/>
             </padding>
 
             <StackPane styleClass="empty-icon, empty-icon-play">
@@ -133,7 +139,7 @@
             <Label styleClass="empty-text" wrapText="true"
                    text="Seleziona un brano dalla libreria per iniziare ad ascoltare."/>
 
-            <Region styleClass="dialog-divider" maxWidth="268.0">
+            <Region styleClass="dialog-divider" maxWidth="300.0">
                 <VBox.margin><Insets top="8.0" bottom="8.0"/></VBox.margin>
             </Region>
 
@@ -146,11 +152,13 @@
                 <Region styleClass="ghost-dash"/>
             </HBox>
         </VBox>
+
         <!-- CONTENUTO BRANI (player) - stato attivo -->
-        <VBox fx:id="playerCardActive" styleClass="player-card" maxWidth="440.0" maxHeight="713.0"
-              spacing="20.0" alignment="CENTER" visible="false" managed="false">
+        <VBox fx:id="playerCardActive" styleClass="player-card" maxWidth="560.0" maxHeight="720.0"
+              spacing="22.0" alignment="CENTER" visible="false" managed="false"
+              style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #21212c, #16161d);">
             <padding>
-                <Insets top="40.0" right="40.0" bottom="40.0" left="40.0"/>
+                <Insets top="44.0" right="48.0" bottom="44.0" left="48.0"/>
             </padding>
 
             <!-- Copertina del brano -->
@@ -160,7 +168,7 @@
             </StackPane>
 
             <!-- Titolo + Artista -->
-            <VBox spacing="6.0" alignment="CENTER" maxWidth="360.0">
+            <VBox spacing="6.0" alignment="CENTER" maxWidth="400.0">
                 <Label fx:id="playerTitle" styleClass="player-title" text="Titolo"
                        maxWidth="Infinity" alignment="CENTER"/>
                 <Label fx:id="playerArtist" styleClass="player-artist" text="Artista"
@@ -168,7 +176,7 @@
             </VBox>
 
             <!-- Barra di avanzamento + durata -->
-            <VBox spacing="6.0" maxWidth="360.0">
+            <VBox spacing="6.0" maxWidth="400.0">
                 <Slider fx:id="playerSlider" styleClass="player-slider" min="0.0" max="100.0" value="0.0"/>
                 <HBox alignment="CENTER_LEFT">
                     <Label fx:id="playerCurrentTime" styleClass="player-time" text="0:00"/>
@@ -177,8 +185,16 @@
                 </HBox>
             </VBox>
 
-            <!-- Controlli di riproduzione -->
-            <HBox alignment="CENTER" spacing="24.0">
+            <!-- Controlli di riproduzione: shuffle + transport in una pill compatta -->
+            <HBox alignment="CENTER" spacing="18.0"
+                  style="-fx-background-color: rgba(255,255,255,0.04); -fx-background-radius: 999; -fx-padding: 10 22 10 22;">
+                <!-- Shuffle: icona nativa SVGPath (nessuna dipendenza esterna) -->
+                <Button fx:id="shuffleButton" styleClass="player-ctrl" onAction="#onShuffle">
+                    <graphic>
+                        <SVGPath content="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"
+                                 scaleX="0.82" scaleY="0.82" style="-fx-fill: #cfcdd8;"/>
+                    </graphic>
+                </Button>
                 <Button fx:id="prevButton" styleClass="player-ctrl">
                     <graphic>
                         <FontIcon iconLiteral="fas-step-backward" iconSize="18"/>
@@ -199,14 +215,15 @@
         </VBox>
 
         <!-- CONTENUTO PLAYLIST (player) - playlist con i suoi brani -->
-        <VBox fx:id="playlistCardActive" styleClass="player-card" maxWidth="440.0" maxHeight="713.0"
-              spacing="16.0" alignment="TOP_CENTER" visible="false" managed="false">
+        <VBox fx:id="playlistCardActive" styleClass="player-card" maxWidth="560.0" maxHeight="720.0"
+              spacing="16.0" alignment="TOP_CENTER" visible="false" managed="false"
+              style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #21212c, #16161d);">
             <padding>
-                <Insets top="32.0" right="28.0" bottom="28.0" left="28.0"/>
+                <Insets top="36.0" right="32.0" bottom="32.0" left="32.0"/>
             </padding>
 
             <!-- Intestazione: copertina + titolo + conteggio -->
-            <HBox spacing="16.0" alignment="CENTER_LEFT" maxWidth="Infinity">
+            <HBox spacing="18.0" alignment="CENTER_LEFT" maxWidth="Infinity">
                 <StackPane styleClass="player-cover">
                     <ImageView fx:id="playlistImage" fitWidth="96.0" fitHeight="96.0"
                                preserveRatio="true" pickOnBounds="true"/>
