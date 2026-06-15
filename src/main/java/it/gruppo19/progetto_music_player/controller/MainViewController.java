@@ -320,7 +320,7 @@ public class MainViewController implements Observer {
         refreshLibrary();
 
         refreshPlaylists();
-        //model.Attach(this);
+        model.Attach(this);
     }
 
 
@@ -469,7 +469,14 @@ public class MainViewController implements Observer {
         System.out.println("[DEBUG] Apertura pannello di modifica per la playlist: " + playlist.getTitolo());
         Window owner = addButton.getScene().getWindow();
         AddPlaylistDialogController controller = Dialogs.openModal1(owner, "dialog-add-playlist.fxml", "Modifica playlist", (AddPlaylistDialogController c) -> c.setPlaylist(playlist));
-        if(controller.isConfirmed()) model.updatePlaylist(playlist);
+
+        if(controller.isConfirmed()) {
+            model.updatePlaylist(playlist);
+            storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
+
+            refreshPlaylists();
+            mostraPlaylist(playlist);
+        }
     }
 
     private void infoPlaylist(PlaylistModel playlist){
@@ -481,6 +488,8 @@ public class MainViewController implements Observer {
     public void refreshPlaylists() {
         if (model == null || playlistSidebarList == null) return;
         playlistItems.setAll(model.getPlaylists());
+
+        playlistSidebarList.refresh();
     }
 
     @FXML

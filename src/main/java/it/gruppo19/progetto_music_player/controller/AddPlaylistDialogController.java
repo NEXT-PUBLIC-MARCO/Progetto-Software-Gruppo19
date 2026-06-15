@@ -55,11 +55,11 @@ public class AddPlaylistDialogController {
     @FXML
     private void onConfirm(ActionEvent e) {
         String nome = trim(nomeField.getText());
-        Path  f = null;
-        if ( foto != null){
-                f =  foto.toPath();
-
+        Path f = null;
+        if (foto != null) {
+            f = foto.toPath();
         }
+
         if (nome.isEmpty()) {
             errorLabel.setText("Il nome della playlist è obbligatorio.");
             errorLabel.setVisible(true);
@@ -67,15 +67,24 @@ public class AddPlaylistDialogController {
             return;
         }
 
-        result = new PlaylistModel(
-                UUID.randomUUID().toString(),
-                nome,
-                trim(descrizioneArea.getText()),
-                f,
-                new ArrayList<>());
-        confirmed = true;
-        close(e);
-    }
+        if (editing != null) {
+            editing.setTitolo(nome);
+            editing.setDescrizione(trim(descrizioneArea.getText()));
+            editing.setPathImmagine(f);
+
+            result = editing;
+        } else {
+            result = new PlaylistModel(
+                    UUID.randomUUID().toString(),
+                    nome,
+                    trim(descrizioneArea.getText()),
+                    f,
+                    new ArrayList<>());
+        }
+
+    confirmed = true;
+    close(e);
+}
 
     @FXML
     private void onCancel(ActionEvent e) {

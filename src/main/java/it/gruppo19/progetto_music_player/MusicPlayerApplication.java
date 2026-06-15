@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
 public class MusicPlayerApplication extends Application {
 
     private static Stage stage;
