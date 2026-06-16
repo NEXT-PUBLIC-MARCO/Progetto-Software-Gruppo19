@@ -404,7 +404,7 @@ public class MainViewController implements Observer {
         playerCardActive.setManaged(false);
         playlistCardActive.setVisible(true);
         playlistCardActive.setManaged(true);
-        playlistSidebarList.getSelectionModel().clearSelection();
+        
 
         // intestazione: titolo, conteggio brani, copertina
         playlistTitle.setText(p.getTitolo());
