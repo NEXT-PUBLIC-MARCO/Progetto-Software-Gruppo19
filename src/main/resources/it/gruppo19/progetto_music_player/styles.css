@@ -501,20 +501,26 @@
     -fx-scale-y: 1.05;
 }
 
-/* --- toggle di trasporto: shuffle / loop ---
-   Stato acceso/spento gestito da ToggleButton + pseudo-classe :selected (no Java).
-   SPENTO = icona attenuata (-fx-mut); ACCESO = icona accento + alone tenue. */
+/* --- LOOP: 2 stati (ToggleButton + pseudo-classe :selected, no Java) ---
+   SPENTO = icona attenuata; ACCESO = icona accento + alone tenue. */
 .toggle-ctrl .ikonli-font-icon { -fx-icon-color: -fx-mut; }
 .toggle-ctrl:hover .ikonli-font-icon { -fx-icon-color: -fx-acc; }
 .toggle-ctrl:selected { -fx-background-color: rgba(157, 123, 255, 0.16); }
 .toggle-ctrl:selected .ikonli-font-icon { -fx-icon-color: -fx-acc; }
 
-/* Shuffle a due icone: freccia "in ordine" (spento) ↔ icona shuffle (acceso).
-   Le due icone sono sovrapposte; si scambiano via opacita'. */
-.toggle-ctrl .ic-on  { -fx-opacity: 0; }
-.toggle-ctrl .ic-off { -fx-opacity: 1; }
-.toggle-ctrl:selected .ic-on  { -fx-opacity: 1; }
-.toggle-ctrl:selected .ic-off { -fx-opacity: 0; }
+/* --- SHUFFLE: 3 stati pilotati dal controller via style class ---
+   stato 0 (nessuna classe) = freccia spenta (grigia)
+   stato 1 (.is-active)     = freccia accesa (accento)
+   stato 2 (.is-active.is-shuffle) = icona shuffle accesa
+   Le due icone (freccia / shuffle) sono sovrapposte e si scambiano via opacita'. */
+.shuffle-ctrl .ikonli-font-icon { -fx-icon-color: -fx-mut; }
+.shuffle-ctrl:hover .ikonli-font-icon { -fx-icon-color: -fx-acc; }
+.shuffle-ctrl.is-active { -fx-background-color: rgba(157, 123, 255, 0.16); }
+.shuffle-ctrl.is-active .ikonli-font-icon { -fx-icon-color: -fx-acc; }
+.shuffle-ctrl .ic-off { -fx-opacity: 1; }   /* default: freccia visibile */
+.shuffle-ctrl .ic-on  { -fx-opacity: 0; }   /* shuffle nascosto */
+.shuffle-ctrl.is-shuffle .ic-off { -fx-opacity: 0; }
+.shuffle-ctrl.is-shuffle .ic-on  { -fx-opacity: 1; }
 
 /* ============ BOTTONI ============ */
 .btn-primary,

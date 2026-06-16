@@ -235,14 +235,14 @@
             <HBox styleClass="transport-bar" alignment="CENTER" spacing="16.0">
                 <!-- SHUFFLE: spento = freccia "in ordine" (→), acceso = icona shuffle.
                      Lo stato on/off è gestito da ToggleButton + CSS :selected (no Java). -->
-                <ToggleButton fx:id="shuffleButton" styleClass="player-ctrl, toggle-ctrl" onAction="#onShuffle">
+                <Button fx:id="shuffleButton" styleClass="player-ctrl, shuffle-ctrl" onAction="#onShuffle">
                     <graphic>
                         <StackPane>
                             <FontIcon iconLiteral="fas-arrow-right" iconSize="16" styleClass="ic-off"/>
                             <FontIcon iconLiteral="fas-random" iconSize="16" styleClass="ic-on"/>
                         </StackPane>
                     </graphic>
-                </ToggleButton>
+                </Button>
 
                 <Button fx:id="prevButton" styleClass="player-ctrl" onAction="#onPrev">
                     <graphic><FontIcon iconLiteral="fas-step-backward" iconSize="18"/></graphic>

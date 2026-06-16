@@ -101,6 +101,8 @@ public class MainViewController implements Observer {
     @FXML private FontIcon coverPlaceholder;
     @FXML private StackPane vinyl;          // disco che ruota durante la riproduzione
     private RotateTransition vinylSpin;     // animazione del vinile (giro continuo)
+    @FXML private Button shuffleButton;     // shuffle a 3 stati (vedi onShuffle)
+    private int shuffleState = 0;           // 0=spento, 1=freccia attiva, 2=shuffle attivo
 
     @FXML private VBox playlistCardActive;
     @FXML private ImageView playlistImage;
@@ -716,14 +718,27 @@ public class MainViewController implements Observer {
 
     @FXML
     private void onShuffle() {
-        if(iterator != null) {
-            if(iterator.getOrderStrat() instanceof SequentialStrat)
-                iterator.setOrderStrat(new ShuffleStrat());
-            else
-                iterator.setOrderStrat(new SequentialStrat());
+        // Ciclo a 3 stati: 0 freccia spenta → 1 freccia accesa → 2 shuffle acceso → 0.
+        shuffleState = (shuffleState + 1) % 3;
+
+        // aggiornamento UI bottone shuffle (icona + evidenziazione via style class)
+        if (shuffleButton != null) {
+            shuffleButton.getStyleClass().removeAll("is-active", "is-shuffle");
+            if (shuffleState == 1) {
+                shuffleButton.getStyleClass().add("is-active");                 // freccia accesa
+            } else if (shuffleState == 2) {
+                shuffleButton.getStyleClass().addAll("is-active", "is-shuffle"); // icona shuffle accesa
+            }
         }
 
-        // aggiornamento UI bottone shuffle
+        // Ordine di riproduzione: shuffle solo nello stato 2, altrimenti sequenziale.
+        if (iterator != null) {
+            if (shuffleState == 2) iterator.setOrderStrat(new ShuffleStrat());
+            else                   iterator.setOrderStrat(new SequentialStrat());
+
+            // Stato 0 (freccia grigia, spento) → riproduzione di default: NoAutoPlay.
+            if (shuffleState == 0) iterator.setPlaybackStrat(new NoAutoPlay());
+        }
     }
 
     @FXML
