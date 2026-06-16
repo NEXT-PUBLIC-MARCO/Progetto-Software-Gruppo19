@@ -26,6 +26,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.geometry.Pos;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -90,6 +91,7 @@ public class MainViewController implements Observer {
     @FXML private Slider playerSlider;
     @FXML private Button playPauseButton;
     @FXML private FontIcon playPauseIcon;
+    @FXML private FontIcon coverPlaceholder;
 
     @FXML private VBox playlistCardActive;
     @FXML private ImageView playlistImage;
@@ -129,6 +131,24 @@ public class MainViewController implements Observer {
             if(mediaPlayer != null) mediaPlayer.seek(Duration.seconds(playerSlider.getValue()));
             isUserSeeking = false;
         });
+
+        // Angoli arrotondati sulla copertina: una foto quadrata avrebbe spigoli
+        // vivi dentro la cornice tonda da 18px. Il clip segue le dimensioni reali
+        // dell'immagine (preserveRatio → può essere più piccola di 280x280).
+        Rectangle coverClip = new Rectangle();
+        coverClip.setArcWidth(28);
+        coverClip.setArcHeight(28);
+        playerImage.layoutBoundsProperty().addListener((obs, oldB, newB) -> {
+            coverClip.setWidth(newB.getWidth());
+            coverClip.setHeight(newB.getHeight());
+        });
+        playerImage.setClip(coverClip);
+
+        // Titoli lunghi vengono troncati con "...": un tooltip recupera il testo
+        // completo al passaggio del mouse (sempre allineato al titolo corrente).
+        Tooltip titleTip = new Tooltip();
+        titleTip.textProperty().bind(playerTitle.textProperty());
+        Tooltip.install(playerTitle, titleTip);
         songListView.setItems(braniItems);
         songListView.setCellFactory(lv -> new ListCell<BranoModel>(){
             private Node card;
@@ -350,12 +370,16 @@ public class MainViewController implements Observer {
         playerTitle.setText(b.getTitolo());
         playerArtist.setText(b.getArtista());
         playerDurata.setText(b.getDurataFormattata());
-        if(b.getPathImmaggine() != null && b.getPathImmaggine().toFile().exists()){
+        boolean hasArtwork = b.getPathImmaggine() != null && b.getPathImmaggine().toFile().exists();
+        if(hasArtwork){
             playerImage.setImage(new Image(b.getPathImmaggine().toUri().toString(),true));
         }
         else{
             playerImage.setImage(null);
         }
+        // placeholder (nota) visibile solo quando il brano non ha copertina
+        coverPlaceholder.setVisible(!hasArtwork);
+        coverPlaceholder.setManaged(!hasArtwork);
         caricaAudio(b);
     }
 

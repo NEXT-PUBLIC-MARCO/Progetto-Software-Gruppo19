@@ -13,6 +13,8 @@
     -fx-brd: #2e2e3a;
     -fx-sel: #2a2536;
     /* selezione/hover */
+    -fx-danger: #e57373;
+    /* rosso per errori/azioni distruttive, leggibile su scuro */
     -fx-font-family: "Segoe UI", "Inter", sans-serif;
     -fx-background-color: linear-gradient(to bottom right, #15131d, #121218 60%);
 }
@@ -72,6 +74,23 @@
     -fx-border-radius: 20px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 30, 0, 0, 12);
     -fx-padding: 24px;
+}
+
+/* Gradiente verticale condiviso dalle card di contenuto (player vuoto/attivo,
+   playlist). Prima era ripetuto inline in 3 punti dell'FXML: spostato qui come
+   classe, deve venire DOPO .player-card per vincere il colore piatto -fx-surf. */
+.player-card-gradient {
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #21212c, #16161d);
+}
+
+/* Barra dei controlli di trasporto (prev/play/next): pillola translucida.
+   Prima era uno style inline sull'HBox. */
+.transport-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.04);
+    -fx-background-radius: 999px;
+    -fx-padding: 10px 22px;
+    -fx-spacing: 18px;
+    -fx-alignment: center;
 }
 
 .dialog-divider {
@@ -177,6 +196,12 @@
     -fx-font-size: 26px;
 }
 
+/* Sulla schermata "in riproduzione" il titolo è l'elemento dominante:
+   esce dal gruppo bold/19px e diventa il punto focale della card. */
+.player-title {
+    -fx-font-size: 24px;
+}
+
 /* il logo è un nodo Text: usa -fx-fill, non -fx-text-fill */
 .logo-melo {
     -fx-fill: -fx-txt;
@@ -246,7 +271,32 @@
 }
 
 .empty-icon-glyph {
+    -fx-font-size: 30px;
+    -fx-text-fill: -fx-acc;
+}
+
+/* Logo: due tinte (bianco + accento), un filo piu' grande per presenza */
+.logo-melo,
+.logo-dia {
     -fx-font-size: 22px;
+}
+
+/* L'icona dell'empty state e' un disco circolare tinto, non un quadratino:
+   da' un punto focale morbido alla schermata vuota. */
+.empty-icon {
+    -fx-min-width: 76px;
+    -fx-min-height: 76px;
+    -fx-max-width: 76px;
+    -fx-max-height: 76px;
+    -fx-background-color: -fx-sel;
+    -fx-background-radius: 999px;
+    -fx-alignment: center;
+}
+
+/* Etichette compatte dei form inline nelle card (TITOLO, ARTISTA, GENERE...) */
+.edit-label {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
     -fx-text-fill: -fx-mut;
 }
 
@@ -303,16 +353,23 @@
     -fx-padding: 9px 12px;
     -fx-border-color: -fx-brd;
     -fx-border-radius: 10px;
+    /* La superficie di digitazione di TextArea e l'editor di una ComboBox
+       editabile sono dipinti da -fx-control-inner-background: lo agganciamo
+       al token cosi' restano in tinta col resto (niente nero/bianco Modena). */
+    -fx-control-inner-background: -fx-raise;
 }
 
 .form-field:focused,
-.form-combo:focused {
+.form-combo:focused,
+.text-area:focused {
     -fx-border-color: -fx-acc;
 }
 
-.form-field {
-    -fx-control-inner-background: black;
-    -fx-text-fill: white;
+/* Il contenuto interno della TextArea eredita il colore della superficie
+   e perde la cornice bianca di default. */
+.text-area .content {
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 10px;
 }
 
 /* ============ IMMAGINI & ICONE ============ */
@@ -497,6 +554,16 @@
 .player-time {
     -fx-font-size: 11px;
     -fx-text-fill: -fx-mut;
+    /* Cifre a larghezza fissa (monospace): il tempo corrente scorre ogni
+       secondo e con un font proporzionale la label "ballerebbe" di pochi px
+       a ogni cambio di cifra. */
+    -fx-font-family: "Consolas", "Segoe UI", monospace;
+}
+
+/* Placeholder dietro la copertina quando il brano non ha artwork:
+   una nota appena accennata, così la cover non legge come "rotta"/in caricamento. */
+.cover-placeholder {
+    -fx-icon-color: rgba(255, 255, 255, 0.16);
 }
 
 /* --- Slider di avanzamento --- */
@@ -564,4 +631,39 @@
     -fx-background-color: linear-gradient(to right, #9670ff, #ad90ff);
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
+}
+
+/* ============ FEEDBACK AL CLICK (pressed) ============ */
+/* Un leggero affondo alla pressione da' riscontro tattile: il bottone
+   "cede" sotto il dito invece di restare immobile. Le regole :pressed
+   vengono dopo le :hover cosi' vincono mentre si tiene premuto. */
+.btn-primary:pressed,
+.fab:pressed,
+.play-btn:pressed,
+.player-ctrl-main:pressed {
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+}
+
+.btn-secondary:pressed,
+.action-btn:pressed,
+.btn-browse:pressed,
+.segment-btn:pressed,
+.back-link:pressed,
+.player-ctrl:pressed,
+.track-card .button:pressed {
+    -fx-background-color: -fx-raise;
+}
+
+/* ============ STATO DISABILITATO ============ */
+/* I controlli disattivati devono leggersi come inattivi, non come attivi
+   ma rotti: opacita' ridotta e niente cursore "mano". */
+.button:disabled,
+.toggle-button:disabled,
+.combo-box:disabled,
+.text-field:disabled,
+.text-area:disabled,
+.slider:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
 }

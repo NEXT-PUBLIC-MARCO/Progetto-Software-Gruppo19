@@ -39,7 +39,7 @@
     </HBox>
 
     <!-- Sezione espandibile per la modifica inline -->
-    <VBox fx:id="expandedSection" managed="false" maxWidth="Infinity" spacing="8" style="-fx-border-color: #e8e8e8; -fx-border-width: 1 0 0 0;" visible="false">
+    <VBox fx:id="expandedSection" managed="false" maxWidth="Infinity" spacing="8" style="-fx-border-color: -fx-brd; -fx-border-width: 1 0 0 0;" visible="false">
         <padding>
             <Insets bottom="14" left="16" right="16" top="10" />
         </padding>
@@ -47,25 +47,25 @@
         <!-- Riga 1: Titolo e Descrizione -->
         <HBox spacing="10">
             <VBox spacing="3" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="TITOLO" />
+                <Label styleClass="edit-label" text="TITOLO" />
                 <TextField fx:id="editTitoloField" maxWidth="Infinity" promptText="Titolo Playlist" style="-fx-font-size: 12px;" styleClass="form-field" />
             </VBox>
             <VBox spacing="3" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="DESCRIZIONE" />
+                <Label styleClass="edit-label" text="DESCRIZIONE" />
                 <TextField fx:id="editDescrizioneField" maxWidth="Infinity" promptText="Breve descrizione" style="-fx-font-size: 12px;" styleClass="form-field" />
             </VBox>
         </HBox>
 
         <!-- Riga 2: Copertina -->
         <VBox spacing="3">
-            <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="COPERTINA" />
+            <Label styleClass="edit-label" text="COPERTINA" />
             <HBox spacing="6">
-                <TextField fx:id="editFotoPathField" editable="false" promptText="Nessuna immagine" style="-fx-font-size: 11px;" HBox.hgrow="ALWAYS" />
-                <Button fx:id="editBrowsePhoto" style="-fx-font-size: 11px;" text="…" />
+                <TextField fx:id="editFotoPathField" editable="false" promptText="Nessuna immagine" style="-fx-font-size: 11px;" styleClass="file-path" HBox.hgrow="ALWAYS" />
+                <Button fx:id="editBrowsePhoto" style="-fx-font-size: 11px;" styleClass="btn-secondary" text="…" />
             </HBox>
         </VBox>
 
-        <Label fx:id="editErrorLabel" managed="false" style="-fx-font-size: 11px; -fx-text-fill: #c0392b;" visible="false" />
+        <Label fx:id="editErrorLabel" managed="false" style="-fx-font-size: 11px; -fx-text-fill: -fx-danger;" visible="false" />
 
     </VBox>
 

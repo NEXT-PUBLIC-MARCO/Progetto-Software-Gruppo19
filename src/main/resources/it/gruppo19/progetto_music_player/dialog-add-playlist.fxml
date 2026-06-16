@@ -47,7 +47,7 @@
         </HBox>
     </VBox>
 
-    <Label fx:id="errorLabel" styleClass="dialog-subtitle" textFill="#c0392b"
+    <Label fx:id="errorLabel" styleClass="dialog-subtitle" textFill="#e57373"
            visible="false" managed="false"/>
 
     <Region styleClass="dialog-divider"/>

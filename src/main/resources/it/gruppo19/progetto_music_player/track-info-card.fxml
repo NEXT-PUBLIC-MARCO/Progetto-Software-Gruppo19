@@ -45,7 +45,7 @@
     </HBox>
 
     <!-- Sezione espandibile -->
-    <VBox fx:id="expandedSection" managed="false" maxWidth="Infinity" spacing="8" style="-fx-border-color: #e8e8e8; -fx-border-width: 1 0 0 0;" visible="false">
+    <VBox fx:id="expandedSection" managed="false" maxWidth="Infinity" spacing="8" style="-fx-border-color: -fx-brd; -fx-border-width: 1 0 0 0;" visible="false">
         <padding>
             <Insets bottom="14" left="16" right="16" top="10" />
         </padding>
@@ -53,18 +53,18 @@
         <!-- Riga 1: Titolo + Artista -->
         <HBox spacing="10">
             <VBox spacing="3" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="TITOLO" />
+                <Label styleClass="edit-label" text="TITOLO" />
                 <TextField fx:id="editTitoloField" maxWidth="Infinity" promptText="Titolo" style="-fx-font-size: 12px;" styleClass="form-field" />
             </VBox>
             <VBox spacing="3" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="ARTISTA" />
+                <Label styleClass="edit-label" text="ARTISTA" />
                 <TextField fx:id="editArtistaField" maxWidth="Infinity" promptText="Artista" style="-fx-font-size: 12px;" styleClass="form-field" />
             </VBox>
         </HBox>
 
         <!-- Riga 2: Genere -->
         <VBox spacing="3">
-            <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="GENERE" />
+            <Label styleClass="edit-label" text="GENERE" />
             <ComboBox fx:id="editGenereCombo" editable="true" maxWidth="Infinity" promptText="Genere" style="-fx-font-size: 12px;">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
@@ -83,22 +83,22 @@
         <!-- Riga 3: Audio + Foto affiancati -->
         <HBox spacing="10">
             <VBox spacing="3" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="FILE AUDIO" />
+                <Label styleClass="edit-label" text="FILE AUDIO" />
                 <HBox spacing="6">
-                    <TextField fx:id="editAudioPathField" editable="false" promptText="Nessun file" style="-fx-font-size: 11px;" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="editBrowseAudio" style="-fx-font-size: 11px;" text="…" />
+                    <TextField fx:id="editAudioPathField" editable="false" promptText="Nessun file" style="-fx-font-size: 11px;" styleClass="file-path" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="editBrowseAudio" style="-fx-font-size: 11px;" styleClass="btn-secondary" text="…" />
                 </HBox>
             </VBox>
             <VBox spacing="3" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-size: 9px; -fx-text-fill: #aaa; -fx-font-weight: bold;" text="COPERTINA" />
+                <Label styleClass="edit-label" text="COPERTINA" />
                 <HBox spacing="6">
-                    <TextField fx:id="editFotoPathField" editable="false" promptText="Nessuna immagine" style="-fx-font-size: 11px;" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="editBrowsePhoto" style="-fx-font-size: 11px;" text="…" />
+                    <TextField fx:id="editFotoPathField" editable="false" promptText="Nessuna immagine" style="-fx-font-size: 11px;" styleClass="file-path" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="editBrowsePhoto" style="-fx-font-size: 11px;" styleClass="btn-secondary" text="…" />
                 </HBox>
             </VBox>
         </HBox>
 
-        <Label fx:id="editErrorLabel" managed="false" style="-fx-font-size: 11px; -fx-text-fill: #c0392b;" visible="false" />
+        <Label fx:id="editErrorLabel" managed="false" style="-fx-font-size: 11px; -fx-text-fill: -fx-danger;" visible="false" />
 
     </VBox>
 
