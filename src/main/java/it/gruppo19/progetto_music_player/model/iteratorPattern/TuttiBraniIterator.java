@@ -29,9 +29,6 @@ public class TuttiBraniIterator implements PlayerIterator, Observer {
     public boolean hasNext() { return playbackStrat.hasNext(braniRiordinati, current); }
 
     @Override
-    public boolean hasPrevious() { return playbackStrat.hasPrevious(braniRiordinati, current); }
-
-    @Override
     public BranoModel getNext()
     {
         if(braniRiordinati != null && !braniRiordinati.isEmpty() && current != null)

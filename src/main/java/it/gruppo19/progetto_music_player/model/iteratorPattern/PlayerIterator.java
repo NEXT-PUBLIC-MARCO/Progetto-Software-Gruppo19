@@ -7,7 +7,6 @@ import it.gruppo19.progetto_music_player.model.strategyPattern.OrderStrat;
 
 public interface PlayerIterator{
     boolean hasNext();
-    boolean hasPrevious();
     BranoModel getNext();
     BranoModel getPrevious();
     BranoModel getCurrent();
