@@ -17,13 +17,16 @@ public class PlaylistIterator implements PlayerIterator, Observer {
     OrderStrat orderStrat;
     PlaybackStrat playbackStrat;
 
-    public PlaylistIterator(PlaylistModel playlist)
+    public PlaylistIterator(PlaylistModel playlist, BranoModel current)
     {
         this.playlist = playlist;
         orderStrat = new SequentialStrat();
         playbackStrat = new PlayOnceStrat();
         braniRiordinati = orderStrat.setBrani(playlist.getBrani());
-        current = braniRiordinati == null || braniRiordinati.isEmpty() ? null : braniRiordinati.getFirst();
+        if(current != null)
+            this.current = current;
+        else
+            this.current = braniRiordinati == null || braniRiordinati.isEmpty() ? null : braniRiordinati.getFirst();
     }
 
     @Override

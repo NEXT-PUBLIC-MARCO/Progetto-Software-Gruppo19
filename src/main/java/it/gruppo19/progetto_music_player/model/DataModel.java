@@ -2,6 +2,7 @@ package it.gruppo19.progetto_music_player.model;
 
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.TuttiBraniIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
 
@@ -9,9 +10,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataModel implements Serializable, Observable {
-    private final List<BranoModel> brani;
-    private final List<PlaylistModel> playlists;
+public class DataModel implements Serializable, Observable, PlayerIterable {
+
+    private static DataModel instance;
+    public static DataModel getInstance() { return instance; }
+
+    private List<BranoModel> brani;
+    private List<PlaylistModel> playlists;
 
     private List<Observer> observers;
 
@@ -33,6 +38,8 @@ public class DataModel implements Serializable, Observable {
     }
 
     public DataModel(List<BranoModel> brani, List<PlaylistModel> playlists) {
+        if(instance != null) return;
+        instance = this;
         this.brani = new ArrayList<>();
         this.playlists = new ArrayList<>();
         this.observers = new ArrayList<>();
@@ -118,5 +125,12 @@ public class DataModel implements Serializable, Observable {
         //Notify("PlaylistChange", p);
         Notify("PlaylistUpdate", p);
         Notify("PlaylistsChange", playlists);
+    }
+
+    @Override
+    public PlayerIterator createIterator(BranoModel current) {
+        TuttiBraniIterator iterator = new TuttiBraniIterator(getBrani(), current);
+        this.Attach(iterator);
+        return iterator;
     }
 }

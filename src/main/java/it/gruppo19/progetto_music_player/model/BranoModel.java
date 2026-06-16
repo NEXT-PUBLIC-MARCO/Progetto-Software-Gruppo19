@@ -11,7 +11,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class BranoModel implements Serializable, PlayerIterable {
+public class BranoModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
@@ -132,12 +132,14 @@ public class BranoModel implements Serializable, PlayerIterable {
 
     }
 
+    /*
     @Override
     public PlayerIterator createIterator(DataModel model) {
         TuttiBraniIterator iterator = new TuttiBraniIterator(model.getBrani(), this);
         model.Attach(iterator);
         return iterator;
     }
+     */
 
     //calcola la durata della canzone partendo dal fileAudio impostato
     private static long calcolaDurata(Path pathAudio){

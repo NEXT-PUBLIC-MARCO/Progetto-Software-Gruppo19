@@ -124,9 +124,9 @@ public class PlaylistModel implements Serializable, PlayerIterable {
     }
 
     @Override
-    public PlayerIterator createIterator(DataModel model) {
-        PlaylistIterator iterator = new PlaylistIterator(this);
-        model.Attach(iterator);
+    public PlayerIterator createIterator(BranoModel current) {
+        PlaylistIterator iterator = new PlaylistIterator(this, current);
+        DataModel.getInstance().Attach(iterator);
         return iterator;
     }
 }
