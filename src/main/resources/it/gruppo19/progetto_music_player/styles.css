@@ -501,6 +501,21 @@
     -fx-scale-y: 1.05;
 }
 
+/* --- toggle di trasporto: shuffle / loop ---
+   Stato acceso/spento gestito da ToggleButton + pseudo-classe :selected (no Java).
+   SPENTO = icona attenuata (-fx-mut); ACCESO = icona accento + alone tenue. */
+.toggle-ctrl .ikonli-font-icon { -fx-icon-color: -fx-mut; }
+.toggle-ctrl:hover .ikonli-font-icon { -fx-icon-color: -fx-acc; }
+.toggle-ctrl:selected { -fx-background-color: rgba(157, 123, 255, 0.16); }
+.toggle-ctrl:selected .ikonli-font-icon { -fx-icon-color: -fx-acc; }
+
+/* Shuffle a due icone: freccia "in ordine" (spento) ↔ icona shuffle (acceso).
+   Le due icone sono sovrapposte; si scambiano via opacita'. */
+.toggle-ctrl .ic-on  { -fx-opacity: 0; }
+.toggle-ctrl .ic-off { -fx-opacity: 1; }
+.toggle-ctrl:selected .ic-on  { -fx-opacity: 1; }
+.toggle-ctrl:selected .ic-off { -fx-opacity: 0; }
+
 /* ============ BOTTONI ============ */
 .btn-primary,
 .fab,

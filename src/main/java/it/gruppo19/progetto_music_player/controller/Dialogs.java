@@ -4,6 +4,7 @@ import it.gruppo19.progetto_music_player.MusicPlayerApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -32,14 +33,15 @@ public final class Dialogs {
             Parent root = loader.load();
 
             Stage dialog = new Stage();
-            dialog.initStyle(StageStyle.UTILITY);
+            dialog.initStyle(StageStyle.TRANSPARENT);   // niente barra di Windows
             dialog.initModality(Modality.WINDOW_MODAL);
             if (owner != null) {
                 dialog.initOwner(owner);
             }
             dialog.setTitle(title);
             dialog.setResizable(false);
-            dialog.setScene(new Scene(root));
+            Scene scene = new Scene(root, Color.TRANSPARENT);   // sfondo trasparente → card arrotondata "galleggia"
+            dialog.setScene(scene);
             dialog.showAndWait();
 
             return loader.getController();
@@ -56,14 +58,15 @@ public final class Dialogs {
             init.accept(controller);
 
             Stage dialog = new Stage();
-            dialog.initStyle(StageStyle.UTILITY);
+            dialog.initStyle(StageStyle.TRANSPARENT);   // niente barra di Windows
             dialog.initModality(Modality.WINDOW_MODAL);
             if (owner != null) {
                 dialog.initOwner(owner);
             }
             dialog.setTitle(title);
             dialog.setResizable(false);
-            dialog.setScene(new Scene(root));
+            Scene scene = new Scene(root, Color.TRANSPARENT);   // sfondo trasparente → card arrotondata "galleggia"
+            dialog.setScene(scene);
             dialog.showAndWait();
 
             return controller;
