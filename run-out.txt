@@ -1,0 +1,3 @@
+[DEBUG] setModel() chiamato. model=it.gruppo19.progetto_music_player.model.DataModel@2f00f492
+[DEBUG] DataModel.Attach: observer agganciato = it.gruppo19.progetto_music_player.controller.MainViewController@2c76b21d, totale observers = 1
+[DEBUG] DataModel.Attach: observer agganciato = it.gruppo19.progetto_music_player.controller.MainViewController@2c76b21d, totale observers = 2

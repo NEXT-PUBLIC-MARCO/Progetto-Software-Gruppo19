@@ -26,7 +26,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
+import javafx.animation.RotateTransition;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.geometry.Pos;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -92,6 +95,8 @@ public class MainViewController implements Observer {
     @FXML private Button playPauseButton;
     @FXML private FontIcon playPauseIcon;
     @FXML private FontIcon coverPlaceholder;
+    @FXML private StackPane vinyl;          // disco che ruota durante la riproduzione
+    private RotateTransition vinylSpin;     // animazione del vinile (giro continuo)
 
     @FXML private VBox playlistCardActive;
     @FXML private ImageView playlistImage;
@@ -132,17 +137,25 @@ public class MainViewController implements Observer {
             isUserSeeking = false;
         });
 
-        // Angoli arrotondati sulla copertina: una foto quadrata avrebbe spigoli
-        // vivi dentro la cornice tonda da 18px. Il clip segue le dimensioni reali
-        // dell'immagine (preserveRatio → può essere più piccola di 280x280).
-        Rectangle coverClip = new Rectangle();
-        coverClip.setArcWidth(28);
-        coverClip.setArcHeight(28);
+        // La foto fa da "etichetta" centrale del vinile: clip circolare che segue
+        // le dimensioni reali dell'immagine (preserveRatio → può non essere quadrata).
+        Circle coverClip = new Circle();
         playerImage.layoutBoundsProperty().addListener((obs, oldB, newB) -> {
-            coverClip.setWidth(newB.getWidth());
-            coverClip.setHeight(newB.getHeight());
+            double d = Math.min(newB.getWidth(), newB.getHeight());
+            coverClip.setRadius(d / 2.0);
+            coverClip.setCenterX(newB.getWidth() / 2.0);
+            coverClip.setCenterY(newB.getHeight() / 2.0);
         });
         playerImage.setClip(coverClip);
+
+        // Rotazione del vinile: giro continuo e lineare, in pausa di default.
+        // Viene avviata/sospesa da onPlayPause in base allo stato del player.
+        if (vinyl != null) {
+            vinylSpin = new RotateTransition(Duration.seconds(6), vinyl);
+            vinylSpin.setByAngle(360);
+            vinylSpin.setCycleCount(Animation.INDEFINITE);
+            vinylSpin.setInterpolator(Interpolator.LINEAR);
+        }
 
         // Titoli lunghi vengono troncati con "...": un tooltip recupera il testo
         // completo al passaggio del mouse (sempre allineato al titolo corrente).
@@ -275,6 +288,7 @@ public class MainViewController implements Observer {
                 s.setText(b.getArtista() + " · " + b.getDurataFormattata());
                 setGraphic(box);
                 deleteTrackFromPlaylist.setOnAction(e -> {
+                    System.out.println("test click");
                     PlaylistModel currentPlaylist =
                             playlistSidebarList.getSelectionModel().getSelectedItem();
                     if (currentPlaylist != null) {
@@ -410,6 +424,12 @@ public class MainViewController implements Observer {
             mediaPlayer.dispose();
             mediaPlayer = null;
         }
+        // nuovo brano: parte in pausa → vinile fermo e dritto, icona "play"
+        if (vinylSpin != null) {
+            vinylSpin.stop();
+            vinyl.setRotate(0);
+        }
+        if (playPauseIcon != null) playPauseIcon.setIconLiteral("fas-play");
         if(b == null || b.getPathAudio() == null || !b.getPathAudio().toFile().exists()) return;
         Media media = new Media(b.getPathAudio().toUri().toString());
         mediaPlayer = new MediaPlayer(media);
@@ -426,8 +446,11 @@ public class MainViewController implements Observer {
             playerCurrentTime.setText(formatTime(cur));
         });
 
-        // a fine brano: torna su play
-        mediaPlayer.setOnEndOfMedia(() -> playPauseIcon.setIconLiteral("fas-play"));
+        // a fine brano: torna su play e ferma il vinile
+        mediaPlayer.setOnEndOfMedia(() -> {
+            playPauseIcon.setIconLiteral("fas-play");
+            if (vinylSpin != null) vinylSpin.pause();
+        });
     }
 
 
@@ -630,9 +653,11 @@ public class MainViewController implements Observer {
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
             playPauseIcon.setIconLiteral("fas-play");
+            if (vinylSpin != null) vinylSpin.pause();   // ferma il giro mantenendo l'angolo
         } else {
             mediaPlayer.play();
             playPauseIcon.setIconLiteral("fas-pause");
+            if (vinylSpin != null) vinylSpin.play();     // riprende il giro
         }
     }
 

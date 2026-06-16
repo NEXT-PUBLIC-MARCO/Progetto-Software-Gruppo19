@@ -1,33 +1,192 @@
-/* ============ PALETTE & BASE ============ */
+/* ============================================================================
+   MUSIC PLAYER · GRUPPO 19  —  Design system (dark / purple accent)
+   Palette invariata: token colore identici alla versione precedente.
+   Obiettivo di questo restyle: gerarchia tipografica piu' netta, ritmo di
+   spaziatura coerente (multipli di 4/8), elevazione a livelli e componenti
+   piu' rifiniti. Nessun fx:id / handler toccato: solo presentazione.
+   ============================================================================ */
+
+/* ============ PALETTE & TOKEN ============ */
 .root {
-    -fx-bg: #121218;
-    /* sfondo app */
-    -fx-surf: #1c1c24;
-    /* superfici/card */
-    -fx-raise: #26262f;
-    /* superfici in rilievo (input, thumb) */
-    -fx-acc: #9d7bff;
-    /* accento */
+    -fx-bg: #121218;          /* sfondo app */
+    -fx-surf: #1c1c24;        /* superfici / card */
+    -fx-surf-hi: #21212c;     /* card gradiente (alto) */
+    -fx-surf-lo: #16161d;     /* card gradiente (basso) */
+    -fx-raise: #26262f;       /* superfici in rilievo (input, thumb) */
+    -fx-acc: #9d7bff;         /* accento */
+    -fx-acc-2: #8a63f4;       /* accento (estremo gradiente) */
     -fx-txt: #f2f0f7;
     -fx-mut: #8b8a94;
     -fx-brd: #2e2e3a;
-    -fx-sel: #2a2536;
-    /* selezione/hover */
+    -fx-sel: #2a2536;         /* selezione / hover */
     -fx-danger: #e57373;
-    /* rosso per errori/azioni distruttive, leggibile su scuro */
+    -fx-danger-strong: #e05252;
+
     -fx-font-family: "Segoe UI", "Inter", sans-serif;
     -fx-background-color: linear-gradient(to bottom right, #15131d, #121218 60%);
 }
 
+/* superfici trasparenti che lasciano vedere lo sfondo dell'app */
 .app-root,
-.content-area,
 .content-area-left,
 .list-scroll,
 .list-scroll .viewport {
     -fx-background-color: transparent;
 }
 
-/* ListView usato come lista di card: niente cornice/sfondo/evidenziazione di default */
+/* ============ SHELL · BORDERPANE (top / left / center / bottom) ============ */
+
+/* top bar: solo il brand. Stessa cromia della barra di riproduzione in basso,
+   così top e bottom formano una cornice coerente attorno al contenuto. */
+.topbar {
+    -fx-background-color: linear-gradient(to bottom, #1d1d26, #17171e);
+    -fx-border-color: transparent transparent -fx-brd transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 18, 0, 0, 5);
+}
+
+/* contenitore della sidebar (StackPane): trasparente, lo sfondo lo da' .sidebar */
+.sidebar-wrap { -fx-background-color: transparent; }
+
+/* palco centrale: alone d'accento tenue in alto per dare profondita' al
+   "now playing" senza introdurre nuovi colori. */
+.stage,
+.content-area {
+    -fx-background-color: radial-gradient(center 50% 0%, radius 80%,
+                          rgba(157, 123, 255, 0.10), transparent);
+}
+
+/* barra di riproduzione persistente: fascia in rilievo con ombra verso l'alto. */
+.playbar {
+    -fx-background-color: linear-gradient(to bottom, #1d1d26, #17171e);
+    -fx-border-color: -fx-brd transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 24, 0, 0, -6);
+}
+
+/* ============ TIPOGRAFIA — scala ============ */
+/* Scala: 11 (label) · 12 (meta) · 13 (corpo s) · 14 (corpo) · 19 · 24 · 28 */
+
+.logo-melo,
+.logo-dia {
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+}
+.logo-melo { -fx-fill: -fx-txt; }            /* nodo Text → -fx-fill */
+.logo-dia  { -fx-fill: -fx-acc; }
+
+.dialog-title,
+.empty-title {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-txt;
+}
+
+/* Titolo "now playing": elemento dominante della card. */
+.player-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-txt;
+}
+
+/* Titolo card playlist / dettaglio. */
+.detail-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-txt;
+}
+
+.song-title-active,
+.detail-meta-strong {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-acc;
+}
+
+.song-title,
+.pl-title,
+.track-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-txt;
+}
+
+.song-artist,
+.track-artist,
+.track-anno,
+.song-duration,
+.empty-text,
+.dialog-text,
+.dialog-subtitle,
+.detail-meta,
+.detail-artist,
+.detail-desc,
+.pl-count {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -fx-mut;
+}
+
+.detail-desc { -fx-line-spacing: 4px; }
+
+/* etichette di sezione / campo: maiuscoletto spaziato. */
+.section-label,
+.field-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-mut;
+}
+
+/* mini-etichette dei form inline (TITOLO, ARTISTA, …) */
+.edit-label {
+    -fx-font-size: 9.5px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-mut;
+}
+
+.empty-icon-glyph {
+    -fx-font-size: 30px;
+    -fx-text-fill: -fx-acc;
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #20202a, -fx-surf 220px);
+    -fx-border-color: transparent -fx-brd transparent transparent;
+    -fx-border-width: 0 1px 0 0;
+}
+
+.sidebar-header {
+    -fx-border-color: transparent transparent -fx-brd transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* ============ CONTROLLO SEGMENTATO (Brani / Playlist) ============ */
+.segment {
+    -fx-background-color: -fx-bg;
+    -fx-background-radius: 12px;
+    -fx-padding: 4px;
+    -fx-spacing: 4px;
+    -fx-alignment: center-left;
+    -fx-border-color: -fx-brd;
+    -fx-border-radius: 12px;
+}
+
+.segment-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-mut;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9px;
+    -fx-padding: 9px 16px;
+    -fx-cursor: hand;
+}
+
+.segment-btn:selected {
+    -fx-background-color: linear-gradient(to right, -fx-acc-2, -fx-acc);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.40), 12, 0, 0, 3);
+}
+
+/* ============ LISTVIEW USATO COME LISTA DI CARD ============ */
 .song-list,
 .song-list .viewport,
 .song-list .list-cell {
@@ -36,15 +195,11 @@
     -fx-padding: 0;
 }
 
-.song-list {
-    -fx-padding: 16px 12px;          /* stesso padding del vecchio VBox */
-}
+.song-list { -fx-padding: 8px 8px; }
 
-.song-list .list-cell {
-    -fx-padding: 2px 0;              /* spacing tra le card */
-}
+.song-list .list-cell { -fx-padding: 4px 4px; }   /* gap fra le card */
 
-/* via l'highlight blu su selezione/hover: la .track-card gestisce già il suo hover */
+/* niente highlight blu nativo: l'hover e' gestito dalla card */
 .song-list .list-cell:filled:selected,
 .song-list .list-cell:filled:selected:focused,
 .song-list .list-cell:filled:hover {
@@ -52,54 +207,37 @@
     -fx-text-fill: -fx-txt;
 }
 
-/* via l'anello di focus attorno al ListView */
 .song-list:focused {
     -fx-background-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-focus-color: transparent;
 }
 
-/* ============ CONTENITORI ============ */
-.sidebar {
-    -fx-background-color: -fx-surf;
-    -fx-border-color: transparent -fx-brd transparent transparent;
-}
-
+/* ============ CARD DI CONTENUTO (player / dialog / dettaglio) ============ */
 .player-card,
 .dialog-card,
 .detail-card {
     -fx-background-color: -fx-surf;
-    -fx-background-radius: 20px;
-    -fx-border-color: -fx-brd;
-    -fx-border-radius: 20px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 30, 0, 0, 12);
+    -fx-background-radius: 24px;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 24px;
     -fx-padding: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.50), 40, 0, 0, 18);
 }
 
-/* Gradiente verticale condiviso dalle card di contenuto (player vuoto/attivo,
-   playlist). Prima era ripetuto inline in 3 punti dell'FXML: spostato qui come
-   classe, deve venire DOPO .player-card per vincere il colore piatto -fx-surf. */
+/* gradiente verticale condiviso dalle card di contenuto.
+   Deve venire DOPO .player-card per vincere sul colore piatto. */
 .player-card-gradient {
-    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #21212c, #16161d);
-}
-
-/* Barra dei controlli di trasporto (prev/play/next): pillola translucida.
-   Prima era uno style inline sull'HBox. */
-.transport-bar {
-    -fx-background-color: rgba(255, 255, 255, 0.04);
-    -fx-background-radius: 999px;
-    -fx-padding: 10px 22px;
-    -fx-spacing: 18px;
-    -fx-alignment: center;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, -fx-surf-hi, -fx-surf-lo);
 }
 
 .dialog-divider {
     -fx-min-height: 1px;
+    -fx-pref-height: 1px;
     -fx-background-color: -fx-brd;
 }
 
-/* ============ LAYOUT RIGHE ============ */
-.segment,
+/* ============ LAYOUT RIGHE GENERICHE ============ */
 .song-row,
 .pl-row,
 .pl-track-row,
@@ -110,140 +248,50 @@
     -fx-background-radius: 12px;
 }
 
-/* ====== Popup "Aggiungi a playlist": rifinitura righe/checkbox/scroll ====== */
+.dialog-footer { -fx-spacing: 12px; }
 
-/* area scroll trasparente, niente bordo */
-.dialog-card .scroll-pane,
-.dialog-card .scroll-pane > .viewport {
-    -fx-background-color: transparent;
+/* ============ CARD BRANO / PLAYLIST (righe lista) ============ */
+.track-card {
+    -fx-background-color: -fx-surf;
+    -fx-border-color: -fx-brd;
+    -fx-border-width: 1px;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-padding: 12px 14px;
+    -fx-spacing: 12px;
+    -fx-alignment: center-left;
 }
 
-/* ogni riga playlist (HBox generato dal controller) diventa una "pillola" cliccabile */
-.dialog-card .scroll-pane HBox {
-    -fx-padding: 8px 12px;
-    -fx-background-color: -fx-raise;
+/* miniatura quadrata arrotondata */
+.song-row .thumb,
+.pl-thumb,
+.track-thumb,
+.ghost-play {
+    -fx-background-color: linear-gradient(to bottom right, -fx-raise, -fx-sel);
     -fx-background-radius: 12px;
-    -fx-border-color: -fx-brd;
-    -fx-border-radius: 12px;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+    -fx-alignment: center;
+}
+
+/* icone (ikonli) bianche dentro i bottoni delle card */
+.track-card .button .ikonli-font-icon { -fx-icon-color: -fx-txt; }
+
+/* bottoni-icona tondi dentro le card */
+.track-card .button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 999px;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
     -fx-cursor: hand;
 }
+.track-card .button:hover { -fx-background-color: -fx-raise; }
 
-.dialog-card .scroll-pane HBox:hover {
-    -fx-background-color: -fx-sel;
-    -fx-border-color: -fx-acc;
-}
-
-/* checkbox in tinta con l'accento */
-.dialog-card .check-box .box {
-    -fx-background-color: -fx-raise;
-    -fx-background-radius: 6px;
-    -fx-border-color: -fx-brd;
-    -fx-border-radius: 6px;
-    -fx-padding: 3px;
-}
-
-.dialog-card .check-box:selected .box {
-    -fx-background-color: -fx-acc;
-    -fx-border-color: -fx-acc;
-}
-
-.dialog-card .check-box:selected .mark {
-    -fx-background-color: white;
-}
-
-/* scrollbar sottile e discreta */
-.dialog-card .scroll-bar:vertical {
-    -fx-pref-width: 8px;
-    -fx-background-color: transparent;
-}
-
-.dialog-card .scroll-bar .thumb {
-    -fx-background-color: -fx-brd;
-    -fx-background-radius: 8px;
-}
-
-.dialog-card .scroll-bar .increment-arrow,
-.dialog-card .scroll-bar .decrement-arrow,
-.dialog-card .scroll-bar .increment-button,
-.dialog-card .scroll-bar .decrement-button {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
-}
-
-.segment {
-    -fx-background-color: -fx-bg;
-    -fx-padding: 4px;
-}
-
-.empty-state {
-    -fx-spacing: 16px;
-    -fx-alignment: center;
-    -fx-padding: 30px;
-}
-
-/* ============ TIPOGRAFIA ============ */
-.logo-melo,
-.player-title,
-.empty-title,
-.dialog-title,
-.detail-title {
-    -fx-font-weight: bold;
-    -fx-font-size: 19px;
-    -fx-text-fill: -fx-txt;
-}
-
-.detail-title {
-    -fx-font-size: 26px;
-}
-
-/* Sulla schermata "in riproduzione" il titolo è l'elemento dominante:
-   esce dal gruppo bold/19px e diventa il punto focale della card. */
-.player-title {
-    -fx-font-size: 24px;
-}
-
-/* il logo è un nodo Text: usa -fx-fill, non -fx-text-fill */
-.logo-melo {
-    -fx-fill: -fx-txt;
-}
-
-.logo-dia {
-    -fx-fill: -fx-acc;
-}
-
-.logo-dia,
-.song-title-active,
-.detail-meta-strong {
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-acc;
-}
-
-.song-title,
-.pl-title,
-.track-title {
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-txt;
-}
-
-.song-artist,
-.track-artist,
-.track-anno,
-.time-label,
-.song-duration,
-.empty-text,
-.dialog-text,
-.dialog-subtitle,
-.detail-meta,
-.detail-artist,
-.detail-desc,
-.pl-count {
-    -fx-font-size: 12px;
-    -fx-text-fill: -fx-mut;
-}
+/* cestino: sempre rosso (vince per specificita') */
+.track-card .button.track-delete .ikonli-font-icon,
+.track-delete .ikonli-font-icon { -fx-icon-color: -fx-danger-strong; }
 
 .track-delete {
-    -fx-font-size: 18px;
     -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-padding: 4px;
@@ -251,158 +299,31 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+.track-delete:hover { -fx-background-color: rgba(224, 82, 82, 0.15); }
 
-/* Icone (ikonli FontIcon) bianche dentro i bottoni delle card */
-.track-card .button .ikonli-font-icon {
-    -fx-icon-color: white;
+/* ============ EMPTY STATE ============ */
+.empty-state {
+    -fx-spacing: 18px;
+    -fx-alignment: center;
+    -fx-padding: 32px;
 }
 
-/* Icona cestino sempre rossa (vince per specificità sulla regola bianca) */
-.track-card .button.track-delete .ikonli-font-icon,
-.track-delete .ikonli-font-icon {
-    -fx-icon-color: #e05252;
-}
-
-.section-label,
-.field-label {
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-mut;
-}
-
-.empty-icon-glyph {
-    -fx-font-size: 30px;
-    -fx-text-fill: -fx-acc;
-}
-
-/* Logo: due tinte (bianco + accento), un filo piu' grande per presenza */
-.logo-melo,
-.logo-dia {
-    -fx-font-size: 22px;
-}
-
-/* L'icona dell'empty state e' un disco circolare tinto, non un quadratino:
-   da' un punto focale morbido alla schermata vuota. */
+/* disco tondo tinto come punto focale morbido */
 .empty-icon {
-    -fx-min-width: 76px;
-    -fx-min-height: 76px;
-    -fx-max-width: 76px;
-    -fx-max-height: 76px;
+    -fx-min-width: 84px;
+    -fx-min-height: 84px;
+    -fx-max-width: 84px;
+    -fx-max-height: 84px;
     -fx-background-color: -fx-sel;
     -fx-background-radius: 999px;
     -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.18), 24, 0, 0, 0);
 }
 
-/* Etichette compatte dei form inline nelle card (TITOLO, ARTISTA, GENERE...) */
-.edit-label {
-    -fx-font-size: 9px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-mut;
-}
-
-/* ============ BOTTONI ============ */
-.btn-primary,
-.fab,
-.play-btn {
-    -fx-background-color: linear-gradient(to right, #8a63f4, -fx-acc);
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 22px;
-    -fx-padding: 10px 18px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.35), 14, 0, 0, 4);
-}
-
-.btn-secondary,
-.action-btn,
-.btn-browse,
-.segment-btn,
-.back-link,
-.track-card .button {
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-mut;
-    -fx-background-radius: 10px;
-    -fx-padding: 8px 16px;
-    -fx-cursor: hand;
-}
-
-.btn-secondary,
-.btn-browse {
-    -fx-border-color: -fx-brd;
-    -fx-border-radius: 10px;
-}
-
-.btn-danger,
-.btn-danger-soft {
-    -fx-background-color: rgba(224, 82, 82, 0.15);
-    -fx-text-fill: #e57373;
-    -fx-background-radius: 10px;
-    -fx-padding: 10px 16px;
-    -fx-cursor: hand;
-}
-
-/* ============ CAMPI FORM ============ */
-.form-field,
-.file-path,
-.form-combo,
-.text-area {
-    -fx-background-color: -fx-raise;
-    -fx-background-radius: 10px;
-    -fx-text-fill: -fx-txt;
-    -fx-prompt-text-fill: -fx-mut;
-    -fx-padding: 9px 12px;
-    -fx-border-color: -fx-brd;
-    -fx-border-radius: 10px;
-    /* La superficie di digitazione di TextArea e l'editor di una ComboBox
-       editabile sono dipinti da -fx-control-inner-background: lo agganciamo
-       al token cosi' restano in tinta col resto (niente nero/bianco Modena). */
-    -fx-control-inner-background: -fx-raise;
-}
-
-.form-field:focused,
-.form-combo:focused,
-.text-area:focused {
-    -fx-border-color: -fx-acc;
-}
-
-/* Il contenuto interno della TextArea eredita il colore della superficie
-   e perde la cornice bianca di default. */
-.text-area .content {
-    -fx-background-color: -fx-raise;
-    -fx-background-radius: 10px;
-}
-
-/* ============ IMMAGINI & ICONE ============ */
-.song-row .thumb,
-.empty-icon,
-.pl-thumb,
-.track-thumb,
-.ghost-play {
-    -fx-background-color: -fx-raise;
-    -fx-background-radius: 10px;
-    -fx-min-width: 44px;
-    -fx-min-height: 44px;
-    -fx-alignment: center;
-}
-
-.album-art,
-.detail-art {
-    -fx-background-color: linear-gradient(to bottom right, -fx-raise, -fx-sel);
-    -fx-background-radius: 16px;
-    -fx-min-width: 140px;
-    -fx-min-height: 140px;
-}
-
-.fab-icon,
 .play-icon-faint {
-    -fx-stroke: white;
-    -fx-stroke-width: 2px;
-    -fx-fill: -fx-mut;
-}
-
-/* Icona del FAB (ikonli FontIcon) bianca */
-.fab-icon {
-    -fx-icon-color: white;
+    -fx-stroke: transparent;
+    -fx-fill: -fx-acc;
+    -fx-opacity: 0.75;
 }
 
 .ghost-dash {
@@ -412,34 +333,397 @@
     -fx-background-radius: 2px;
 }
 
-.now-dot {
-    -fx-min-width: 8px;
-    -fx-min-height: 8px;
-    -fx-max-width: 8px;
-    -fx-max-height: 8px;
-    -fx-background-color: -fx-acc;
-    -fx-background-radius: 4px;
+/* ============ PLAYER (stato attivo) ============ */
+.player-cover {
+    -fx-background-color: linear-gradient(to bottom right, -fx-raise, -fx-sel);
+    -fx-background-radius: 20px;
+    -fx-min-width: 300px;
+    -fx-min-height: 300px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 36, 0, 0, 16);
 }
+
+/* nota tenue dietro la copertina quando manca l'artwork */
+.cover-placeholder { -fx-icon-color: rgba(255, 255, 255, 0.16); }
+
+/* ============ VINILE (now playing) ============
+   Composizione: wrap fisso → .vinyl (nodo che RUOTA) contiene disco/etichetta/
+   foto/foro; .vinyl-sheen sta FUORI dal nodo rotante (riflesso luce fermo). */
+
+.vinyl-wrap { -fx-background-color: transparent; }
+
+.vinyl {
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.65), 40, 0.1, 0, 18);
+}
+
+/* disco: solchi resi con tante bande sottili alternate in un gradiente radiale.
+   Bordo esterno leggermente piu' chiaro = riflesso del rim. */
+.vinyl-disc {
+    -fx-min-width: 300px;  -fx-min-height: 300px;
+    -fx-max-width: 300px;  -fx-max-height: 300px;
+    -fx-background-radius: 999px;
+    -fx-background-color:
+        radial-gradient(center 50% 50%, radius 50%,
+            #050506 0%, #1a1a1f 18%,
+            #0c0c0f 30%,
+            #1c1c21 33%, #0d0d10 35%, #1c1c21 37%, #0d0d10 39%,
+            #1c1c21 41%, #0d0d10 43%, #1c1c21 45%, #0d0d10 47%,
+            #1c1c21 49%, #0d0d10 51%, #1c1c21 53%, #0d0d10 55%,
+            #1c1c21 57%, #0d0d10 59%, #1c1c21 61%, #0d0d10 63%,
+            #1c1c21 65%, #0d0d10 67%, #1c1c21 69%, #0d0d10 71%,
+            #1c1c21 73%, #0d0d10 75%, #1c1c21 77%, #0d0d10 79%,
+            #1c1c21 81%, #0d0d10 83%, #1c1c21 85%, #0d0d10 87%,
+            #1c1c21 89%, #0d0d10 91%, #262630 95%, #08080a 98%, #000000 100%);
+}
+
+/* etichetta circolare (carta) dietro la foto: rende il bordo del "label". */
+.vinyl-label {
+    -fx-min-width: 168px;  -fx-min-height: 168px;
+    -fx-max-width: 168px;  -fx-max-height: 168px;
+    -fx-background-radius: 999px;
+    -fx-background-color: radial-gradient(center 50% 50%, radius 50%, #241a30, #181020);
+    -fx-border-color: rgba(157, 123, 255, 0.40);
+    -fx-border-width: 2px;
+    -fx-border-radius: 999px;
+}
+
+/* foro centrale (spindle): puntino scuro con anellino chiaro. */
+.vinyl-hole {
+    -fx-min-width: 13px;  -fx-min-height: 13px;
+    -fx-max-width: 13px;  -fx-max-height: 13px;
+    -fx-background-radius: 999px;
+    -fx-background-color: #050506;
+    -fx-border-color: rgba(255, 255, 255, 0.30);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 999px;
+}
+
+/* riflesso di luce statico: striscia diagonale tenue sopra il disco.
+   Non ruota → simula la luce ambientale che scorre sul vinile in movimento. */
+.vinyl-sheen {
+    -fx-min-width: 300px;  -fx-min-height: 300px;
+    -fx-max-width: 300px;  -fx-max-height: 300px;
+    -fx-background-radius: 999px;
+    -fx-background-color: linear-gradient(from 8% 0% to 92% 100%,
+        rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 22%,
+        transparent 42%, transparent 60%,
+        rgba(255, 255, 255, 0.03) 80%, rgba(255, 255, 255, 0.10) 100%);
+}
+
+/* copertina compatta nell'intestazione della card playlist (NON usare
+   .player-cover qui: forzerebbe 300x300 sul thumbnail dell'header). */
+.pl-cover {
+    -fx-background-color: linear-gradient(to bottom right, -fx-raise, -fx-sel);
+    -fx-background-radius: 16px;
+    -fx-min-width: 96px;
+    -fx-min-height: 96px;
+    -fx-max-width: 96px;
+    -fx-max-height: 96px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.40), 16, 0, 0, 6);
+}
+
+.player-artist {
+    -fx-font-size: 15px;
+    -fx-text-fill: -fx-mut;
+}
+
+.player-time {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-mut;
+    /* cifre monospace: il tempo scorre ogni secondo senza far "ballare" la label */
+    -fx-font-family: "Consolas", "Segoe UI", monospace;
+}
+
+/* --- slider di avanzamento --- */
+.player-slider { -fx-padding: 6px 0; }
+
+.player-slider .track {
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 4px;
+    -fx-pref-height: 6px;
+}
+
+.player-slider .thumb {
+    -fx-background-color: -fx-acc;
+    -fx-background-radius: 999px;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.60), 10, 0, 0, 0);
+}
+.player-slider:hover .thumb { -fx-background-color: #b49bff; }
+
+/* --- barra di trasporto (pillola dei controlli) --- */
+.transport-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.045);
+    -fx-background-radius: 999px;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 999px;
+    -fx-padding: 10px 24px;
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+/* --- controlli prev / next --- */
+.player-ctrl {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-txt;
+    -fx-font-size: 18px;
+    -fx-min-width: 46px;
+    -fx-min-height: 46px;
+    -fx-max-width: 46px;
+    -fx-max-height: 46px;
+    -fx-background-radius: 999px;
+    -fx-cursor: hand;
+}
+.player-ctrl:hover {
+    -fx-background-color: -fx-sel;
+    -fx-text-fill: -fx-acc;
+}
+.player-ctrl .ikonli-font-icon,
+.player-ctrl-main .ikonli-font-icon { -fx-icon-color: -fx-txt; }
+
+/* --- play / pause principale --- */
+.player-ctrl-main {
+    -fx-background-color: linear-gradient(to right, -fx-acc-2, -fx-acc);
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-min-width: 64px;
+    -fx-min-height: 64px;
+    -fx-max-width: 64px;
+    -fx-max-height: 64px;
+    -fx-background-radius: 999px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.50), 18, 0, 0, 5);
+}
+.player-ctrl-main:hover {
+    -fx-background-color: linear-gradient(to right, #9670ff, #ad90ff);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* ============ BOTTONI ============ */
+.btn-primary,
+.fab,
+.play-btn {
+    -fx-background-color: linear-gradient(to right, -fx-acc-2, -fx-acc);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 12px;
+    -fx-padding: 11px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.35), 16, 0, 0, 5);
+}
+
+.btn-secondary,
+.btn-browse,
+.back-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-mut;
+    -fx-font-size: 13px;
+    -fx-background-radius: 12px;
+    -fx-padding: 10px 18px;
+    -fx-cursor: hand;
+}
+.btn-secondary,
+.btn-browse {
+    -fx-border-color: -fx-brd;
+    -fx-border-radius: 12px;
+}
+
+.back-link {
+    -fx-font-size: 14px;
+    -fx-padding: 8px 4px;
+}
+
+.btn-danger,
+.btn-danger-soft {
+    -fx-background-color: rgba(224, 82, 82, 0.15);
+    -fx-text-fill: -fx-danger;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 12px;
+    -fx-padding: 11px 18px;
+    -fx-cursor: hand;
+}
+
+/* --- FAB (aggiungi) --- */
+.fab {
+    -fx-min-width: 56px;
+    -fx-min-height: 56px;
+    -fx-max-width: 56px;
+    -fx-max-height: 56px;
+    -fx-background-radius: 999px;
+    -fx-padding: 0;
+}
+.fab-icon { -fx-icon-color: white; -fx-fill: white; -fx-stroke: white; }
+
+/* ============ CAMPI FORM ============ */
+.form-field,
+.file-path,
+.form-combo,
+.text-area {
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 12px;
+    -fx-text-fill: -fx-txt;
+    -fx-prompt-text-fill: -fx-mut;
+    -fx-padding: 10px 13px;
+    -fx-border-color: -fx-brd;
+    -fx-border-radius: 12px;
+    -fx-control-inner-background: -fx-raise;
+}
+
+.form-field:focused,
+.form-combo:focused,
+.text-area:focused {
+    -fx-border-color: -fx-acc;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.30), 10, 0, 0, 0);
+}
+
+.text-area .content {
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 12px;
+}
+
+/* ComboBox: freccia e listina in tinta */
+.form-combo .arrow,
+.form-combo .arrow-button { -fx-background-color: transparent; }
+.form-combo .arrow { -fx-background-color: -fx-mut; }
+.form-combo .list-cell {
+    -fx-background-color: -fx-raise;
+    -fx-text-fill: -fx-txt;
+}
+.form-combo-popup .list-view,
+.combo-box-popup .list-view {
+    -fx-background-color: -fx-raise;
+    -fx-border-color: -fx-brd;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+}
+.combo-box-popup .list-cell:filled:hover {
+    -fx-background-color: -fx-sel;
+    -fx-text-fill: -fx-acc;
+}
+
+/* ============ BADGE / PILL / PUNTINI ============ */
+.badge {
+    -fx-min-width: 56px;
+    -fx-min-height: 56px;
+    -fx-max-width: 56px;
+    -fx-max-height: 56px;
+    -fx-background-radius: 999px;
+    -fx-alignment: center;
+}
+.badge-danger  { -fx-background-color: rgba(224, 82, 82, 0.16); }
+.badge-warning { -fx-background-color: rgba(157, 123, 255, 0.16); }
+.badge-glyph {
+    -fx-stroke: -fx-acc;
+    -fx-stroke-width: 2px;
+    -fx-fill: transparent;
+}
+.badge-danger .badge-glyph { -fx-stroke: -fx-danger; }
 
 .badge-pill {
     -fx-background-color: -fx-sel;
     -fx-text-fill: -fx-acc;
     -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-padding: 4px 10px;
+    -fx-padding: 4px 12px;
     -fx-background-radius: 999px;
 }
 
-/* ============ CARD BRANO ============ */
-.track-card {
-    -fx-background-color: -fx-surf;
+.now-dot {
+    -fx-min-width: 8px;
+    -fx-min-height: 8px;
+    -fx-max-width: 8px;
+    -fx-max-height: 8px;
+    -fx-background-color: -fx-acc;
+    -fx-background-radius: 999px;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.70), 8, 0, 0, 0);
+}
+
+/* arte album grande (dettaglio) */
+.album-art,
+.detail-art {
+    -fx-background-color: linear-gradient(to bottom right, -fx-raise, -fx-sel);
+    -fx-background-radius: 18px;
+    -fx-min-width: 150px;
+    -fx-min-height: 150px;
+}
+
+/* ============ POPUP "AGGIUNGI A PLAYLIST" ============ */
+.dialog-card .scroll-pane,
+.dialog-card .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.dialog-card .scroll-pane HBox {
+    -fx-padding: 10px 14px;
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 12px;
     -fx-border-color: -fx-brd;
-    -fx-border-width: 1px;
-    -fx-background-radius: 14px;
-    -fx-border-radius: 14px;
-    -fx-padding: 10px;
-    -fx-spacing: 12px;
-    -fx-alignment: center-left;
+    -fx-border-radius: 12px;
+    -fx-cursor: hand;
+}
+.dialog-card .scroll-pane HBox:hover {
+    -fx-background-color: -fx-sel;
+    -fx-border-color: -fx-acc;
+}
+
+.dialog-card .check-box .box {
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 6px;
+    -fx-border-color: -fx-brd;
+    -fx-border-radius: 6px;
+    -fx-padding: 3px;
+}
+.dialog-card .check-box:selected .box {
+    -fx-background-color: -fx-acc;
+    -fx-border-color: -fx-acc;
+}
+.dialog-card .check-box:selected .mark { -fx-background-color: white; }
+
+/* ============ CONTEXT MENU ============ */
+.context-menu {
+    -fx-background-color: -fx-raise;
+    -fx-background-radius: 12px;
+    -fx-border-color: -fx-brd;
+    -fx-border-radius: 12px;
+    -fx-padding: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 20, 0, 0, 8);
+}
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+    -fx-padding: 9px 14px;
+}
+.context-menu .menu-item .label {
+    -fx-text-fill: -fx-txt;
+    -fx-font-size: 12.5px;
+}
+.context-menu .menu-item:focused,
+.context-menu .menu-item:hover { -fx-background-color: -fx-sel; }
+.context-menu .menu-item:focused .label,
+.context-menu .menu-item:hover .label { -fx-text-fill: -fx-acc; }
+
+/* ============ SCROLLBAR ============ */
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px;
+    -fx-pref-height: 10px;
+}
+.scroll-bar .thumb {
+    -fx-background-color: -fx-brd;
+    -fx-background-radius: 8px;
+    -fx-background-insets: 2px;
+}
+.scroll-bar .thumb:hover { -fx-background-color: -fx-mut; }
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button,
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
 }
 
 /* ============ HOVER & SELEZIONE ============ */
@@ -451,192 +735,30 @@
     -fx-border-color: -fx-acc;
     -fx-cursor: hand;
 }
-
-.song-row-selected {
-    -fx-background-color: -fx-sel;
-}
-
-.segment-btn:selected {
-    -fx-background-color: -fx-raise;
-    -fx-text-fill: -fx-txt;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 2);
-}
+.song-row-selected { -fx-background-color: -fx-sel; }
 
 .btn-primary:hover,
 .fab:hover,
 .play-btn:hover {
-    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.6), 20, 0, 0, 6);
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.60), 22, 0, 0, 7);
     -fx-scale-x: 1.04;
     -fx-scale-y: 1.04;
 }
 
 .btn-secondary:hover,
-.action-btn:hover,
 .btn-browse:hover,
-.segment-btn:hover,
-.back-link:hover,
-.track-card .button:hover {
+.back-link:hover {
     -fx-background-color: -fx-sel;
     -fx-text-fill: -fx-txt;
 }
 
 .btn-danger:hover,
 .btn-danger-soft:hover {
-    -fx-background-color: #e05252;
+    -fx-background-color: -fx-danger-strong;
     -fx-text-fill: white;
-}
-
-/* ============ CONTEXT MENU ============ */
-.context-menu {
-    -fx-background-color: -fx-raise;
-    -fx-background-radius: 10px;
-    -fx-border-color: -fx-brd;
-    -fx-border-radius: 10px;
-    -fx-padding: 6px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 18, 0, 0, 6);
-}
-
-.context-menu .menu-item {
-    -fx-background-color: transparent;
-    -fx-background-radius: 8px;
-    -fx-padding: 8px 14px;
-}
-
-.context-menu .menu-item .label {
-    -fx-text-fill: -fx-txt;
-    -fx-font-size: 12px;
-}
-
-.context-menu .menu-item:focused,
-.context-menu .menu-item:hover {
-    -fx-background-color: -fx-sel;
-}
-
-.context-menu .menu-item:focused .label,
-.context-menu .menu-item:hover .label {
-    -fx-text-fill: -fx-acc;
-}
-
-/* ============ SCROLLBAR ============ */
-.scroll-bar {
-    -fx-background-color: transparent;
-    -fx-pref-width: 8px;
-}
-
-.scroll-bar .thumb {
-    -fx-background-color: -fx-brd;
-    -fx-background-radius: 4px;
-}
-
-.scroll-bar .thumb:hover {
-    -fx-background-color: -fx-mut;
-}
-
-.scroll-bar .increment-button,
-.scroll-bar .decrement-button {
-    -fx-padding: 0;
-}
-
-/* ============ PLAYER (stato attivo) ============ */
-.player-cover {
-    -fx-background-color: linear-gradient(to bottom right, -fx-raise, -fx-sel);
-    -fx-background-radius: 18px;
-    -fx-min-width: 280px;
-    -fx-min-height: 280px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 28, 0, 0, 10);
-}
-
-.player-artist {
-    -fx-font-size: 14px;
-    -fx-text-fill: -fx-mut;
-}
-
-.player-time {
-    -fx-font-size: 11px;
-    -fx-text-fill: -fx-mut;
-    /* Cifre a larghezza fissa (monospace): il tempo corrente scorre ogni
-       secondo e con un font proporzionale la label "ballerebbe" di pochi px
-       a ogni cambio di cifra. */
-    -fx-font-family: "Consolas", "Segoe UI", monospace;
-}
-
-/* Placeholder dietro la copertina quando il brano non ha artwork:
-   una nota appena accennata, così la cover non legge come "rotta"/in caricamento. */
-.cover-placeholder {
-    -fx-icon-color: rgba(255, 255, 255, 0.16);
-}
-
-/* --- Slider di avanzamento --- */
-.player-slider {
-    -fx-padding: 6px 0;
-}
-
-.player-slider .track {
-    -fx-background-color: -fx-raise;
-    -fx-background-radius: 3px;
-    -fx-pref-height: 6px;
-}
-
-.player-slider .thumb {
-    -fx-background-color: -fx-acc;
-    -fx-background-radius: 999px;
-    -fx-pref-width: 15px;
-    -fx-pref-height: 15px;
-    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.55), 8, 0, 0, 0);
-}
-
-.player-slider:hover .thumb {
-    -fx-background-color: #b49bff;
-}
-
-/* --- Controlli prev / next --- */
-.player-ctrl {
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-txt;
-    -fx-font-size: 18px;
-    -fx-min-width: 44px;
-    -fx-min-height: 44px;
-    -fx-max-width: 44px;
-    -fx-max-height: 44px;
-    -fx-background-radius: 999px;
-    -fx-cursor: hand;
-}
-
-.player-ctrl:hover {
-    -fx-background-color: -fx-sel;
-    -fx-text-fill: -fx-acc;
-}
-
-/* Icone dei controlli del player bianche */
-.player-ctrl .ikonli-font-icon,
-.player-ctrl-main .ikonli-font-icon {
-    -fx-icon-color: white;
-}
-
-/* --- Bottone play/pause principale --- */
-.player-ctrl-main {
-    -fx-background-color: linear-gradient(to right, #8a63f4, -fx-acc);
-    -fx-text-fill: white;
-    -fx-font-size: 22px;
-    -fx-min-width: 62px;
-    -fx-min-height: 62px;
-    -fx-max-width: 62px;
-    -fx-max-height: 62px;
-    -fx-background-radius: 999px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.45), 16, 0, 0, 4);
-}
-
-.player-ctrl-main:hover {
-    -fx-background-color: linear-gradient(to right, #9670ff, #ad90ff);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
 }
 
 /* ============ FEEDBACK AL CLICK (pressed) ============ */
-/* Un leggero affondo alla pressione da' riscontro tattile: il bottone
-   "cede" sotto il dito invece di restare immobile. Le regole :pressed
-   vengono dopo le :hover cosi' vincono mentre si tiene premuto. */
 .btn-primary:pressed,
 .fab:pressed,
 .play-btn:pressed,
@@ -644,20 +766,14 @@
     -fx-scale-x: 0.97;
     -fx-scale-y: 0.97;
 }
-
 .btn-secondary:pressed,
-.action-btn:pressed,
 .btn-browse:pressed,
 .segment-btn:pressed,
 .back-link:pressed,
 .player-ctrl:pressed,
-.track-card .button:pressed {
-    -fx-background-color: -fx-raise;
-}
+.track-card .button:pressed { -fx-background-color: -fx-raise; }
 
 /* ============ STATO DISABILITATO ============ */
-/* I controlli disattivati devono leggersi come inattivi, non come attivi
-   ma rotti: opacita' ridotta e niente cursore "mano". */
 .button:disabled,
 .toggle-button:disabled,
 .combo-box:disabled,

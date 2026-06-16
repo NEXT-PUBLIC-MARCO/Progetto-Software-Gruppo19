@@ -3,9 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
@@ -14,242 +18,242 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <!--
-  Music Player - Unica View presente
+  Music Player - Gruppo 19  ·  Shell ridisegnata (BorderPane "app moderna").
+  Architettura:
+    top    = top bar (brand + navigazione primaria Brani/Playlist)
+    left   = sidebar libreria (lista + FAB)
+    center = palco "now playing" / dettaglio playlist
+    bottom = barra di riproduzione persistente (transport + seek)
+  NB: tutti gli fx:id/handler sono preservati; i nodi del player sono solo
+  stati RICOLLOCATI (il controller li indirizza per fx:id, non per posizione).
 -->
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Slider?>
-<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="it.gruppo19.progetto_music_player.controller.MainViewController"
-      styleClass="app-root" prefWidth="1280.0" prefHeight="800.0"
-      stylesheets="@styles.css">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.gruppo19.progetto_music_player.controller.MainViewController"
+            styleClass="app-root" prefWidth="1280.0" prefHeight="800.0"
+            stylesheets="@styles.css">
 
-    <!-- ============================ LEFT PANE ============================ -->
-    <StackPane minWidth="380.0" prefWidth="380.0" maxWidth="380.0">
-        <VBox styleClass="sidebar">
+    <!-- ============================ TOP BAR ============================ -->
+    <top>
+        <HBox styleClass="topbar" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="18.0" right="28.0" bottom="18.0" left="28.0"/>
+            </padding>
 
-            <!-- Header: logo + segmented control (condiviso tra le due viste) -->
-            <VBox styleClass="sidebar-header" spacing="24.0">
+            <TextFlow styleClass="logo">
+                <Text styleClass="logo-melo" text="Music Player "/>
+                <Text styleClass="logo-dia" text="Gruppo 19"/>
+            </TextFlow>
+        </HBox>
+    </top>
 
-                <padding>
-                    <Insets top="28.0" right="24.0" bottom="0.0" left="24.0"/>
-                </padding>
+    <!-- ============================ LEFT · SIDEBAR ============================ -->
+    <left>
+        <StackPane styleClass="sidebar-wrap" minWidth="340.0" prefWidth="340.0" maxWidth="340.0">
+            <VBox styleClass="sidebar">
 
-                <TextFlow styleClass="logo">
-                    <Text styleClass="logo-melo" text="Music Player "/>
-                    <Text styleClass="logo-dia" text="Gruppo 19"/>
-                </TextFlow>
-
+                <!-- Navigazione primaria: tab Brani/Playlist sopra la libreria. -->
                 <HBox styleClass="segment" fx:id="tabSegment">
+                    <VBox.margin>
+                        <Insets top="24.0" right="20.0" bottom="0.0" left="20.0"/>
+                    </VBox.margin>
                     <fx:define>
                         <ToggleGroup fx:id="tabGroup"/>
                     </fx:define>
                     <ToggleButton fx:id="tabBrani" text="Brani" selected="true"
                                   toggleGroup="$tabGroup" styleClass="segment-btn"
-                                  onAction="#onTabChanged"
-                                  maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                                  onAction="#onTabChanged" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                     <ToggleButton fx:id="tabPlaylist" text="Playlist"
                                   toggleGroup="$tabGroup" styleClass="segment-btn"
-                                  onAction="#onTabChanged"
-                                  maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                                  onAction="#onTabChanged" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                 </HBox>
+
+                <Label fx:id="sectionLabel" text="LIBRERIA" styleClass="section-label">
+                    <padding>
+                        <Insets top="22.0" right="24.0" bottom="10.0" left="24.0"/>
+                    </padding>
+                </Label>
+
+                <!-- Area lista: Brani e Playlist sovrapposte; il controller mostra
+                     quella attiva (onTabChanged). -->
+                <StackPane fx:id="libraryArea" VBox.vgrow="ALWAYS">
+
+                    <!-- SIDEBAR BRANI -->
+                    <StackPane fx:id="braniSidebar">
+                        <ListView fx:id="songListView" styleClass="song-list"
+                                  visible="false" managed="false">
+                            <padding>
+                                <Insets top="8.0" right="10.0" bottom="96.0" left="10.0"/>
+                            </padding>
+                        </ListView>
+
+                        <!-- EMPTY STATE - Nessun brano -->
+                        <VBox fx:id="emptyLibrary" styleClass="empty-state">
+                            <StackPane styleClass="empty-icon">
+                                <Label text="&#9835;" styleClass="empty-icon-glyph"/>
+                            </StackPane>
+                            <Label text="Nessun brano" styleClass="empty-title"/>
+                            <Label styleClass="empty-text" wrapText="true"
+                                   text="La tua libreria &#232; vuota. Aggiungi il tuo primo brano per cominciare."/>
+                            <Button styleClass="btn-primary" onAction="#onAdd" text="+  Aggiungi brano"/>
+                        </VBox>
+                    </StackPane>
+
+                    <!-- SIDEBAR PLAYLIST -->
+                    <ScrollPane fx:id="playlistSidebar" fitToWidth="true" styleClass="list-scroll"
+                                visible="false" managed="false">
+                        <ListView fx:id="playlistSidebarList" styleClass="song-list">
+                            <padding><Insets top="8.0" right="10.0" bottom="96.0" left="10.0"/></padding>
+                        </ListView>
+                    </ScrollPane>
+                </StackPane>
             </VBox>
 
-            <!-- Section label (cambia in base alla tab) -->
-            <Label fx:id="sectionLabel" text="LIBRERIA" styleClass="section-label">
+            <!-- FAB "aggiungi" — galleggia in fondo alla sidebar, sopra la barra
+                 di riproduzione (le regioni del BorderPane non si sovrappongono). -->
+            <Button fx:id="addButton" styleClass="fab" onAction="#onAdd"
+                    StackPane.alignment="BOTTOM_RIGHT">
+                <StackPane.margin>
+                    <Insets bottom="24.0" right="24.0"/>
+                </StackPane.margin>
+                <graphic>
+                    <FontIcon iconLiteral="fas-plus" iconSize="20" styleClass="fab-icon"/>
+                </graphic>
+            </Button>
+        </StackPane>
+    </left>
+
+    <!-- ============================ CENTER · STAGE ============================ -->
+    <center>
+        <StackPane styleClass="stage">
+            <padding>
+                <Insets top="28.0" right="40.0" bottom="28.0" left="40.0"/>
+            </padding>
+
+            <!-- NOW PLAYING · stato vuoto -->
+            <VBox fx:id="playerCardEmpty" styleClass="player-card, player-card-gradient"
+                  maxWidth="560.0" maxHeight="640.0" spacing="18.0" alignment="CENTER">
                 <padding>
-                    <Insets top="20.0" right="24.0" bottom="8.0" left="24.0"/>
+                    <Insets top="56.0" right="48.0" bottom="56.0" left="48.0"/>
                 </padding>
-            </Label>
 
-            <!-- Area lista: contiene sovrapposte la sidebar Brani e la sidebar Playlist.
-                 Il controller mostra/nasconde quella attiva. -->
-            <StackPane fx:id="libraryArea" VBox.vgrow="ALWAYS">
+                <StackPane styleClass="empty-icon">
+                    <SVGPath styleClass="play-icon-faint" content="M7 5v14l11-7z"/>
+                </StackPane>
+                <Label text="Nessun brano in riproduzione" styleClass="empty-title"/>
+                <Label styleClass="empty-text" wrapText="true" maxWidth="320.0"
+                       text="Seleziona un brano dalla libreria per iniziare ad ascoltare. I controlli compaiono nella barra in basso."/>
+            </VBox>
 
-                <!-- - SIDEBAR BRANI- -->
-                <StackPane fx:id="braniSidebar">
-                    <ListView fx:id="songListView" styleClass="song-list"
-                              visible="false" managed="false">
+            <!-- NOW PLAYING · stato attivo (cover + titolo + artista) -->
+            <VBox fx:id="playerCardActive" styleClass="player-card, player-card-gradient"
+                  maxWidth="560.0" maxHeight="640.0" spacing="22.0" alignment="CENTER"
+                  visible="false" managed="false">
+                <padding>
+                    <Insets top="40.0" right="48.0" bottom="40.0" left="48.0"/>
+                </padding>
 
-                        <padding>
-                            <Insets top="16.0" right="12.0" bottom="16.0" left="12.0"/>
+                <Label text="ORA IN RIPRODUZIONE" styleClass="badge-pill"/>
 
-                        </padding>
-                    </ListView>
+                <!-- VINILE: il disco (fx:id="vinyl") ruota quando si preme play
+                     (RotateTransition nel controller). La foto del brano fa da
+                     etichetta circolare al centro; il riflesso (vinyl-sheen) resta
+                     FERMO, fuori dal nodo rotante, per simulare la luce sul disco.
+                     coverPlaceholder = nota mostrata quando manca l'artwork. -->
+                <StackPane styleClass="vinyl-wrap" minWidth="320.0" minHeight="320.0"
+                           maxWidth="320.0" maxHeight="320.0">
+                    <StackPane fx:id="vinyl" styleClass="vinyl"
+                               minWidth="300.0" minHeight="300.0" maxWidth="300.0" maxHeight="300.0">
+                        <Region styleClass="vinyl-disc"/>
+                        <Region styleClass="vinyl-label"/>
+                        <FontIcon fx:id="coverPlaceholder" iconLiteral="fas-music" iconSize="40" styleClass="cover-placeholder"/>
+                        <ImageView fx:id="playerImage" fitWidth="150.0" fitHeight="150.0"
+                                   preserveRatio="true" pickOnBounds="true"/>
+                        <Region styleClass="vinyl-hole"/>
+                    </StackPane>
+                    <Region styleClass="vinyl-sheen" mouseTransparent="true"/>
+                </StackPane>
 
-                    <!-- EMPTY STATE - Nessun brano -->
-                    <VBox fx:id="emptyLibrary" styleClass="empty-state">
-                        <StackPane styleClass="empty-icon, empty-icon-music">
-                            <Label text="♫" styleClass="empty-icon-glyph"/>
-                        </StackPane>
-                        <Label text="Nessun brano" styleClass="empty-title"/>
-                        <Label styleClass="empty-text" wrapText="true"
-                               text="La tua libreria è vuota. Aggiungi il tuo primo brano per cominciare."/>
-                        <Button styleClass="btn-primary" onAction="#onAdd" text="+  Aggiungi brano"/>
+                <VBox spacing="6.0" alignment="CENTER" maxWidth="420.0">
+                    <Label fx:id="playerTitle" styleClass="player-title" text="Titolo"
+                           maxWidth="Infinity" alignment="CENTER"/>
+                    <Label fx:id="playerArtist" styleClass="player-artist" text="Artista"
+                           maxWidth="Infinity" alignment="CENTER"/>
+                </VBox>
+            </VBox>
+
+            <!-- DETTAGLIO PLAYLIST -->
+            <VBox fx:id="playlistCardActive" styleClass="player-card, player-card-gradient"
+                  maxWidth="860.0" maxHeight="680.0" spacing="18.0" alignment="TOP_CENTER"
+                  visible="false" managed="false">
+                <padding>
+                    <Insets top="36.0" right="36.0" bottom="32.0" left="36.0"/>
+                </padding>
+
+                <!-- Intestazione: copertina + titolo + conteggio -->
+                <HBox spacing="20.0" alignment="CENTER_LEFT" maxWidth="Infinity">
+                    <StackPane styleClass="pl-cover">
+                        <ImageView fx:id="playlistImage" fitWidth="96.0" fitHeight="96.0"
+                                   preserveRatio="true" pickOnBounds="true"/>
+                    </StackPane>
+
+                    <VBox spacing="6.0" alignment="CENTER_LEFT" minWidth="0" HBox.hgrow="ALWAYS">
+                        <Label styleClass="section-label" text="PLAYLIST"/>
+                        <Label fx:id="playlistTitle" styleClass="detail-title" text="Titolo playlist"
+                               maxWidth="Infinity" wrapText="true"/>
+                        <Label fx:id="playlistCount" styleClass="pl-count" text="0 brani"/>
                     </VBox>
-                </StackPane>
-
-                <!-- - SIDEBAR PLAYLIST -
-                     Le righe playlist sono costruite dinamicamente dal
-                     MainViewController: ogni box, al click, si espande in-line
-                     mostrando tutti i brani della playlist (vedi refreshPlaylists). -->
-                <ScrollPane fx:id="playlistSidebar" fitToWidth="true" styleClass="list-scroll"
-                            visible="false" managed="false">
-                    <ListView fx:id="playlistSidebarList" styleClass="song-list">
-                        <padding><Insets top="16.0" right="12.0" bottom="16.0" left="12.0"/></padding>
-                    </ListView>
-                </ScrollPane>
-            </StackPane>
-        </VBox>
-
-        <!-- Floating "add" button -->
-        <Button fx:id="addButton" styleClass="fab" onAction="#onAdd"
-                StackPane.alignment="BOTTOM_RIGHT">
-            <StackPane.margin>
-                <Insets bottom="24.0" right="25.0"/>
-            </StackPane.margin>
-            <graphic>
-                <FontIcon iconLiteral="fas-plus" iconSize="20" styleClass="fab-icon"/>
-            </graphic>
-        </Button>
-    </StackPane>
-
-    <!-- ============================ RIGHT PANE ============================ -->
-    <!-- Gutter orizzontale per dare respiro e non lasciare la card "appesa": le
-         card sono più larghe (560) cosi' la fascia laterale vuota si compatta. -->
-    <StackPane styleClass="content-area" HBox.hgrow="ALWAYS">
-        <padding>
-            <Insets top="32.0" right="48.0" bottom="32.0" left="48.0"/>
-        </padding>
-
-        <!-- CONTENUTO BRANI (player) - stato vuoto -->
-        <VBox fx:id="playerCardEmpty" styleClass="player-card, player-card-gradient" maxWidth="560.0" maxHeight="720.0"
-              spacing="16.0" alignment="CENTER">
-            <padding>
-                <Insets top="48.0" right="48.0" bottom="48.0" left="48.0"/>
-            </padding>
-
-            <StackPane styleClass="empty-icon, empty-icon-play">
-                <SVGPath styleClass="play-icon-faint" content="M7 5v14l11-7z"/>
-            </StackPane>
-            <Label text="Nessun brano selezionato" styleClass="empty-title"/>
-            <Label styleClass="empty-text" wrapText="true"
-                   text="Seleziona un brano dalla libreria per iniziare ad ascoltare."/>
-
-            <Region styleClass="dialog-divider" maxWidth="300.0">
-                <VBox.margin><Insets top="8.0" bottom="8.0"/></VBox.margin>
-            </Region>
-
-            <!-- controlli decorativi (disattivati) -->
-            <HBox alignment="CENTER" spacing="12.0">
-                <Region styleClass="ghost-dash"/>
-                <StackPane styleClass="ghost-play">
-                    <Label text="▶" styleClass="empty-icon-glyph"/>
-                </StackPane>
-                <Region styleClass="ghost-dash"/>
-            </HBox>
-        </VBox>
-
-        <!-- CONTENUTO BRANI (player) - stato attivo -->
-        <VBox fx:id="playerCardActive" styleClass="player-card, player-card-gradient" maxWidth="560.0" maxHeight="720.0"
-              spacing="22.0" alignment="CENTER" visible="false" managed="false">
-            <padding>
-                <Insets top="44.0" right="48.0" bottom="44.0" left="48.0"/>
-            </padding>
-
-            <!-- Copertina del brano: la nota placeholder sta dietro l'ImageView e
-                 viene nascosta dal controller appena un artwork è caricato. -->
-            <StackPane styleClass="player-cover">
-                <FontIcon fx:id="coverPlaceholder" iconLiteral="fas-music" iconSize="72" styleClass="cover-placeholder"/>
-                <ImageView fx:id="playerImage" fitWidth="280.0" fitHeight="280.0"
-                           preserveRatio="true" pickOnBounds="true"/>
-            </StackPane>
-
-            <!-- Titolo + Artista -->
-            <VBox spacing="6.0" alignment="CENTER" maxWidth="400.0">
-                <Label fx:id="playerTitle" styleClass="player-title" text="Titolo"
-                       maxWidth="Infinity" alignment="CENTER"/>
-                <Label fx:id="playerArtist" styleClass="player-artist" text="Artista"
-                       maxWidth="Infinity" alignment="CENTER"/>
-            </VBox>
-
-            <!-- Barra di avanzamento + durata -->
-            <VBox spacing="6.0" maxWidth="400.0">
-                <Slider fx:id="playerSlider" styleClass="player-slider" min="0.0" max="100.0" value="0.0"/>
-                <HBox alignment="CENTER_LEFT">
-                    <Label fx:id="playerCurrentTime" styleClass="player-time" text="0:00"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="playerDurata" styleClass="player-time" text="--:--"/>
                 </HBox>
-            </VBox>
 
-            <!-- Controlli di riproduzione: transport in una pill compatta -->
-            <HBox styleClass="transport-bar">
+                <Region styleClass="dialog-divider" maxWidth="Infinity">
+                    <VBox.margin><Insets top="4.0" bottom="4.0"/></VBox.margin>
+                </Region>
+
+                <!-- Header lista + shuffle -->
+                <HBox alignment="CENTER_LEFT" spacing="12.0" maxWidth="Infinity">
+                    <Label styleClass="section-label" text="BRANI"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="shuffleButton" styleClass="player-ctrl" onAction="#onShuffle">
+                        <graphic>
+                            <SVGPath content="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"
+                                     scaleX="0.78" scaleY="0.78" style="-fx-fill: #cfcdd8;"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+
+                <ListView fx:id="playlistSongsList" styleClass="song-list" VBox.vgrow="ALWAYS" maxWidth="Infinity"/>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <!-- ============================ BOTTOM · PLAYBACK BAR ============================ -->
+    <!-- Barra di riproduzione globale e persistente: transport + barra di seek a
+         tutta larghezza. Prima questi controlli vivevano dentro la card centrale;
+         ora sono una fascia fissa in stile player moderno. -->
+    <bottom>
+        <HBox styleClass="playbar" alignment="CENTER" spacing="22.0">
+            <padding>
+                <Insets top="14.0" right="28.0" bottom="16.0" left="28.0"/>
+            </padding>
+
+            <HBox styleClass="transport-bar" alignment="CENTER" spacing="18.0">
                 <Button fx:id="prevButton" styleClass="player-ctrl">
-                    <graphic>
-                        <FontIcon iconLiteral="fas-step-backward" iconSize="18"/>
-                    </graphic>
+                    <graphic><FontIcon iconLiteral="fas-step-backward" iconSize="18"/></graphic>
                 </Button>
                 <Button fx:id="playPauseButton" styleClass="player-ctrl, player-ctrl-main" onMouseClicked="#onPlayPause">
-                    <graphic>
-                        <FontIcon fx:id="playPauseIcon" iconLiteral="fas-play" iconSize="22"/>
-                    </graphic>
+                    <graphic><FontIcon fx:id="playPauseIcon" iconLiteral="fas-play" iconSize="22"/></graphic>
                 </Button>
                 <Button fx:id="nextButton" styleClass="player-ctrl">
-                    <graphic>
-                        <FontIcon iconLiteral="fas-step-forward" iconSize="18"/>
-                    </graphic>
+                    <graphic><FontIcon iconLiteral="fas-step-forward" iconSize="18"/></graphic>
                 </Button>
             </HBox>
 
-        </VBox>
-
-        <!-- CONTENUTO PLAYLIST (player) - playlist con i suoi brani -->
-        <VBox fx:id="playlistCardActive" styleClass="player-card, player-card-gradient" maxWidth="560.0" maxHeight="720.0"
-              spacing="16.0" alignment="TOP_CENTER" visible="false" managed="false">
-            <padding>
-                <Insets top="36.0" right="32.0" bottom="32.0" left="32.0"/>
-            </padding>
-
-            <!-- Intestazione: copertina + titolo + conteggio -->
-            <HBox spacing="18.0" alignment="CENTER_LEFT" maxWidth="Infinity">
-                <StackPane styleClass="player-cover">
-                    <ImageView fx:id="playlistImage" fitWidth="96.0" fitHeight="96.0"
-                               preserveRatio="true" pickOnBounds="true"/>
-                </StackPane>
-
-                <VBox spacing="6.0" alignment="CENTER_LEFT" minWidth="0" HBox.hgrow="ALWAYS">
-                    <Label styleClass="section-label" text="PLAYLIST"/>
-                    <Label fx:id="playlistTitle" styleClass="detail-title" text="Titolo playlist"
-                           maxWidth="Infinity" wrapText="true"/>
-                    <Label fx:id="playlistCount" styleClass="pl-count" text="0 brani"/>
-                </VBox>
-            </HBox>
-
-            <Region styleClass="dialog-divider" maxWidth="Infinity">
-                <VBox.margin><Insets top="4.0" bottom="4.0"/></VBox.margin>
-            </Region>
-
-            <!-- Header lista + shuffle della playlist (icona nativa SVGPath, nessuna dipendenza esterna) -->
-            <HBox alignment="CENTER_LEFT" spacing="12.0" maxWidth="Infinity">
-                <Label styleClass="section-label" text="BRANI"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Button fx:id="shuffleButton" styleClass="player-ctrl" onAction="#onShuffle">
-                    <graphic>
-                        <SVGPath content="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"
-                                 scaleX="0.78" scaleY="0.78" style="-fx-fill: #cfcdd8;"/>
-                    </graphic>
-                </Button>
-            </HBox>
-
-            <!-- Lista dei brani della playlist -->
-            <ListView fx:id="playlistSongsList" styleClass="song-list" VBox.vgrow="ALWAYS" maxWidth="Infinity"/>
-
-        </VBox>
-
-    </StackPane>
-</HBox>
+            <Label fx:id="playerCurrentTime" styleClass="player-time" text="0:00"/>
+            <Slider fx:id="playerSlider" styleClass="player-slider" min="0.0" max="100.0" value="0.0"
+                    HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Label fx:id="playerDurata" styleClass="player-time" text="--:--"/>
+        </HBox>
+    </bottom>
+</BorderPane>
