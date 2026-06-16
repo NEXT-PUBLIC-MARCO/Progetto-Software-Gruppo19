@@ -9,7 +9,7 @@ public class ShuffleStrat implements OrderStrat {
     @Override
     public List<BranoModel> setBrani(List<BranoModel> tracks) {
         ArrayList<BranoModel> shuffled = new ArrayList<BranoModel>(tracks);
-        Collections.shuffle(tracks);
+        Collections.shuffle(shuffled);
         return shuffled;
     }
 }
