@@ -123,6 +123,10 @@ public class PlaylistModel implements Serializable, PlayerIterable {
 
     }
 
+    public boolean hasBrano(BranoModel b){
+        return brani.contains(b);
+    }
+
     @Override
     public PlayerIterator createIterator(BranoModel current) {
         PlaylistIterator iterator = new PlaylistIterator(this, current);
