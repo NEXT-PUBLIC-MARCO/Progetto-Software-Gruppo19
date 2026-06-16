@@ -3,6 +3,7 @@ package it.gruppo19.progetto_music_player.controller;
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
 import it.gruppo19.progetto_music_player.model.commandPattern.*;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
@@ -243,7 +244,7 @@ public class MainViewController implements Observer {
 
                 refreshPlaylists();
 
-                mostraPlayer(sel);
+                mostraPlayer(DataModel.getInstance().createIterator(sel));
             }
         });
 
@@ -379,7 +380,11 @@ public class MainViewController implements Observer {
     }
 
 
-    public void mostraPlayer(BranoModel b){
+    public void mostraPlayer(PlayerIterator iterable){
+
+        if(iterable != null) iterator = iterable;
+        if(iterator == null) return; //-------------------- Che deve fare????? -----------------------------------
+
         playlistCardActive.setVisible(false);
         playlistCardActive.setManaged(false);
         playerCardEmpty.setVisible(false);
@@ -387,12 +392,12 @@ public class MainViewController implements Observer {
         playerCardActive.setVisible(true);
         playerCardActive.setManaged(true);
         playlistSidebarList.getSelectionModel().clearSelection();
-        playerTitle.setText(b.getTitolo());
-        playerArtist.setText(b.getArtista());
-        playerDurata.setText(b.getDurataFormattata());
-        boolean hasArtwork = b.getPathImmaggine() != null && b.getPathImmaggine().toFile().exists();
+        playerTitle.setText(iterator.getCurrent().getTitolo());
+        playerArtist.setText(iterator.getCurrent().getArtista());
+        playerDurata.setText(iterator.getCurrent().getDurataFormattata());
+        boolean hasArtwork = iterator.getCurrent().getPathImmaggine() != null && iterator.getCurrent().getPathImmaggine().toFile().exists();
         if(hasArtwork){
-            playerImage.setImage(new Image(b.getPathImmaggine().toUri().toString(),true));
+            playerImage.setImage(new Image(iterator.getCurrent().getPathImmaggine().toUri().toString(),true));
         }
         else{
             playerImage.setImage(null);
@@ -400,7 +405,7 @@ public class MainViewController implements Observer {
         // placeholder (nota) visibile solo quando il brano non ha copertina
         coverPlaceholder.setVisible(!hasArtwork);
         coverPlaceholder.setManaged(!hasArtwork);
-        caricaAudio(b);
+        caricaAudio(iterator.getCurrent());
     }
 
     public void mostraPlaylist(PlaylistModel p){
@@ -671,12 +676,18 @@ public class MainViewController implements Observer {
 
     @FXML
     private void onPrev() {
-        if(iterator != null) mostraPlayer(iterator.getPrevious());
+        if(iterator != null) {
+            iterator.getPrevious();
+            mostraPlayer(null);
+        }
     }
 
     @FXML
     private void onNext() {
-        if(iterator != null) mostraPlayer(iterator.getNext());
+        if(iterator != null) {
+            iterator.getNext();
+            mostraPlayer(null);
+        }
     }
 
     @FXML
@@ -687,16 +698,20 @@ public class MainViewController implements Observer {
             else
                 iterator.setOrderStrat(new SequentialStrat());
         }
+
+        // aggiornamento UI bottone shuffle
     }
 
     @FXML
     private void onRepeat() {
         if(iterator != null) {
-            if(iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat)
+            if (iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat)
                 iterator.setPlaybackStrat(new LoopStrat());
             else
                 iterator.setPlaybackStrat(new PlayOnceStrat());
         }
+
+        // aggiornamento UI bottone loop
     }
 
     @Override
@@ -707,4 +722,3 @@ public class MainViewController implements Observer {
     }
 
 }
-
