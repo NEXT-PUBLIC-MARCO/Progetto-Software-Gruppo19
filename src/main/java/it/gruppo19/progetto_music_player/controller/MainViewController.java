@@ -107,6 +107,7 @@ public class MainViewController implements Observer {
     @FXML private Label playlistTitle;
     @FXML private Label playlistCount;
     @FXML private ListView<BranoModel> playlistSongsList;
+    private PlaylistModel playlistVisualizzata;   // playlist attualmente aperta nella colonna centrale
 
 
     private MediaPlayer mediaPlayer;       // player corrente
@@ -300,6 +301,7 @@ public class MainViewController implements Observer {
                         commands.peek().execute();
                         // qui probabilmente vorrai anche aggiornare la lista:
                         playlistSongsList.getItems().remove(b);
+                        aggiornaContatoriPlaylist();
                         storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
                     }
                 });
@@ -411,7 +413,8 @@ public class MainViewController implements Observer {
         playerCardActive.setManaged(false);
         playlistCardActive.setVisible(true);
         playlistCardActive.setManaged(true);
-        
+        this.playlistVisualizzata = p;
+
 
         // intestazione: titolo, conteggio brani, copertina
         playlistTitle.setText(p.getTitolo());
@@ -504,6 +507,13 @@ public class MainViewController implements Observer {
             commands.peek().execute();   // Esegue l’ultimo comando inserito
         }
         storage.SaveBrani(new ArrayList<>( model.getBrani()) );
+        storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
+        mediaPlayer.stop();
+        mediaPlayer.dispose();
+        mediaPlayer = null;
+        setShown(playerCardEmpty, true);
+        setShown(playerCardActive, false);
+        vinylSpin.stop();
     }
 
     private void modifyBrano(BranoModel brano){
@@ -556,6 +566,13 @@ public class MainViewController implements Observer {
         playlistSidebarList.refresh();
     }
 
+    private void aggiornaContatoriPlaylist() {
+        refreshPlaylists();
+        if (playlistVisualizzata != null) {
+            playlistCount.setText(playlistVisualizzata.getBrani().size() + " brani");
+        }
+    }
+
     @FXML
     private void addTrackToPlaylist(BranoModel brano){
         Window owner = addButton.getScene().getWindow();
@@ -563,6 +580,7 @@ public class MainViewController implements Observer {
             c.setModel(model);
             c.addBranoToPlaylist(brano);
         });
+        aggiornaContatoriPlaylist();
         storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
     }
 

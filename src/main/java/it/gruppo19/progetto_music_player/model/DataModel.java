@@ -9,6 +9,7 @@ import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DataModel implements Serializable, Observable, PlayerIterable {
 
@@ -75,8 +76,13 @@ public class DataModel implements Serializable, Observable, PlayerIterable {
     public int removeBrani (BranoModel b){
         int index = brani.indexOf(b);
         brani.remove(b);
+        for(PlaylistModel p : playlists){
+            p.removeBrano(b);
+        }
         Notify("BranoRemove", b);
         Notify("BraniChange", brani);
+        Notify("PlaylistChange", playlists);
+
         return index;
     }
 
