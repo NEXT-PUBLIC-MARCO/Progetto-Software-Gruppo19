@@ -391,7 +391,6 @@ public class MainViewController implements Observer {
         playerCardEmpty.setManaged(false);
         playerCardActive.setVisible(true);
         playerCardActive.setManaged(true);
-        playlistSidebarList.getSelectionModel().clearSelection();
         playerTitle.setText(iterator.getCurrent().getTitolo());
         playerArtist.setText(iterator.getCurrent().getArtista());
         playerDurata.setText(iterator.getCurrent().getDurataFormattata());
