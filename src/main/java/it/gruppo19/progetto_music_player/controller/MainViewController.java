@@ -7,10 +7,7 @@ import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
-import it.gruppo19.progetto_music_player.model.strategyPattern.LoopStrat;
-import it.gruppo19.progetto_music_player.model.strategyPattern.PlayOnceStrat;
-import it.gruppo19.progetto_music_player.model.strategyPattern.SequentialStrat;
-import it.gruppo19.progetto_music_player.model.strategyPattern.ShuffleStrat;
+import it.gruppo19.progetto_music_player.model.strategyPattern.*;
 import it.gruppo19.progetto_music_player.storage.Storage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -380,7 +377,7 @@ public class MainViewController implements Observer {
     }
 
 
-    public void mostraPlayer(PlayerIterator iterable){
+    public void mostraPlayer(PlayerIterator iterable) {
 
         if(iterable != null) iterator = iterable;
         if(iterator == null) return; //-------------------- Che deve fare????? -----------------------------------
@@ -704,10 +701,12 @@ public class MainViewController implements Observer {
     @FXML
     private void onRepeat() {
         if(iterator != null) {
-            if (iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat)
+            if (iterator.getPlaybackOrderStrat() instanceof NoAutoPlay)
+                iterator.setPlaybackStrat(new PlayOnceStrat());
+            else if (iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat)
                 iterator.setPlaybackStrat(new LoopStrat());
             else
-                iterator.setPlaybackStrat(new PlayOnceStrat());
+                iterator.setPlaybackStrat(new NoAutoPlay());
         }
 
         // aggiornamento UI bottone loop

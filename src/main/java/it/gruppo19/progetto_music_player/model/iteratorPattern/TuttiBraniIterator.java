@@ -2,10 +2,7 @@ package it.gruppo19.progetto_music_player.model.iteratorPattern;
 
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
-import it.gruppo19.progetto_music_player.model.strategyPattern.PlayOnceStrat;
-import it.gruppo19.progetto_music_player.model.strategyPattern.PlaybackStrat;
-import it.gruppo19.progetto_music_player.model.strategyPattern.OrderStrat;
-import it.gruppo19.progetto_music_player.model.strategyPattern.SequentialStrat;
+import it.gruppo19.progetto_music_player.model.strategyPattern.*;
 
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class TuttiBraniIterator implements PlayerIterator, Observer {
     {
         this.tuttiBrani = tuttiBrani;
         orderStrat = new SequentialStrat();
-        playbackStrat = new PlayOnceStrat();
+        playbackStrat = new NoAutoPlay();
         braniRiordinati = orderStrat.setBrani(tuttiBrani);
         if(current != null)
             this.current = current;
