@@ -455,9 +455,19 @@ public class MainViewController implements Observer {
 
         // a fine brano: torna su play e ferma il vinile
         mediaPlayer.setOnEndOfMedia(() -> {
-            playPauseIcon.setIconLiteral("fas-play");
-            if (vinylSpin != null) vinylSpin.pause();
+            if(iterator == null || !iterator.hasNext()){
+                playPauseIcon.setIconLiteral("fas-play");
+                if (vinylSpin != null) vinylSpin.pause();
+            } else {
+                iterator.getNext();
+                mostraPlayer(null);
+            }
         });
+
+        if (!(iterator.getPlaybackOrderStrat() instanceof NoAutoPlay)) {
+            mediaPlayer.play();
+            playPauseIcon.setIconLiteral("fas-pause");
+        }
     }
 
 
