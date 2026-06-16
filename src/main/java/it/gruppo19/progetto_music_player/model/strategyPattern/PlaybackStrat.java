@@ -7,6 +7,4 @@ import java.util.List;
 public interface PlaybackStrat {
     boolean hasNext(List<BranoModel> tracks, BranoModel current);
     boolean hasPrevious(List<BranoModel> tracks, BranoModel current);
-    BranoModel getNext(List<BranoModel> tracks, BranoModel current);
-    BranoModel getPrevious(List<BranoModel> tracks, BranoModel current);
 }

@@ -1,5 +1,5 @@
 package it.gruppo19.progetto_music_player.model;
-import it.gruppo19.progetto_music_player.model.iteratorPattern.BranoIterator;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.TuttiBraniIterator;
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterable;
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observable;
