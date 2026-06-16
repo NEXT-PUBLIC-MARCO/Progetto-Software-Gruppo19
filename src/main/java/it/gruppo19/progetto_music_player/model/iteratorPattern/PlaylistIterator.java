@@ -50,7 +50,13 @@ public class PlaylistIterator implements PlayerIterator, Observer {
     public BranoModel getCurrent() { return current; }
 
     @Override
+    public PlaybackStrat getPlaybackOrderStrat() { return playbackStrat; }
+
+    @Override
     public void setPlaybackStrat(PlaybackStrat strat) { this.playbackStrat = strat; }
+
+    @Override
+    public OrderStrat getOrderStrat() { return  orderStrat; }
 
     @Override
     public void setOrderStrat(OrderStrat strat)

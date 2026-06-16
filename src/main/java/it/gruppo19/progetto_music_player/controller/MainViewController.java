@@ -3,8 +3,13 @@ package it.gruppo19.progetto_music_player.controller;
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
 import it.gruppo19.progetto_music_player.model.commandPattern.*;
+import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
+import it.gruppo19.progetto_music_player.model.strategyPattern.LoopStrat;
+import it.gruppo19.progetto_music_player.model.strategyPattern.PlayOnceStrat;
+import it.gruppo19.progetto_music_player.model.strategyPattern.SequentialStrat;
+import it.gruppo19.progetto_music_player.model.strategyPattern.ShuffleStrat;
 import it.gruppo19.progetto_music_player.storage.Storage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,6 +44,7 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Stack;
@@ -645,7 +651,9 @@ public class MainViewController implements Observer {
         }
     }
 
-    // METODI RIGHT PANE ===================================================
+    // METODI PLAYER ===================================================
+
+    private PlayerIterator iterator;
     @FXML
     private void onPlayPause() {
         if (mediaPlayer == null) return;
@@ -663,22 +671,32 @@ public class MainViewController implements Observer {
 
     @FXML
     private void onPrev() {
-        // TODO: brano precedente
+        if(iterator != null) mostraPlayer(iterator.getPrevious());
     }
 
     @FXML
     private void onNext() {
-        // TODO: brano successivo
+        if(iterator != null) mostraPlayer(iterator.getNext());
     }
 
     @FXML
     private void onShuffle() {
-        // TODO: attiva/disattiva riproduzione casuale
+        if(iterator != null) {
+            if(iterator.getOrderStrat() instanceof SequentialStrat)
+                iterator.setOrderStrat(new ShuffleStrat());
+            else
+                iterator.setOrderStrat(new SequentialStrat());
+        }
     }
 
     @FXML
     private void onRepeat() {
-        // TODO: attiva/disattiva ripeti
+        if(iterator != null) {
+            if(iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat)
+                iterator.setPlaybackStrat(new LoopStrat());
+            else
+                iterator.setPlaybackStrat(new PlayOnceStrat());
+        }
     }
 
     @Override

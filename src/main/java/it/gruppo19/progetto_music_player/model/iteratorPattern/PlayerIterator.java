@@ -10,6 +10,8 @@ public interface PlayerIterator{
     BranoModel getNext();
     BranoModel getPrevious();
     BranoModel getCurrent();
+    PlaybackStrat getPlaybackOrderStrat();
     void setPlaybackStrat(PlaybackStrat strat);
+    OrderStrat getOrderStrat();
     void setOrderStrat(OrderStrat strat);
 }

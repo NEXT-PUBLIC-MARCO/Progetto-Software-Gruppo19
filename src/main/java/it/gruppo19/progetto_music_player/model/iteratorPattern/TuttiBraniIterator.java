@@ -22,7 +22,11 @@ public class TuttiBraniIterator implements PlayerIterator, Observer {
         this.tuttiBrani = tuttiBrani;
         orderStrat = new SequentialStrat();
         playbackStrat = new PlayOnceStrat();
-        this.current = current;
+        braniRiordinati = orderStrat.setBrani(tuttiBrani);
+        if(current != null)
+            this.current = current;
+        else
+            this.current = braniRiordinati == null || braniRiordinati.isEmpty() ? null : braniRiordinati.getFirst();
     }
 
     @Override
@@ -48,7 +52,13 @@ public class TuttiBraniIterator implements PlayerIterator, Observer {
     public BranoModel getCurrent() { return current; }
 
     @Override
+    public PlaybackStrat getPlaybackOrderStrat() { return playbackStrat; }
+
+    @Override
     public void setPlaybackStrat(PlaybackStrat strat) { this.playbackStrat = strat; }
+
+    @Override
+    public OrderStrat getOrderStrat() { return orderStrat; }
 
     @Override
     public void setOrderStrat(OrderStrat strat)
