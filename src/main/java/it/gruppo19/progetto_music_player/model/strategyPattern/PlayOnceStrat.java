@@ -10,9 +10,4 @@ public class PlayOnceStrat implements PlaybackStrat {
     public boolean hasNext(List<BranoModel> tracks, BranoModel current) {
         return tracks != null && !tracks.isEmpty() && current != null && tracks.indexOf(current) + 1 < tracks.size();
     }
-
-    @Override
-    public boolean hasPrevious(List<BranoModel> tracks, BranoModel current) {
-        return tracks != null && !tracks.isEmpty() && current != null && tracks.indexOf(current) - 1 > 0;
-    }
 }

@@ -133,9 +133,9 @@ public class BranoModel implements Serializable, PlayerIterable {
     }
 
     @Override
-    public PlayerIterator createIterator(Observable model) {
-        BranoIterator iterator = new BranoIterator(this);
-        if(model != null) model.Attach(iterator);
+    public PlayerIterator createIterator(DataModel model) {
+        TuttiBraniIterator iterator = new TuttiBraniIterator(model.getBrani(), this);
+        model.Attach(iterator);
         return iterator;
     }
 
