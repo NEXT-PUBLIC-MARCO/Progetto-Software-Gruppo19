@@ -521,9 +521,11 @@ public class MainViewController implements Observer {
         }
         storage.SaveBrani(new ArrayList<>( model.getBrani()) );
         storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
-        mediaPlayer.stop();
-        mediaPlayer.dispose();
-        mediaPlayer = null;
+        if(mediaPlayer != null && iterator != null && iterator.getCurrent() == brano) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+            mediaPlayer = null;
+        }
         setShown(playerCardEmpty, true);
         setShown(playerCardActive, false);
         vinylSpin.stop();
