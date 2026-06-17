@@ -57,7 +57,7 @@ public class AddToPlaylistDialogController {
         }
 
         Label titleLabel = new Label(playlist.getTitolo());
-        titleLabel.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+        titleLabel.setStyle("-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: white;");
         HBox.setHgrow(titleLabel, javafx.scene.layout.Priority.ALWAYS);
 
         CheckBox checkBox = new CheckBox();
