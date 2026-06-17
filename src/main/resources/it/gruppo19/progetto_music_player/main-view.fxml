@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -46,6 +47,14 @@
                 <Text styleClass="logo-melo" text="Music Player "/>
                 <Text styleClass="logo-dia" text="Gruppo 19"/>
             </TextFlow>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- "Spegni la musica": chiude l'app (neutro, rosso all'hover) -->
+            <Button fx:id="closeButton" styleClass="window-close" onAction="#onClose">
+                <graphic><FontIcon iconLiteral="fas-power-off" iconSize="16"/></graphic>
+                <tooltip><Tooltip text="Esci"/></tooltip>
+            </Button>
         </HBox>
     </top>
 

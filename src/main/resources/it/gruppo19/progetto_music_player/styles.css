@@ -45,6 +45,20 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 18, 0, 0, 5);
 }
 
+/* bottone "spegni la musica" (chiudi app): tondo, neutro, rosso all'hover */
+.window-close {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-min-width: 38px;  -fx-min-height: 38px;
+    -fx-max-width: 38px;  -fx-max-height: 38px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+.window-close .ikonli-font-icon { -fx-icon-color: -fx-mut; }
+.window-close:hover { -fx-background-color: rgba(255, 77, 79, 0.16); }
+.window-close:hover .ikonli-font-icon { -fx-icon-color: #ff4d4f; }
+.window-close:pressed { -fx-background-color: rgba(255, 77, 79, 0.28); }
+
 /* contenitore della sidebar (StackPane): trasparente, lo sfondo lo da' .sidebar */
 .sidebar-wrap { -fx-background-color: transparent; }
 

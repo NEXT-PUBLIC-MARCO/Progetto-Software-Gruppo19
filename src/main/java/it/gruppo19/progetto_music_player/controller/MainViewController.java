@@ -11,6 +11,7 @@ import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
 import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.strategyPattern.*;
 import it.gruppo19.progetto_music_player.storage.Storage;
+import javafx.application.Platform;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -413,6 +414,12 @@ public class MainViewController implements Observer {
                     "dialog-add-track.fxml", "Aggiungi brano");
             if (d.isConfirmed()) esegui(new AddBrano(d.getResult(), model));
         }
+    }
+
+    /** Chiude l'applicazione ("spegni la musica"). I dati sono già salvati ad ogni azione. */
+    @FXML
+    private void onClose() {
+        Platform.exit();
     }
 
     @FXML
