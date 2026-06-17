@@ -112,7 +112,14 @@ public class MainViewController implements Observer {
             salvaTutto();
             refreshLibrary();
             refreshPlaylists();
-            mostraPlayer(DataModel.getInstance().createIterator(sel));
+
+            // FIX: Creiamo l'iteratore e gli iniettiamo le strategie attualmente in uso nel player
+            PlayerIterator nuovoIteratore = DataModel.getInstance().createIterator(sel);
+            if (player.hasIterator()) {
+                if (player.getPlaybackStrat() != null) nuovoIteratore.setPlaybackStrat(player.getPlaybackStrat());
+                if (player.getOrderStrat() != null) nuovoIteratore.setOrderStrat(player.getOrderStrat());
+            }
+            mostraPlayer(nuovoIteratore);
         });
         // scorciatoia Ctrl/Cmd+Z → Undo
         songListView.sceneProperty().addListener((obs, oldScene, scene) -> {
@@ -137,7 +144,14 @@ public class MainViewController implements Observer {
         playlistSongsList.setOnMouseClicked(e -> {
             BranoModel sel = playlistSongsList.getSelectionModel().getSelectedItem();
             if (sel == null || playlistVisualizzata == null) return;
-            player.play(playlistVisualizzata.createIterator(sel));
+
+            // FIX: Creiamo l'iteratore e gli iniettiamo le strategie attualmente in uso nel player
+            PlayerIterator nuovoIteratore = playlistVisualizzata.createIterator(sel);
+            if (player.hasIterator()) {
+                if (player.getPlaybackStrat() != null) nuovoIteratore.setPlaybackStrat(player.getPlaybackStrat());
+                if (player.getOrderStrat() != null) nuovoIteratore.setOrderStrat(player.getOrderStrat());
+            }
+            player.play(nuovoIteratore);
         });
     }
 
@@ -396,7 +410,9 @@ public class MainViewController implements Observer {
     // HANDLER PLAYER (delegano solo allo stato; la UI si aggiorna da sola) ====
 
     @FXML private void onPlayPause() { player.togglePlay(); }
+
     @FXML private void onPrev()      { player.prev(); }
+
     @FXML private void onNext()      { player.next(); }
 
     @FXML
@@ -432,7 +448,6 @@ public class MainViewController implements Observer {
     }
 
     // OBSERVER: i dati cambiano → la UI si ridisegna ================
-
     @Override
     public void Update(String event, Object object) {
         switch (event) {

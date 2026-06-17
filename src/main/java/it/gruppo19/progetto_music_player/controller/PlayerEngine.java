@@ -134,6 +134,10 @@ public class PlayerEngine {
         return iterator == null ? null : iterator.getPlaybackOrderStrat();
     }
 
+    public OrderStrat getOrderStrat() {
+        return iterator == null ? null : iterator.getOrderStrat();
+    }
+
     public void setOrderStrat(OrderStrat strat) {
         if (iterator != null) iterator.setOrderStrat(strat);
     }
