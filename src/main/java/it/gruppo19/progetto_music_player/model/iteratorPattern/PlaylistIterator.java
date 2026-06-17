@@ -42,7 +42,7 @@ public class PlaylistIterator implements PlayerIterator, Observer {
     @Override
     public BranoModel getPrevious() {
         if(braniRiordinati != null && !braniRiordinati.isEmpty() && current != null)
-            current = braniRiordinati.get((braniRiordinati.indexOf(current) - 1) % braniRiordinati.size());
+            current = braniRiordinati.get((braniRiordinati.indexOf(current) - 1 + braniRiordinati.size()) % braniRiordinati.size());
         return current;
     }
 
