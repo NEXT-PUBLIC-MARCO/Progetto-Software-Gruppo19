@@ -21,7 +21,7 @@ public class PlaylistIterator implements PlayerIterator, Observer {
     {
         this.playlist = playlist;
         orderStrat = new SequentialStrat();
-        playbackStrat = new PlayOnceStrat();
+        playbackStrat = new NoAutoPlayStrat();
         braniRiordinati = orderStrat.setBrani(playlist.getBrani());
         if(current != null)
             this.current = current;
@@ -65,11 +65,11 @@ public class PlaylistIterator implements PlayerIterator, Observer {
 
     @Override
     public void Update(String event, Object object) {
-        if(event == "PlaylistRemove" && (PlaylistModel)object == playlist) {
+        if("PlaylistRemove".equals(event) && (PlaylistModel)object == playlist) {
             playlist = null;
             braniRiordinati = null;
             current = null;
-        } else if(event == "PlaylistChange" && (PlaylistModel)object == playlist) {
+        } else if("PlaylistChange".equals(event) && (PlaylistModel)object == playlist) {
             Set setPlaylist = new HashSet<>(playlist.getBrani());
             Set setBrani = new HashSet<>(braniRiordinati);
             if(!setPlaylist.equals(setBrani)){

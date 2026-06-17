@@ -441,6 +441,7 @@ public class MainViewController implements Observer {
         if (!player.hasIterator()) return;
         shuffleState = (shuffleState + 1) % 3;
         shuffleButton.getStyleClass().removeAll("is-active", "is-shuffle");
+
         switch (shuffleState) {
             case 0 -> {   // stop: nessun avanzamento automatico
                 player.setOrderStrat(new SequentialStrat());
