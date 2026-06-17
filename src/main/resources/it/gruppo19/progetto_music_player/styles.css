@@ -152,6 +152,7 @@
     -fx-background-color: linear-gradient(to bottom, #20202a, -fx-surf 220px);
     -fx-border-color: transparent -fx-brd transparent transparent;
     -fx-border-width: 0 1px 0 0;
+    -fx-padding: 0px 0px 50px 0px;
 }
 
 .sidebar-header {
@@ -535,19 +536,6 @@
     -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.35), 16, 0, 0, 5);
 }
 
-.fab{
-
-    -fx-background-color: linear-gradient(to right, -fx-acc-2, -fx-acc);
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 13px;
-    -fx-background-radius: 12px;
-    -fx-padding: 11px 20px 20px 11px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.35), 16, 0, 0, 5);
-
-
-}
 
 .btn-secondary,
 .btn-browse,
@@ -588,6 +576,7 @@
     -fx-max-width: 56px;
     -fx-max-height: 56px;
     -fx-background-radius: 999px;
+    -fx-background-color: #9670ff ;
     -fx-padding: 0;
 }
 .fab-icon { -fx-icon-color: white; -fx-fill: white; -fx-stroke: white; }
