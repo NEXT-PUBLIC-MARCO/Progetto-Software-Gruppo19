@@ -733,22 +733,25 @@ public class MainViewController implements Observer {
         */
         // Ordine di riproduzione: shuffle solo nello stato 2, altrimenti sequenziale.
         if (iterator != null) {
-            if (iterator.getPlaybackOrderStrat() instanceof NoAutoPlay)
-                iterator.setPlaybackStrat(new LoopStrat());
-            else if(iterator.getPlaybackOrderStrat() instanceof LoopStrat)
-                iterator.setPlaybackStrat(new NoAutoPlay());
+            if (iterator.getOrderStrat() instanceof SequentialStrat) {
+                iterator.setOrderStrat(new ShuffleStrat());
+            }
+            else {
+                iterator.setOrderStrat(new SequentialStrat());
+            }
         }
     }
 
     @FXML
     private void onRepeat() {
         if(iterator != null) {
-            if (iterator.getPlaybackOrderStrat() instanceof NoAutoPlay)
+            if (iterator.getPlaybackOrderStrat() instanceof NoAutoPlay) {
                 iterator.setPlaybackStrat(new PlayOnceStrat());
-            else if (iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat)
+            } else if (iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat) {
                 iterator.setPlaybackStrat(new LoopStrat());
-            else
+            } else {
                 iterator.setPlaybackStrat(new NoAutoPlay());
+            }
         }
 
         // aggiornamento UI bottone loop
