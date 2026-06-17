@@ -371,12 +371,28 @@ public class MainViewController implements Observer {
     @FXML
     private void onTabChanged() {
         boolean playlist = tabPlaylist.isSelected();
+
+        // Gestione Sidebar (Sinistra)
         setShown(braniSidebar, !playlist);
         setShown(playlistSidebar, playlist);
-        if (sectionLabel != null)
-            sectionLabel.setText(playlist ? "LE TUE PLAYLIST" : "LIBRERIA");
-    }
 
+        // Etichetta di sezione
+        if (sectionLabel != null) {
+            sectionLabel.setText(playlist ? "LE TUE PLAYLIST" : "LIBRERIA");
+        }
+
+        // GESTIONE PANNELLO DI DESTRA
+        if (!playlist) {
+            // Se l'utente clicca su "Brani", nascondiamo la schermata della playlist
+            setShown(playlistCardActive, false);
+
+            // Se c'è già un brano in coda/riproduzione (iterator non nullo), mostriamo il player attivo.
+            // Altrimenti, mostriamo la schermata del player vuoto.
+            boolean haBranoAttivo = ( player.hasIterator());
+            setShown(playerCardActive, haBranoAttivo);
+            setShown(playerCardEmpty, !haBranoAttivo);
+        }
+    }
     // HANDLER PLAYER (delegano solo allo stato; la UI si aggiorna da sola) ====
 
     @FXML private void onPlayPause() { player.togglePlay(); }
