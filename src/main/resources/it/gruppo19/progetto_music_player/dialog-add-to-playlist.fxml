@@ -30,10 +30,12 @@
     <Region styleClass="dialog-divider"/>
 
     <!-- elenco playlist -->
-    <ScrollPane fitToWidth="true" fitToHeight="false" VBox.vgrow="ALWAYS" style="-fx-border-color: transparent; -fx-background-color: transparent;">
+    <ScrollPane fitToWidth="true" fitToHeight="false" VBox.vgrow="ALWAYS"
+                prefHeight="300.0" maxHeight="400.0"
+                style="-fx-border-color: transparent; -fx-background-color: transparent;">
+
         <VBox fx:id="playlistList" spacing="8.0">
             <padding><Insets top="12.0" right="12.0" bottom="12.0" left="16.0"/></padding>
-            <!-- Gli HBox delle playlist vengono generati qui dal controller -->
         </VBox>
     </ScrollPane>
 

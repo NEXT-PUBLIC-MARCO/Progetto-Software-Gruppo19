@@ -33,10 +33,16 @@ public class PlaylistIterator implements PlayerIterator, Observer {
     public boolean hasNext() { return playbackStrat.hasNext(braniRiordinati, current); }
 
     @Override
-    public BranoModel getNext() { return playbackStrat.getNext(braniRiordinati, current); }
+    public BranoModel getNext() {
+        current = playbackStrat.getNext(braniRiordinati, current);
+        return current;
+    }
 
     @Override
-    public BranoModel getPrevious() { return  playbackStrat.getPrevious(braniRiordinati, current); }
+    public BranoModel getPrevious() {
+        current = playbackStrat.getPrevious(braniRiordinati, current);
+        return current;
+    }
 
     @Override
     public BranoModel getCurrent() { return current; }
