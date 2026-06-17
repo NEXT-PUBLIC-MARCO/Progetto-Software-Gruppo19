@@ -515,6 +515,9 @@
 .toggle-ctrl:hover .ikonli-font-icon { -fx-icon-color: -fx-acc; }
 .toggle-ctrl:selected { -fx-background-color: rgba(157, 123, 255, 0.16); }
 .toggle-ctrl:selected .ikonli-font-icon { -fx-icon-color: -fx-acc; }
+/* stato acceso pilotato dal controller via style class (vale per i Button, a differenza di :selected) */
+.toggle-ctrl.is-active { -fx-background-color: rgba(157, 123, 255, 0.16); }
+.toggle-ctrl.is-active .ikonli-font-icon { -fx-icon-color: -fx-acc; }
 
 /* --- SHUFFLE: 3 stati pilotati dal controller via style class ---
    stato 0 (nessuna classe) = freccia spenta (grigia)

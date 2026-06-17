@@ -211,10 +211,14 @@
                     <VBox.margin><Insets top="4.0" bottom="4.0"/></VBox.margin>
                 </Region>
 
-                <!-- Header lista brani (lo shuffle ora vive nella barra in basso) -->
+                <!-- Header lista brani: a destra il loop dell'intera playlist (LoopStrat) -->
                 <HBox alignment="CENTER_LEFT" spacing="12.0" maxWidth="Infinity">
                     <Label styleClass="section-label" text="BRANI"/>
                     <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="playlistLoopButton" styleClass="player-ctrl, toggle-ctrl"
+                            onAction="#onPlaylistRepeat">
+                        <graphic><FontIcon iconLiteral="fas-redo" iconSize="16"/></graphic>
+                    </Button>
                 </HBox>
 
                 <ListView fx:id="playlistSongsList" styleClass="song-list" VBox.vgrow="ALWAYS" maxWidth="Infinity"/>

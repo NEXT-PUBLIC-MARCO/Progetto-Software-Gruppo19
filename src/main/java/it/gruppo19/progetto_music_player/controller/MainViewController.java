@@ -84,6 +84,7 @@ public class MainViewController implements Observer {
     @FXML private StackPane vinyl;          // disco che ruota durante la riproduzione
     private RotateTransition vinylSpin;     // animazione del vinile (giro continuo)
     @FXML private Button shuffleButton;
+    @FXML private Button loopButton;        // loop del singolo brano (footer)
     private int shuffleState = 0;           // 0=stop, 1=loop sequenziale, 2=loop shuffle
 
     // RIGHT PANE — playlist ==========================================
@@ -92,6 +93,7 @@ public class MainViewController implements Observer {
     @FXML private Label playlistTitle;
     @FXML private Label playlistCount;
     @FXML private ListView<BranoModel> playlistSongsList;
+    @FXML private Button playlistLoopButton;
 
     // INIZIALIZZAZIONE ===============================================
 
@@ -456,27 +458,39 @@ public class MainViewController implements Observer {
             case 0 -> {   // stop: nessun avanzamento automatico
                 player.setOrderStrat(new SequentialStrat());
                 player.setPlaybackStrat(new NoAutoPlayStrat());
+                System.out.println("Ciao");
             }
             case 1 -> {   // loop sequenziale
                 shuffleButton.getStyleClass().add("is-active");
                 player.setOrderStrat(new SequentialStrat());
                 player.setPlaybackStrat(new AutoPlayStrat());
+                System.out.println("Ciao1");
             }
             case 2 -> {   // loop casuale
                 shuffleButton.getStyleClass().addAll("is-active", "is-shuffle");
                 player.setOrderStrat(new ShuffleStrat());
                 player.setPlaybackStrat(new AutoPlayStrat());
+                System.out.println("Ciao2");
             }
         }
     }
 
+
+    @FXML
+    private void onPlaylistRepeat() {
+        if (!player.hasIterator()) return;
+        boolean attivo = player.getPlaybackStrat() instanceof LoopStrat;
+        player.setPlaybackStrat(attivo ? new NoAutoPlayStrat() : new LoopStrat());
+        if (attivo) playlistLoopButton.getStyleClass().remove("is-active");
+        else        playlistLoopButton.getStyleClass().add("is-active");
+    }
     @FXML
     private void onRepeat() {
         if (!player.hasIterator()) return;
-        PlaybackStrat s = player.getPlaybackStrat();
-        if (s instanceof NoAutoPlayStrat)    player.setPlaybackStrat(new PlayOnceStrat());
-        else if (s instanceof PlayOnceStrat) player.setPlaybackStrat(new LoopStrat());
-        else                                 player.setPlaybackStrat(new NoAutoPlayStrat());
+        boolean attivo = player.getPlaybackStrat() instanceof LoopSingleStrat;
+        player.setPlaybackStrat(attivo ? new NoAutoPlayStrat() : new LoopSingleStrat());
+        if (attivo) loopButton.getStyleClass().remove("is-active");
+        else        loopButton.getStyleClass().add("is-active");
     }
 
     // OBSERVER: i dati cambiano → la UI si ridisegna ================
