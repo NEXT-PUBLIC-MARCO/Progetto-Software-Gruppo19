@@ -145,7 +145,17 @@ public class MainViewController implements Observer {
             BranoModel sel = playlistSongsList.getSelectionModel().getSelectedItem();
             if (sel == null || playlistVisualizzata == null) return;
 
-            // FIX: Creiamo l'iteratore e gli iniettiamo le strategie attualmente in uso nel player
+            // conta l'ascolto sull'ISTANZA in libreria (dopo un reload può essere un
+            // oggetto diverso da quello dentro la playlist): così risale tra i Brani
+            BranoModel inLibreria = model.getBrani().stream()
+                    .filter(x -> x.getId().equals(sel.getId()))
+                    .findFirst().orElse(sel);
+            inLibreria.incrementaAscolti();
+            salvaTutto();
+            refreshLibrary();    // DataModel.getBrani() riordina per ascolti -> sale in cima
+            refreshPlaylists();
+
+            // riproduzione (invariata)
             PlayerIterator nuovoIteratore = playlistVisualizzata.createIterator(sel);
             if (player.hasIterator()) {
                 if (player.getPlaybackStrat() != null) nuovoIteratore.setPlaybackStrat(player.getPlaybackStrat());
