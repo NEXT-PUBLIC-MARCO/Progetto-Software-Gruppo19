@@ -313,7 +313,20 @@ public class MainViewController implements Observer {
                         playlistSongsList.getItems().remove(b);
                         aggiornaContatoriPlaylist();
                         storage.SavePlaylist(new ArrayList<>(model.getPlaylists()));
+                        e.consume();
                     }
+                });
+
+                playlistSongsList.setOnMouseClicked(e -> {
+                    BranoModel sel = playlistSongsList.getSelectionModel().getSelectedItem();
+                    if (sel == null) return;
+                    caricaAudio(sel);
+                    if (mediaPlayer != null){
+                        mediaPlayer.play();
+                        playPauseIcon.setIconLiteral("fas-play");
+                    }
+
+
                 });
             }
         });
@@ -392,7 +405,7 @@ public class MainViewController implements Observer {
     public void mostraPlayer(PlayerIterator iterable) {
 
         if(iterable != null) iterator = iterable;
-        if(iterator == null) return; //-------------------- Che deve fare????? -----------------------------------
+        if(iterator == null) return;
 
         playlistCardActive.setVisible(false);
         playlistCardActive.setManaged(false);
@@ -477,7 +490,7 @@ public class MainViewController implements Observer {
             }
         });
 
-        if (!(iterator.getPlaybackOrderStrat() instanceof NoAutoPlay)) {
+        if (iterator != null && !(iterator.getPlaybackOrderStrat() instanceof NoAutoPlay)) {
             mediaPlayer.play();
             playPauseIcon.setIconLiteral("fas-pause");
         }

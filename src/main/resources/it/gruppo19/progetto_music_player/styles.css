@@ -208,6 +208,13 @@
     -fx-text-fill: -fx-txt;
 }
 
+.song-list .list-cell:filled:selected {
+    -fx-border-color: -fx-acc;          /* viola accent */
+    -fx-border-width: 0 0 0 3px;        /* solo lato sinistro, 3px */
+    -fx-border-insets: 6 0 6 0;         /* margine verticale: la lineetta non tocca i bordi */
+    -fx-border-radius: 2px;             /* angoli leggermente arrotondati */
+}
+
 .song-list:focused {
     -fx-background-color: transparent;
     -fx-faint-focus-color: transparent;
