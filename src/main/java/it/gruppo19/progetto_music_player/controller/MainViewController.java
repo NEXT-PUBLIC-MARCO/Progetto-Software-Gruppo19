@@ -688,7 +688,6 @@ public class MainViewController implements Observer {
     @FXML
     private void onPlayPause() {
         if (mediaPlayer == null) return;
-
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
             playPauseIcon.setIconLiteral("fas-play");
@@ -718,26 +717,32 @@ public class MainViewController implements Observer {
 
     @FXML
     private void onShuffle() {
+        if (iterator == null) return;
+
         // Ciclo a 3 stati: 0 freccia spenta → 1 freccia accesa → 2 shuffle acceso → 0.
         shuffleState = (shuffleState + 1) % 3;
 
-        // aggiornamento UI bottone shuffle (icona + evidenziazione via style class)
         if (shuffleButton != null) {
+            // Reset classi UI
             shuffleButton.getStyleClass().removeAll("is-active", "is-shuffle");
-            if (shuffleState == 1) {
-                shuffleButton.getStyleClass().add("is-active");                 // freccia accesa
+
+            if (shuffleState == 0) {
+                // Stato 0: freccia spenta -> Nessun avanzamento automatico (si ferma a fine brano)
+                iterator.setPlaybackStrat(new NoAutoPlay());
+                iterator.setOrderStrat(new SequentialStrat());
+
+            } else if (shuffleState == 1) {
+                // Stato 1: freccia accesa -> Riproduzione continua in ordine sequenziale
+                shuffleButton.getStyleClass().add("is-active");
+                iterator.setOrderStrat(new SequentialStrat());
+                iterator.setPlaybackStrat(new LoopStrat());
+
             } else if (shuffleState == 2) {
-                shuffleButton.getStyleClass().addAll("is-active", "is-shuffle"); // icona shuffle accesa
+                // Stato 2: icona shuffle -> Riproduzione continua in ordine casuale
+                shuffleButton.getStyleClass().addAll("is-active", "is-shuffle");
+                iterator.setOrderStrat(new ShuffleStrat());
+                iterator.setPlaybackStrat(new LoopStrat());
             }
-        }
-
-        // Ordine di riproduzione: shuffle solo nello stato 2, altrimenti sequenziale.
-        if (iterator != null) {
-            if (shuffleState == 2) iterator.setOrderStrat(new ShuffleStrat());
-            else                   iterator.setOrderStrat(new SequentialStrat());
-
-            // Stato 0 (freccia grigia, spento) → riproduzione di default: NoAutoPlay.
-            if (shuffleState == 0) iterator.setPlaybackStrat(new NoAutoPlay());
         }
     }
 
