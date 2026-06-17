@@ -524,7 +524,6 @@
 
 /* ============ BOTTONI ============ */
 .btn-primary,
-.fab,
 .play-btn {
     -fx-background-color: linear-gradient(to right, -fx-acc-2, -fx-acc);
     -fx-text-fill: white;
@@ -534,6 +533,20 @@
     -fx-padding: 11px 20px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.35), 16, 0, 0, 5);
+}
+
+.fab{
+
+    -fx-background-color: linear-gradient(to right, -fx-acc-2, -fx-acc);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 12px;
+    -fx-padding: 11px 20px 20px 11px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(157, 123, 255, 0.35), 16, 0, 0, 5);
+
+
 }
 
 .btn-secondary,
