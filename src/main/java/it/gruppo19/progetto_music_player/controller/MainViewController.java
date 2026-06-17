@@ -738,10 +738,10 @@ public class MainViewController implements Observer {
             loopButton.getStyleClass().remove("is-looping");
         } else if (iterator.getPlaybackOrderStrat() instanceof PlayOnceStrat) {
             iterator.setPlaybackStrat(new LoopStrat());
-            loopButton.getStyleClass().addAll("is-active", "is-looping");
+            loopButton.getStyleClass().addAll("is-active","is-looping");
         } else {
             iterator.setPlaybackStrat(new NoAutoPlay());
-            loopButton.getStyleClass().removeAll("is-active", "is-looping");
+            loopButton.getStyleClass().removeAll("is-active","is-looping");
         }
     }
 

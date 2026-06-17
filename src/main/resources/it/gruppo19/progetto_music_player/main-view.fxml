@@ -255,9 +255,9 @@
                 </Button>
 
                 <!-- LOOP: una sola icona, cambia solo colore spento/acceso. -->
-                <ToggleButton fx:id="loopButton" styleClass="player-ctrl, toggle-ctrl" onAction="#onRepeat">
+                <Button fx:id="loopButton" styleClass="player-ctrl, toggle-ctrl" onAction="#onRepeat">
                     <graphic><FontIcon iconLiteral="fas-redo" iconSize="16"/></graphic>
-                </ToggleButton>
+                </Button>
             </HBox>
 
             <Label fx:id="playerCurrentTime" styleClass="player-time" text="0:00"/>
