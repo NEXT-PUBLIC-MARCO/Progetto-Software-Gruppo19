@@ -20,14 +20,14 @@
         </VBox>
 
         <HBox alignment="CENTER_RIGHT" spacing="8" minWidth="-Infinity" HBox.hgrow="NEVER">
+            <!-- Bottone Info (i) - Analogo a 'Aggiungi a playlist' delle track -->
+            <Button fx:id="infoButton" minWidth="36" minHeight="36" visible="false">
+                <graphic><FontIcon iconLiteral="fas-info-circle" iconSize="16" /></graphic>
+            </Button>
+
             <!-- Bottone Modifica (Matita) -->
             <Button fx:id="editButton" minWidth="36" minHeight="36">
                 <graphic><FontIcon iconLiteral="fas-pen" iconSize="16" /></graphic>
-            </Button>
-
-            <!-- Bottone Info (i) - Analogo a 'Aggiungi a playlist' delle track -->
-            <Button fx:id="infoButton" minWidth="36" minHeight="36">
-                <graphic><FontIcon iconLiteral="fas-info-circle" iconSize="16" /></graphic>
             </Button>
 
             <!-- Bottone Elimina (Trash) -->
