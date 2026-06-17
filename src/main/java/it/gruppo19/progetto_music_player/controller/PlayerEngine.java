@@ -2,7 +2,6 @@ package it.gruppo19.progetto_music_player.controller;
 
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.iteratorPattern.PlayerIterator;
-import it.gruppo19.progetto_music_player.model.strategyPattern.NoAutoPlayStrat;
 import it.gruppo19.progetto_music_player.model.strategyPattern.OrderStrat;
 import it.gruppo19.progetto_music_player.model.strategyPattern.PlaybackStrat;
 import javafx.beans.property.DoubleProperty;
@@ -68,9 +67,8 @@ public class PlayerEngine {
         });
         mediaPlayer.setOnEndOfMedia(this::onEndOfMedia);
 
-        if (iterator != null && !(iterator.getPlaybackOrderStrat() instanceof NoAutoPlayStrat)) {
-            mediaPlayer.play();
-        }
+        // la traccia scelta parte sempre; la strategy decide solo cosa fare a FINE brano
+        mediaPlayer.play();
     }
 
     private void onEndOfMedia() {

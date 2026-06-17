@@ -136,7 +136,7 @@
 
     <!-- ============================ CENTER · STAGE ============================ -->
     <center>
-        <StackPane styleClass="stage">
+        <StackPane fx:id="stagePane" styleClass="stage">
             <padding>
                 <Insets top="28.0" right="40.0" bottom="28.0" left="40.0"/>
             </padding>

@@ -15,7 +15,14 @@ import javafx.application.Platform;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -71,6 +78,9 @@ public class MainViewController implements Observer {
     @FXML private ListView<PlaylistModel> playlistSidebarList;
     @FXML private Button addButton;
 
+    // CENTER — palco (ospita gli orb animati dello sfondo) ===========
+    @FXML private StackPane stagePane;
+
     // RIGHT PANE — player ============================================
     @FXML private VBox playerCardEmpty;
     @FXML private VBox playerCardActive;
@@ -86,7 +96,10 @@ public class MainViewController implements Observer {
     private RotateTransition vinylSpin;     // animazione del vinile (giro continuo)
     @FXML private Button shuffleButton;
     @FXML private Button loopButton;        // loop del singolo brano (footer)
-    private int shuffleState = 0;           // 0=stop, 1=loop sequenziale, 2=loop shuffle
+    // Stato dei controlli di riproduzione = unica fonte di verità.
+    private boolean shuffleOn = false;      // ordine: false=sequenziale, true=casuale
+    private boolean loopPlaylist = false;   // ripeti intera playlist (LoopStrat)
+    private boolean loopSingle = false;     // ripeti brano corrente (LoopSingleStrat)
 
     // RIGHT PANE — playlist ==========================================
     @FXML private VBox playlistCardActive;
@@ -101,6 +114,7 @@ public class MainViewController implements Observer {
     @FXML
     public void initialize() {
         setupVinileEClip();
+        setupGlow();
         bindPlayerUi();
 
         // --- libreria ---
@@ -116,13 +130,8 @@ public class MainViewController implements Observer {
             refreshLibrary();
             refreshPlaylists();
 
-            // FIX: Creiamo l'iteratore e gli iniettiamo le strategie attualmente in uso nel player
-            PlayerIterator nuovoIteratore = DataModel.getInstance().createIterator(sel);
-            if (player.hasIterator()) {
-                if (player.getPlaybackStrat() != null) nuovoIteratore.setPlaybackStrat(player.getPlaybackStrat());
-                if (player.getOrderStrat() != null) nuovoIteratore.setOrderStrat(player.getOrderStrat());
-            }
-            mostraPlayer(nuovoIteratore);
+            mostraPlayer(DataModel.getInstance().createIterator(sel));
+            applicaStrategie();   // applica shuffle/loop correnti al nuovo iterator
         });
         // scorciatoia Ctrl/Cmd+Z → Undo
         songListView.sceneProperty().addListener((obs, oldScene, scene) -> {
@@ -158,14 +167,75 @@ public class MainViewController implements Observer {
             refreshLibrary();    // DataModel.getBrani() riordina per ascolti -> sale in cima
             refreshPlaylists();
 
-            // riproduzione (invariata)
-            PlayerIterator nuovoIteratore = playlistVisualizzata.createIterator(sel);
-            if (player.hasIterator()) {
-                if (player.getPlaybackStrat() != null) nuovoIteratore.setPlaybackStrat(player.getPlaybackStrat());
-                if (player.getOrderStrat() != null) nuovoIteratore.setOrderStrat(player.getOrderStrat());
-            }
-            player.play(nuovoIteratore);
+            // riproduzione
+            player.play(playlistVisualizzata.createIterator(sel));
+            applicaStrategie();   // applica shuffle/loop correnti al nuovo iterator
         });
+    }
+
+    /**
+     * Crea due "orb" luminosi (cerchi sfocati con gradiente) dietro al contenuto
+     * centrale e li anima con un lento movimento + "respiro". Insieme, sul fondo
+     * scuro, generano l'effetto arcobaleno.
+     */
+    private void setupGlow() {
+        if (stagePane == null) return;
+
+        // confina gli orb (e il loro ingombro per i click) all'area centrale:
+        // così non sforano sull'header rendendolo non cliccabile. La grafica non
+        // cambia perché lo sforo era comunque coperto dai pannelli opachi.
+        javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle();
+        clip.widthProperty().bind(stagePane.widthProperty());
+        clip.heightProperty().bind(stagePane.heightProperty());
+        stagePane.setClip(clip);
+
+        Circle orb1 = makeOrb(Color.web("#ff4ecd"), Color.web("#9d7bff"), 260);
+        orb1.layoutXProperty().bind(stagePane.widthProperty().multiply(0.24));
+        orb1.layoutYProperty().bind(stagePane.heightProperty().multiply(0.30));
+
+        Circle orb2 = makeOrb(Color.web("#00e0ff"), Color.web("#32e6a0"), 280);
+        orb2.layoutXProperty().bind(stagePane.widthProperty().multiply(0.78));
+        orb2.layoutYProperty().bind(stagePane.heightProperty().multiply(0.74));
+
+        // dietro alle card del player/playlist
+        stagePane.getChildren().add(0, orb1);
+        stagePane.getChildren().add(1, orb2);
+
+        animateOrb(orb1, 70, 50, 9, 0.92, 1.18);
+        animateOrb(orb2, -80, -60, 12, 1.12, 0.90);
+    }
+
+    /** Orb = cerchio con gradiente radiale (centro acceso → bordi trasparenti) e blur. */
+    private Circle makeOrb(Color inner, Color mid, double radius) {
+        Circle c = new Circle(radius);
+        c.setFill(new RadialGradient(0, 0, 0.5, 0.5, 0.5, true, CycleMethod.NO_CYCLE,
+                new Stop(0, inner),
+                new Stop(0.5, Color.color(mid.getRed(), mid.getGreen(), mid.getBlue(), 0.55)),
+                new Stop(1, Color.TRANSPARENT)));
+        c.setEffect(new GaussianBlur(90));
+        c.setOpacity(0.55);
+        c.setManaged(false);         // non influenza il layout dello stage
+        c.setMouseTransparent(true); // non intercetta i click
+        return c;
+    }
+
+    /** Movimento lento (autoreverse) + "respiro" in scala, all'infinito. */
+    private void animateOrb(Circle orb, double dx, double dy, double secs, double sFrom, double sTo) {
+        TranslateTransition t = new TranslateTransition(javafx.util.Duration.seconds(secs), orb);
+        t.setByX(dx);
+        t.setByY(dy);
+        t.setAutoReverse(true);
+        t.setCycleCount(Animation.INDEFINITE);
+        t.setInterpolator(Interpolator.EASE_BOTH);
+        t.play();
+
+        ScaleTransition s = new ScaleTransition(javafx.util.Duration.seconds(secs * 0.85), orb);
+        s.setFromX(sFrom); s.setFromY(sFrom);
+        s.setToX(sTo);     s.setToY(sTo);
+        s.setAutoReverse(true);
+        s.setCycleCount(Animation.INDEFINITE);
+        s.setInterpolator(Interpolator.EASE_BOTH);
+        s.play();
     }
 
     /** Clip circolare della copertina + animazione del vinile (in pausa di default). */
@@ -419,7 +489,10 @@ public class MainViewController implements Observer {
     /** Chiude l'applicazione ("spegni la musica"). I dati sono già salvati ad ogni azione. */
     @FXML
     private void onClose() {
-        Platform.exit();
+        player.stopAndClear();              // ferma il MediaPlayer (thread non-daemon)
+        if (vinylSpin != null) vinylSpin.stop();
+        Platform.exit();                    // chiude le finestre JavaFX
+        System.exit(0);                     // garantisce la fine del processo
     }
 
     @FXML
@@ -457,47 +530,57 @@ public class MainViewController implements Observer {
 
     @FXML
     private void onShuffle() {
-        if (!player.hasIterator()) return;
-        shuffleState = (shuffleState + 1) % 3;
-        shuffleButton.getStyleClass().removeAll("is-active", "is-shuffle");
-
-        switch (shuffleState) {
-            case 0 -> {   // stop: nessun avanzamento automatico
-                player.setOrderStrat(new SequentialStrat());
-                player.setPlaybackStrat(new NoAutoPlayStrat());
-                System.out.println("Ciao");
-            }
-            case 1 -> {   // loop sequenziale
-                shuffleButton.getStyleClass().add("is-active");
-                player.setOrderStrat(new SequentialStrat());
-                player.setPlaybackStrat(new AutoPlayStrat());
-                System.out.println("Ciao1");
-            }
-            case 2 -> {   // loop casuale
-                shuffleButton.getStyleClass().addAll("is-active", "is-shuffle");
-                player.setOrderStrat(new ShuffleStrat());
-                player.setPlaybackStrat(new AutoPlayStrat());
-                System.out.println("Ciao2");
-            }
-        }
+        shuffleOn = !shuffleOn;
+        applicaStrategie();
     }
-
 
     @FXML
     private void onPlaylistRepeat() {
-        if (!player.hasIterator()) return;
-        boolean attivo = player.getPlaybackStrat() instanceof LoopStrat;
-        player.setPlaybackStrat(attivo ? new NoAutoPlayStrat() : new LoopStrat());
-        if (attivo) playlistLoopButton.getStyleClass().remove("is-active");
-        else        playlistLoopButton.getStyleClass().add("is-active");
+        loopPlaylist = !loopPlaylist;
+        if (loopPlaylist) loopSingle = false;   // i due loop sono mutuamente esclusivi
+        applicaStrategie();
     }
+
     @FXML
     private void onRepeat() {
-        if (!player.hasIterator()) return;
-        boolean attivo = player.getPlaybackStrat() instanceof LoopSingleStrat;
-        player.setPlaybackStrat(attivo ? new NoAutoPlayStrat() : new LoopSingleStrat());
-        if (attivo) loopButton.getStyleClass().remove("is-active");
-        else        loopButton.getStyleClass().add("is-active");
+        loopSingle = !loopSingle;
+        if (loopSingle) loopPlaylist = false;    // i due loop sono mutuamente esclusivi
+        applicaStrategie();
+    }
+
+    /**
+     * Unico punto che traduce lo stato dei controlli in strategie sull'iterator
+     * e aggiorna le visuali dei bottoni. Ordine e continuazione sono due assi
+     * indipendenti, quindi i bottoni non si "rubano" più lo stato a vicenda.
+     */
+    private void applicaStrategie() {
+        if (player.hasIterator()) {
+            // asse ORDINE
+            player.setOrderStrat(shuffleOn ? new ShuffleStrat() : new SequentialStrat());
+            // asse CONTINUAZIONE (a fine brano): priorità loop-singolo > loop-playlist > shuffle > stop
+            PlaybackStrat pb;
+            if (loopSingle)        pb = new LoopSingleStrat();
+            else if (loopPlaylist) pb = new LoopStrat();
+            else if (shuffleOn)    pb = new AutoPlayStrat();   // shuffle senza loop: avanza in ordine casuale
+            else                   pb = new NoAutoPlayStrat(); // default: a fine brano si ferma
+            player.setPlaybackStrat(pb);
+        }
+        aggiornaVisualiControlli();
+    }
+
+    private void aggiornaVisualiControlli() {
+        setActive(loopButton, loopSingle);
+        setActive(playlistLoopButton, loopPlaylist);
+        setActive(shuffleButton, shuffleOn);
+        // lo shuffle ha anche l'icona alternativa (ic-on) pilotata da is-shuffle
+        if (shuffleOn) shuffleButton.getStyleClass().add("is-shuffle");
+        else           shuffleButton.getStyleClass().remove("is-shuffle");
+    }
+
+    private static void setActive(Button b, boolean active) {
+        if (b == null) return;
+        if (active) { if (!b.getStyleClass().contains("is-active")) b.getStyleClass().add("is-active"); }
+        else        b.getStyleClass().remove("is-active");
     }
 
     // OBSERVER: i dati cambiano → la UI si ridisegna ================
