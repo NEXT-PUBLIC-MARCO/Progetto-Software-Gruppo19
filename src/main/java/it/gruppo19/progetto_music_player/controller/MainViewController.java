@@ -165,6 +165,24 @@ public class MainViewController implements Observer {
         Tooltip.install(playerTitle, titleTip);
     }
 
+
+    private void selezionaBranoCorrente(BranoModel b) {
+        if (b == null) {
+            playlistSongsList.getSelectionModel().clearSelection();
+            return;
+        }
+        // seleziona nella playlist aperta, solo se la contiene
+        if (playlistSongsList.getItems().contains(b)) {
+            playlistSongsList.getSelectionModel().select(b);
+            playlistSongsList.scrollTo(b);
+        }
+        // (opzionale) stessa cosa per la libreria
+        if (songListView.getItems().contains(b)) {
+            songListView.getSelectionModel().select(b);
+            songListView.scrollTo(b);
+        }
+    }
+
     /**
      * Lega la UI del player allo stato di {@link PlayerEngine}: da qui in poi
      * nessun handler tocca icone/slider/vinile, ci pensano questi binding.
@@ -193,7 +211,10 @@ public class MainViewController implements Observer {
         });
 
         // contenuto della card = SEMPRE funzione del brano corrente
-        player.current.addListener((o, ol, b) -> renderCurrent(b));
+        player.current.addListener((o, ol, b) -> {
+            renderCurrent(b);
+            selezionaBranoCorrente(b);
+        } );
     }
 
     public void setModel(DataModel model) {
