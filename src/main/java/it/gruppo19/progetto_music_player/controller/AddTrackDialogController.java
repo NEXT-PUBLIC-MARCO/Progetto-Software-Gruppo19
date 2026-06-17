@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -31,6 +32,9 @@ public class AddTrackDialogController {
     @FXML private TextField audioPathField;
     @FXML private TextField fotoPathField;
     @FXML private Label errorLabel;
+    @FXML private CheckBox favouriteCheck;
+    @FXML private CheckBox newReleaseCheck;
+    @FXML private CheckBox explicitCheck;
 
     @FXML private Label changeActionText;
     @FXML private Label changeActionDesc;
@@ -105,6 +109,9 @@ public class AddTrackDialogController {
             editing.setAnno(anno);
             editing.setPathAudio(musica);
             editing.setPathImmaggine(foto);
+            editing.setFavourite(favouriteCheck.isSelected());
+            editing.setNewRelease(newReleaseCheck.isSelected());
+            editing.setExplicit(explicitCheck.isSelected());
             result = editing;
             confirmed = true;
             close(e);
@@ -118,6 +125,9 @@ public class AddTrackDialogController {
                     anno,
                     foto,
                     musica);
+            result.setFavourite(favouriteCheck.isSelected());
+            result.setNewRelease(newReleaseCheck.isSelected());
+            result.setExplicit(explicitCheck.isSelected());
             confirmed = true;
             close(e);
         }
@@ -156,6 +166,9 @@ public class AddTrackDialogController {
         titoloField.setText(b.getTitolo());
         artistaField.setText(b.getArtista());
         genereCombo.setValue(b.getGenere());
+        favouriteCheck.setSelected(b.isFavourite());
+        newReleaseCheck.setSelected(b.isNewRelease());
+        explicitCheck.setSelected(b.isExplicit());
         System.out.println("[DEBUG] Campi testo impostati -> Titolo: " + b.getTitolo() + " | Artista: " + b.getArtista() + " | Genere: " + b.getGenere());
 
         // Debug della sezione Audio

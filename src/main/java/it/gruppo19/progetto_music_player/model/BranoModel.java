@@ -26,6 +26,9 @@ public class BranoModel implements Serializable {
     private transient Path pathImmaggine;
     private transient Path pathAudio;
     private int ascolti=0;
+    private boolean favourite;
+    private boolean explicit;
+    private boolean newRelease;
 
     public BranoModel(String id, String titolo, String descrizione, String artista, String genere, int anno, Path pathImmaggine, Path pathAudio) {
         this.id = id;
@@ -111,6 +114,30 @@ public class BranoModel implements Serializable {
 
     public void incrementaAscolti() {
         this.ascolti++;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public boolean isExplicit() {
+        return explicit;
+    }
+
+    public void setExplicit(boolean explicit) {
+        this.explicit = explicit;
+    }
+
+    public boolean isNewRelease() {
+        return newRelease;
+    }
+
+    public void setNewRelease(boolean newRelease) {
+        this.newRelease = newRelease;
     }
 
     //Chiamato da ObjectOutputStream durante writeObject

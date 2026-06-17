@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -66,6 +67,16 @@
     <VBox spacing="6.0">
         <Label text="ANNO" styleClass="field-label"/>
         <TextField fx:id="annoField" styleClass="form-field" promptText="Es. 1980"/>
+    </VBox>
+
+    <!-- Tag -->
+    <VBox spacing="6.0">
+        <Label text="TAG" styleClass="field-label"/>
+        <HBox spacing="16.0">
+            <CheckBox fx:id="favouriteCheck"  text="Favourite (F)"  style="-fx-text-fill:#cfcdd8;"/>
+            <CheckBox fx:id="newReleaseCheck" text="New release (N)" style="-fx-text-fill:#cfcdd8;"/>
+            <CheckBox fx:id="explicitCheck"   text="Explicit (E)"    style="-fx-text-fill:#cfcdd8;"/>
+        </HBox>
     </VBox>
 
     <!-- File audio -->

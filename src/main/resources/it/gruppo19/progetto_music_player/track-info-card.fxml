@@ -40,6 +40,14 @@
                     <graphic><FontIcon iconLiteral="fas-trash" iconSize="16" /></graphic>
                 </Button>
             </HBox>
+            <HBox fx:id="tagsBox" spacing="6" alignment="CENTER_RIGHT">
+                <Label fx:id="tagFavourite" text="★" managed="false" visible="false"
+                       style="-fx-font-size:10px; -fx-font-weight:bold; -fx-padding:1 7 1 7; -fx-background-radius:6; -fx-background-color:#f5b301; -fx-text-fill:#1b1b22;"/>
+                <Label fx:id="tagNewRelease" text="New" managed="false" visible="false"
+                       style="-fx-font-size:10px; -fx-font-weight:bold; -fx-padding:1 7 1 7; -fx-background-radius:6; -fx-background-color:#2ecc71; -fx-text-fill:#10231a;"/>
+                <Label fx:id="tagExplicit" text="E" managed="false" visible="false"
+                       style="-fx-font-size:10px; -fx-font-weight:bold; -fx-padding:1 7 1 7; -fx-background-radius:6; -fx-background-color:#e74c3c; -fx-text-fill:white;"/>
+            </HBox>
         </VBox>
 
     </HBox>

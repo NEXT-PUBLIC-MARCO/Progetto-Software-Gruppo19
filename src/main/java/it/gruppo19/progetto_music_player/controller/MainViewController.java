@@ -175,6 +175,7 @@ public class MainViewController implements Observer {
             private Node card;
             private Label title, subtitle, anno, durata;
             private ImageView image;
+            private Label tagFav, tagNew, tagExp;
 
             // blocco di inizializzazione: eseguito una volta alla creazione della cella
             {
@@ -194,6 +195,9 @@ public class MainViewController implements Observer {
                     anno     = (Label) loader.getNamespace().get("annoLabel");
                     image    = (ImageView) loader.getNamespace().get("cardImage");
                     durata = (Label) loader.getNamespace().get("durataLabel");
+                    tagFav = (Label) loader.getNamespace().get("tagFavourite");
+                    tagNew = (Label) loader.getNamespace().get("tagNewRelease");
+                    tagExp = (Label) loader.getNamespace().get("tagExplicit");
 
                     // handler impostati UNA volta: usano getItem() = brano corrente della cella
                     Button editButton = (Button) loader.getNamespace().get("editButton");
@@ -222,6 +226,9 @@ public class MainViewController implements Observer {
                 subtitle.setText(brano.getArtista());
                 anno.setText(Integer.toString(brano.getAnno()));
                 durata.setText(brano.getDurataFormattata());
+                setShown(tagFav, brano.isFavourite());
+                setShown(tagNew, brano.isNewRelease());
+                setShown(tagExp, brano.isExplicit());
 
                 if (brano.getPathImmaggine() != null && brano.getPathImmaggine().toFile().exists())
                     image.setImage(new Image(brano.getPathImmaggine().toUri().toString(), true));
