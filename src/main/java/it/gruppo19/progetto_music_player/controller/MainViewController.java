@@ -101,7 +101,8 @@ public class MainViewController implements Observer {
     @FXML private FontIcon coverPlaceholder;
     @FXML private StackPane vinyl;          // disco che ruota durante la riproduzione
     private RotateTransition vinylSpin;     // animazione del vinile (giro continuo)
-    @FXML private Button shuffleButton;     // shuffle a 3 stati (vedi onShuffle)
+    @FXML private Button shuffleButton;
+    @FXML private Button loopButton;
     private int shuffleState = 0;           // 0=spento, 1=freccia attiva, 2=shuffle attivo
 
     @FXML private VBox playlistCardActive;
@@ -688,6 +689,7 @@ public class MainViewController implements Observer {
     @FXML
     private void onPlayPause() {
         if (mediaPlayer == null) return;
+
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
             playPauseIcon.setIconLiteral("fas-play");

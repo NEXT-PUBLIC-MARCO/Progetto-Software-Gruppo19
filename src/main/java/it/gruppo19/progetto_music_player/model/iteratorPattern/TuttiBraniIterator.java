@@ -30,20 +30,10 @@ public class TuttiBraniIterator implements PlayerIterator, Observer {
     public boolean hasNext() { return playbackStrat.hasNext(braniRiordinati, current); }
 
     @Override
-    public BranoModel getNext()
-    {
-        if(braniRiordinati != null && !braniRiordinati.isEmpty() && current != null)
-            current = braniRiordinati.get((braniRiordinati.indexOf(current) + 1) % braniRiordinati.size());
-        return current;
-    }
+    public BranoModel getNext() { return playbackStrat.getNext(braniRiordinati, current); }
 
     @Override
-    public BranoModel getPrevious()
-    {
-        if(braniRiordinati != null && !braniRiordinati.isEmpty() && current != null)
-            current = braniRiordinati.get((braniRiordinati.indexOf(current) - 1) % braniRiordinati.size());
-        return current;
-    }
+    public BranoModel getPrevious() { return  playbackStrat.getPrevious(braniRiordinati, current); }
 
     @Override
     public BranoModel getCurrent() { return current; }
