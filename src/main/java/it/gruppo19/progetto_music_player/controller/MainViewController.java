@@ -97,10 +97,14 @@ public class MainViewController implements Observer {
     @FXML private Button shuffleButton;
     @FXML private Button loopButton;        // loop del singolo brano (footer)
     // Stato dei controlli di riproduzione = unica fonte di verità.
-    private boolean shuffleOn = false;      // ordine: false=sequenziale, true=casuale
+    // asse ORDINE/auto-avanzamento: ciclo a 3 stati pilotato da onShuffle()
+    //   OFF      = sequenziale, si ferma a fine brano  -> freccia grigia
+    //   SEQ      = sequenziale, auto-avanza             -> freccia accesa
+    //   SHUFFLE  = casuale, auto-avanza                 -> icona shuffle accesa
+    private static final int ORDER_OFF = 0, ORDER_SEQ = 1, ORDER_SHUFFLE = 2;
+    private int orderMode = ORDER_OFF;
     private boolean loopPlaylist = false;   // ripeti intera playlist (LoopStrat)
     private boolean loopSingle = false;     // ripeti brano corrente (LoopSingleStrat)
-
     // RIGHT PANE — playlist ==========================================
     @FXML private VBox playlistCardActive;
     @FXML private ImageView playlistImage;
@@ -116,6 +120,7 @@ public class MainViewController implements Observer {
         setupVinileEClip();
         setupGlow();
         bindPlayerUi();
+        aggiornaVisualiControlli();   // stato di default (sequential): freccia accesa
 
         // --- libreria ---
         songListView.setItems(braniItems);
@@ -530,7 +535,7 @@ public class MainViewController implements Observer {
 
     @FXML
     private void onShuffle() {
-        shuffleOn = !shuffleOn;
+        orderMode = (orderMode + 1) % 3;   // OFF -> SEQ -> SHUFFLE -> OFF
         applicaStrategie();
     }
 
@@ -556,13 +561,13 @@ public class MainViewController implements Observer {
     private void applicaStrategie() {
         if (player.hasIterator()) {
             // asse ORDINE
-            player.setOrderStrat(shuffleOn ? new ShuffleStrat() : new SequentialStrat());
-            // asse CONTINUAZIONE (a fine brano): priorità loop-singolo > loop-playlist > shuffle > stop
+            player.setOrderStrat(orderMode == ORDER_SHUFFLE ? new ShuffleStrat() : new SequentialStrat());
+            // asse CONTINUAZIONE (a fine brano): priorità loop-singolo > loop-playlist > auto-avanza > stop
             PlaybackStrat pb;
-            if (loopSingle)        pb = new LoopSingleStrat();
-            else if (loopPlaylist) pb = new LoopStrat();
-            else if (shuffleOn)    pb = new AutoPlayStrat();   // shuffle senza loop: avanza in ordine casuale
-            else                   pb = new NoAutoPlayStrat(); // default: a fine brano si ferma
+            if (loopSingle)              pb = new LoopSingleStrat();
+            else if (loopPlaylist)       pb = new LoopStrat();
+            else if (orderMode != ORDER_OFF) pb = new AutoPlayStrat();   // SEQ/SHUFFLE: avanza al brano successivo
+            else                         pb = new NoAutoPlayStrat();     // OFF: a fine brano si ferma
             player.setPlaybackStrat(pb);
         }
         aggiornaVisualiControlli();
@@ -571,10 +576,11 @@ public class MainViewController implements Observer {
     private void aggiornaVisualiControlli() {
         setActive(loopButton, loopSingle);
         setActive(playlistLoopButton, loopPlaylist);
-        setActive(shuffleButton, shuffleOn);
-        // lo shuffle ha anche l'icona alternativa (ic-on) pilotata da is-shuffle
-        if (shuffleOn) shuffleButton.getStyleClass().add("is-shuffle");
-        else           shuffleButton.getStyleClass().remove("is-shuffle");
+        // ciclo a 3 stati: OFF = grigio (no is-active), SEQ = freccia accesa (is-active),
+        // SHUFFLE = icona shuffle accesa (is-active + is-shuffle)
+        setActive(shuffleButton, orderMode != ORDER_OFF);
+        if (orderMode == ORDER_SHUFFLE) shuffleButton.getStyleClass().add("is-shuffle");
+        else                            shuffleButton.getStyleClass().remove("is-shuffle");
     }
 
     private static void setActive(Button b, boolean active) {
