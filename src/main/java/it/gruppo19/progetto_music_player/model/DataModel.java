@@ -31,7 +31,7 @@ public class DataModel implements Serializable, Observable, PlayerIterable {
         observers.remove(Observer);
     }
 
-    public void Notify(String event, Object object){
+    public void Notify(Observer.Events event, Object object){
         System.out.println("[DEBUG] DataModel.Notify: event=" + event
                 + ", observers da notificare = " + observers.size());
         for(Observer Observer : observers)
@@ -61,16 +61,16 @@ public class DataModel implements Serializable, Observable, PlayerIterable {
                 + ", brani totali dopo add = " + (brani.size() + 1));
         brani.add(b);
         //Notify("BraniChange", brani);
-        Notify("BranoAdd", b);
-        Notify("BraniChange", brani);
+        Notify(Observer.Events.BranoAdd, b);
+        Notify(Observer.Events.BraniChange, brani);
     }
 
     public void addBrani(BranoModel b, int index)
     {
         brani.add(index, b);
         //Notify("BraniChange", brani);
-        Notify("BranoAdd", b);
-        Notify("BraniChange", brani);
+        Notify(Observer.Events.BranoAdd, b);
+        Notify(Observer.Events.BraniChange, brani);
     }
 
     public int removeBrani (BranoModel b){
@@ -79,30 +79,30 @@ public class DataModel implements Serializable, Observable, PlayerIterable {
         for(PlaylistModel p : playlists){
             p.removeBrano(b);
         }
-        Notify("BranoRemove", b);
-        Notify("BraniChange", brani);
-        Notify("PlaylistChange", playlists);
+        Notify(Observer.Events.BranoRemove, b);
+        Notify(Observer.Events.BraniChange, brani);
+        Notify(Observer.Events.PlaylistsChange, playlists);
 
         return index;
     }
 
     public void addPlaylist (PlaylistModel p){
         playlists.add(p);
-        Notify("PlaylistAdd", p);
-        Notify("PlaylistChange", playlists);
+        Notify(Observer.Events.PlaylistAdd, p);
+        Notify(Observer.Events.PlaylistsChange, playlists);
     }
 
     public void addPlaylist (PlaylistModel p, int index){
         playlists.add(index, p);
-        Notify("PlaylistAdd", p);
-        Notify("PlaylistChange", playlists);
+        Notify(Observer.Events.PlaylistAdd, p);
+        Notify(Observer.Events.PlaylistsChange, playlists);
     }
 
     public int removePlaylist (PlaylistModel p){
         int index = playlists.indexOf(p);
         playlists.remove(p);
-        Notify("PlaylistRemove", p);
-        Notify("PlaylistChange", playlists);
+        Notify(Observer.Events.PlaylistRemove, p);
+        Notify(Observer.Events.PlaylistsChange, playlists);
         return index;
     }
 
@@ -122,15 +122,15 @@ public class DataModel implements Serializable, Observable, PlayerIterable {
         // Questa cosa è sbagliata.
         // Tutte le chiamate di "BraniChange" passano come Object una List non un singolo BranoModel.
         //Notify("BraniChange", b);
-        Notify("BranoUpdate", b);
-        Notify("BraniChange", brani);
+        Notify(Observer.Events.BranoUpdate, b);
+        Notify(Observer.Events.BraniChange, brani);
     }
 
     public void updatePlaylist(PlaylistModel p){
         // Stesso cosa qui di sopra.
         //Notify("PlaylistChange", p);
-        Notify("PlaylistUpdate", p);
-        Notify("PlaylistsChange", playlists);
+        Notify(Observer.Events.PlaylistUpdate, p);
+        Notify(Observer.Events.PlaylistsChange, playlists);
     }
 
     @Override

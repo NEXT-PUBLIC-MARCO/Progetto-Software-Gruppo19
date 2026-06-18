@@ -64,12 +64,12 @@ public class PlaylistIterator implements PlayerIterator, Observer {
     }
 
     @Override
-    public void Update(String event, Object object) {
-        if("PlaylistRemove".equals(event) && (PlaylistModel)object == playlist) {
+    public void Update(Observer.Events event, Object object) {
+        if(event.equals(Observer.Events.PlaylistRemove) && (PlaylistModel)object == playlist) {
             playlist = null;
             braniRiordinati = null;
             current = null;
-        } else if("PlaylistChange".equals(event) && (PlaylistModel)object == playlist) {
+        } else if(event.equals(Observer.Events.PlaylistUpdate) && (PlaylistModel)object == playlist) {
             Set setPlaylist = new HashSet<>(playlist.getBrani());
             Set setBrani = new HashSet<>(braniRiordinati);
             if(!setPlaylist.equals(setBrani)){

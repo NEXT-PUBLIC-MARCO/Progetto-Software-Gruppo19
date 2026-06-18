@@ -3,6 +3,7 @@ package it.gruppo19.progetto_music_player.model.commandPattern;
 import it.gruppo19.progetto_music_player.model.BranoModel;
 import it.gruppo19.progetto_music_player.model.DataModel;
 import it.gruppo19.progetto_music_player.model.PlaylistModel;
+import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class RemoveBrano implements Command{
             }
         }
         index = model.removeBrani(brano);
-        model.Notify("PlaylistChange", model.getPlaylists());
+        model.Notify(Observer.Events.PlaylistsChange, model.getPlaylists());
     }
 
     @Override
@@ -36,6 +37,6 @@ public class RemoveBrano implements Command{
         for(PlaylistModel p : playlists){
             p.addBrano(brano);
         }
-        model.Notify("PlaylistChange", model.getPlaylists());
+        model.Notify(Observer.Events.PlaylistsChange, model.getPlaylists());
     }
 }

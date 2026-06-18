@@ -591,11 +591,10 @@ public class MainViewController implements Observer {
 
     // OBSERVER: i dati cambiano → la UI si ridisegna ================
     @Override
-    public void Update(String event, Object object) {
+    public void Update(Observer.Events event, Object object) {
         switch (event) {
-            case "BraniChange", "BranoAdd", "BranoRemove", "BranoUpdate" -> refreshLibrary();
-            case "PlaylistChange", "PlaylistsChange", "PlaylistAdd",
-                 "PlaylistRemove", "PlaylistUpdate" -> refreshPlaylists();
+            case Events.BranoAdd, Events.BranoRemove, Events.BranoUpdate, Events.BraniChange -> refreshLibrary();
+            case Events.PlaylistAdd, Events.PlaylistRemove, Events.PlaylistUpdate, Events.PlaylistsChange-> refreshPlaylists();
             default -> { /* evento non rilevante per questa vista */ }
         }
     }

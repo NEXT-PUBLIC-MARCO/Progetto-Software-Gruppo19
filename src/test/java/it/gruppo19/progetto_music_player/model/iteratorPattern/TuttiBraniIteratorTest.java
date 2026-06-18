@@ -1,6 +1,7 @@
 package it.gruppo19.progetto_music_player.model.iteratorPattern;
 
 import it.gruppo19.progetto_music_player.model.BranoModel;
+import it.gruppo19.progetto_music_player.model.observerPattern.Observer;
 import it.gruppo19.progetto_music_player.model.strategyPattern.AutoPlayStrat;
 import it.gruppo19.progetto_music_player.model.strategyPattern.ShuffleStrat;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ class TuttiBraniIteratorTest {
     @Test
     void updateBranoRemoveSpostaIlCorrenteSeRimossoQuelloInRiproduzione() {
         TuttiBraniIterator it = iterator(); // current = a
-        it.Update("BranoRemove", a);
+        it.Update(Observer.Events.BranoRemove, a);
         assertNotEquals(a, it.getCurrent(),
                 "rimuovendo il brano corrente, l'iterator deve spostarsi su un altro");
     }

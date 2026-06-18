@@ -61,11 +61,11 @@ public class TuttiBraniIterator implements PlayerIterator, Observer {
     }
 
     @Override
-    public void Update(String event, Object object) {
+    public void Update(Observer.Events event, Object object) {
         // CORREZIONE 2: In Java le stringhe si confrontano SEMPRE con .equals(), non con ==
-        if("BranoRemove".equals(event)){
-            if((BranoModel)object == current) getNext();
-        } else if("BraniChange".equals(event)){
+        if(event.equals(Events.BranoRemove) && (BranoModel)object == current){
+            getNext();
+        } else if(event.equals(Events.BraniChange)){
             tuttiBrani = (List<BranoModel>)object;
             braniRiordinati = orderStrat.setBrani(tuttiBrani);
         }
